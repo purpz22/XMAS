@@ -3,150 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Countdown - Cristyl Aurelio</title>
+    <title>MLBB Treasure Hunt</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0f3e3e; /* Dark Green */
-            background-image: radial-gradient(circle, #1a5c5c 0%, #0f3e3e 100%);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
+        body { font-family: sans-serif; background: #222; color: #fff; text-align: center; margin: 0; padding: 20px; }
+        
+        /* Containers */
+        .container { max-width: 800px; margin: 0 auto; background: #333; padding: 20px; border-radius: 10px; }
+        .hidden { display: none; }
+        
+        /* Inputs */
+        input { padding: 10px; width: 70%; margin: 5px; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px;}
+        button:hover { background: #d35400; }
+        button:disabled { background: #555; cursor: not-allowed; }
 
-        .card {
-            background-color: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid #d4af37; /* Gold Border */
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            max-width: 90%;
-            width: 400px;
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(35px, 1fr)); gap: 4px; margin-top: 20px; }
+        .tile { 
+            background: #444; 
+            height: 35px; 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; font-size: 10px; color: #aaa; border-radius: 3px;
         }
-
-        h1 {
-            color: #d4af37; /* Gold */
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
-        }
-
-        .timer-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .time-box {
-            background-color: #b3000c; /* Christmas Red */
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 60px;
-        }
-
-        .number {
-            font-size: 1.5rem;
-            font-weight: bold;
-            display: block;
-        }
-
-        .label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
-        .footer {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            font-style: italic;
-        }
-
-        .name {
-            color: #d4af37;
-            font-weight: bold;
-        }
+        .tile:hover { background: #555; }
+        .tile.open { background: #222; color: #444; cursor: default; }
+        .tile.win { background: #f1c40f; color: black; font-size: 20px; animation: pop 0.5s; }
+        
+        @keyframes pop { 0% { transform: scale(0.5); } 100% { transform: scale(1); } }
+        
+        /* Admin Box */
+        .admin-box { border: 1px solid #555; padding: 15px; margin-bottom: 20px; background: #2a2a2a; }
+        .link-display { background: #111; color: #0f0; padding: 10px; word-break: break-all; margin-top: 10px; font-family: monospace; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Christmas Countdown</h1>
-        
-        <!-- Image from your link -->
-        <img src="https://scontent.fdvo1-2.fna.fbcdn.net/v/t39.30808-1/596808038_2127880827951193_917494172024388396_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=103&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeFASfbosbHnenXKfF0C6dvJT97tTKbNjwVP3u1Mps2PBcGwPq8_Ffj-SIo8aQ91GQrfYcyUOB2pRVevPQndNExU&_nc_ohc=VvDI0FfQilYQ7kNvwEOyuvo&_nc_oc=Adl79yJzP2Ss2EzPlK76qo_90YN4aa8dEp2quxVOIPs4TZWqdVIpO5ko9o0-p6GGAGg&_nc_zt=24&_nc_ht=scontent.fdvo1-2.fna&_nc_gid=5yCMQcdmBpQ9d__cN9HNmA&oh=00_AfltT7pMT0R-3w7pFHWv1ZJnQb1DBGTqZRxKvb3vs3MM3Q&oe=6951AC25" 
-             alt="Cristyl Aurelio" 
-             class="profile-img">
+<div class="container">
+    <h1>MLBB Gold Chest Hunt</h1>
 
-        <div class="timer-container">
-            <div class="time-box">
-                <span class="number" id="days">00</span>
-                <span class="label">Days</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="hours">00</span>
-                <span class="label">Hours</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="minutes">00</span>
-                <span class="label">Mins</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="seconds">00</span>
-                <span class="label">Secs</span>
-            </div>
-        </div>
-
-        <div class="footer">
-            Wish you a Merry Christmas!<br>
-            From <span class="name">Cristyl Aurelio</span>
-        </div>
+    <!-- 1. ADMIN PANEL (Only visible if no game is loaded) -->
+    <div id="adminPanel" class="admin-box">
+        <h3>👮 Admin: Create Game</h3>
+        <p>Where do you want to hide the chest? (1-1000)</p>
+        <input type="number" id="adminNum" placeholder="e.g. 20" min="1" max="1000">
+        <br>
+        <button onclick="generateLink()">Generate Play Link</button>
+        <div id="linkOutput" class="link-display"></div>
     </div>
 
-    <script>
-        function updateCountdown() {
-            const now = new Date();
-            let currentYear = now.getFullYear();
-            let xmasDate = new Date(currentYear, 11, 25); // Month is 0-indexed (11 = Dec)
+    <!-- 2. PLAYER LOGIN -->
+    <div id="loginPanel" class="hidden">
+        <h3>👤 Player Login</h3>
+        <input type="text" id="mlbbId" placeholder="MLBB ID">
+        <input type="text" id="mlbbServer" placeholder="Server ID">
+        <br>
+        <button onclick="startGame()">Start Game</button>
+    </div>
 
-            // If Christmas passed this year, count to next year
-            if (now.getMonth() === 11 && now.getDate() > 25) {
-                xmasDate.setFullYear(currentYear + 1);
+    <!-- 3. GAME GRID -->
+    <div id="gamePanel" class="hidden">
+        <p>Player: <span id="displayPlayer" style="color:#f39c12"></span> | <span id="status">Ready</span></p>
+        <div class="grid" id="grid"></div>
+    </div>
+</div>
+
+<script>
+    const TOTAL_TILES = 1000;
+    const COOLDOWN_MS = 500; // 0.5 seconds
+    
+    let secretTile = 0;
+    let canClick = true;
+
+    // --- ON LOAD: Check if this is Admin or Player ---
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const secretCode = urlParams.get('game');
+
+        if (secretCode) {
+            // PLAYER MODE: Found a game code in URL
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('loginPanel').classList.remove('hidden');
+            try {
+                // Decode the number from Base64 so players can't easily read URL
+                secretTile = parseInt(atob(secretCode));
+            } catch(e) {
+                alert("Invalid Game Link");
             }
-
-            const diff = xmasDate - now;
-
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerText = d;
-            document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
-            document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
-            document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+        } else {
+            // ADMIN MODE: No code, let user create one
+            document.getElementById('adminPanel').style.display = 'block';
         }
+    };
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown(); // Run immediately
-    </script>
+    // --- ADMIN: Generate Link ---
+    function generateLink() {
+        const num = document.getElementById('adminNum').value;
+        if(num < 1 || num > 1000) return alert("Pick 1-1000");
+
+        // Simple encoding to hide the number in the URL
+        const code = btoa(num); 
+        const link = window.location.href.split('?')[0] + "?game=" + code;
+
+        const out = document.getElementById('linkOutput');
+        out.style.display = 'block';
+        out.innerHTML = `Send this to player:<br><br><a href="${link}" style="color:#0f0">${link}</a>`;
+    }
+
+    // --- PLAYER: Start Game ---
+    function startGame() {
+        const id = document.getElementById('mlbbId').value;
+        const server = document.getElementById('mlbbServer').value;
+        if(!id || !server) return alert("Enter Info");
+
+        document.getElementById('displayPlayer').innerText = id + " (" + server + ")";
+        document.getElementById('loginPanel').classList.add('hidden');
+        document.getElementById('gamePanel').classList.remove('hidden');
+        
+        renderGrid();
+    }
+
+    // --- RENDER GRID ---
+    function renderGrid() {
+        const grid = document.getElementById('grid');
+        let html = "";
+        for(let i=1; i<=TOTAL_TILES; i++) {
+            html += `<div class="tile" id="t${i}" onclick="clickTile(${i})">${i}</div>`;
+        }
+        grid.innerHTML = html;
+    }
+
+    // --- GAME LOGIC ---
+    function clickTile(num) {
+        if(!canClick) return;
+        const tile = document.getElementById(`t${num}`);
+        if(tile.classList.contains('open') || tile.classList.contains('win')) return;
+
+        // Cooldown
+        canClick = false;
+        document.getElementById('status').innerText = "Cooldown...";
+        document.getElementById('status').style.color = "red";
+        
+        setTimeout(() => {
+            canClick = true;
+            document.getElementById('status').innerText = "Ready";
+            document.getElementById('status').style.color = "#fff";
+        }, COOLDOWN_MS);
+
+        // Check Win
+        if(num === secretTile) {
+            tile.classList.add('win');
+            tile.innerHTML = "💰"; // Gold Chest
+            alert(`🎉 FOUND IT! \nChest was at ${num}\nWinner: ${document.getElementById('mlbbId').value}`);
+        } else {
+            tile.classList.add('open');
+            tile.style.background = "#222"; // Hide logic
+        }
+    }
+</script>
 
 </body>
 </html>
