@@ -46,6 +46,21 @@
             transition: all 0.1s;
         }
         button:active { transform: translateY(4px); box-shadow: 0 0 0 #d35400; }
+
+        /* --- HOW TO PLAY BOX --- */
+        .rules-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            border-left: 4px solid #f1c40f;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #bdc3c7;
+        }
+        .rules-title { color: #f1c40f; font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; }
         
         /* --- ADMIN BOX --- */
         .admin-box { 
@@ -79,11 +94,25 @@
             border-radius: 5px;
             box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             user-select: none;
+            transition: transform 0.1s;
         }
         
         .tile:active { transform: scale(0.95); }
-        .tile.open { background: #2c3e50; color: #2c3e50; cursor: default; box-shadow: none; border: 1px solid #222; }
+
+        /* INCORRECT TILE STYLE (RED X) */
+        .tile.miss {
+            background-color: #1a1a1a;
+            border: 2px solid #e74c3c; /* Red Border */
+            color: #e74c3c;            /* Red Text */
+            cursor: default;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: none;
+            animation: shake 0.2s;
+        }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } 100% { transform: translateX(0); } }
         
+        /* WINNING TILE STYLE */
         .tile.win { 
             background: #f1c40f; 
             color: #fff; 
@@ -91,6 +120,7 @@
             z-index: 10;
             animation: bounce 0.6s infinite alternate;
             box-shadow: 0 0 15px #f1c40f;
+            border: 2px solid #fff;
         }
 
         @keyframes bounce { from { transform: scale(1); } to { transform: scale(1.1); } }
@@ -202,6 +232,16 @@
 
     <!-- 2. LOGIN PANEL -->
     <div id="loginPanel" class="hidden">
+        
+        <!-- HOW TO PLAY DESCRIPTION -->
+        <div class="rules-box">
+            <span class="rules-title">📜 HOW TO PLAY:</span>
+            1. Enter your <strong>MLBB ID</strong> and <strong>Server</strong>.<br>
+            2. Tap the tiles to find the hidden <strong>Gold Chest</strong>.<br>
+            3. If a tile turns <strong>RED with an X</strong>, it is empty.<br>
+            4. If you find the chest, <strong>Screenshot</strong> the victory screen!
+        </div>
+
         <h3>👤 Player Login</h3>
         <p>Enter details to start hunting</p>
         <input type="text" id="mlbbId" placeholder="MLBB ID">
@@ -250,14 +290,12 @@
             <p style="color: #bdc3c7;">and show it to</p>
             <p class="senator-name">Senator Akai</p>
         </div>
-        <!-- No Button Here Anymore -->
-
     </div>
 </div>
 
 <script>
-    const TOTAL_TILES = 1000;
-    const COOLDOWN_MS = 100; 
+    const TOTAL_TILES = 666;
+    const COOLDOWN_MS = 60; 
     
     let secretTile = 0;
     let canClick = true;
@@ -310,6 +348,7 @@
         const grid = document.getElementById('grid');
         let html = "";
         for(let i=1; i<=TOTAL_TILES; i++) {
+            // using onmousedown for better responsiveness
             html += `<div class="tile" id="t${i}" onmousedown="clickTile(${i})">${i}</div>`;
         }
         grid.innerHTML = html;
@@ -320,9 +359,10 @@
         if(!canClick) return;
         const tile = document.getElementById(`t${num}`);
         
-        if(tile.classList.contains('open') || tile.classList.contains('win')) return;
+        // Prevent clicking if already opened (either miss or win)
+        if(tile.classList.contains('miss') || tile.classList.contains('win')) return;
 
-        // Cooldown
+        // Cooldown Logic
         canClick = false;
         const status = document.getElementById('status');
         status.innerText = "Wait...";
@@ -334,14 +374,16 @@
             status.style.color = "#2ecc71";
         }, COOLDOWN_MS);
 
-        // Check Logic
+        // Check Win/Loss
         if(num === secretTile) {
+            // WINNER
             tile.classList.add('win');
             tile.innerHTML = "💰"; 
             showWinModal(num);
         } else {
-            tile.classList.add('open');
-            tile.innerHTML = ""; 
+            // INCORRECT (Red X)
+            tile.classList.add('miss');
+            tile.innerHTML = "✕"; // Red X symbol
         }
     }
 
