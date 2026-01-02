@@ -5,159 +5,318 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MLBB Treasure Hunt</title>
     <style>
-        body { font-family: sans-serif; background: #222; color: #fff; text-align: center; margin: 0; padding: 20px; }
-        
-        /* Containers */
-        .container { max-width: 800px; margin: 0 auto; background: #333; padding: 20px; border-radius: 10px; }
-        .hidden { display: none; }
-        
-        /* Inputs */
-        input { padding: 10px; width: 70%; margin: 5px; border-radius: 5px; border: none; }
-        button { padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px;}
-        button:hover { background: #d35400; }
-        button:disabled { background: #555; cursor: not-allowed; }
-
-        /* Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(35px, 1fr)); gap: 4px; margin-top: 20px; }
-        .tile { 
-            background: #444; 
-            height: 35px; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; font-size: 10px; color: #aaa; border-radius: 3px;
+        /* --- GENERAL STYLES --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #1a1a1a; 
+            color: #ecf0f1; 
+            text-align: center; 
+            margin: 0; 
+            padding: 0;
+            overflow-x: hidden; /* Prevent scroll on mobile */
         }
-        .tile:hover { background: #555; }
-        .tile.open { background: #222; color: #444; cursor: default; }
-        .tile.win { background: #f1c40f; color: black; font-size: 20px; animation: pop 0.5s; }
         
-        @keyframes pop { 0% { transform: scale(0.5); } 100% { transform: scale(1); } }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            padding-bottom: 100px; /* Space for scrolling */
+        }
+
+        .hidden { display: none !important; }
         
-        /* Admin Box */
-        .admin-box { border: 1px solid #555; padding: 15px; margin-bottom: 20px; background: #2a2a2a; }
-        .link-display { background: #111; color: #0f0; padding: 10px; word-break: break-all; margin-top: 10px; font-family: monospace; display: none; }
+        /* --- INPUTS & BUTTONS --- */
+        input { 
+            padding: 12px; width: 70%; margin: 8px 0; 
+            border-radius: 8px; border: 1px solid #444; 
+            background: #333; color: white; text-align: center; font-size: 16px;
+        }
+        
+        button { 
+            padding: 12px 25px; 
+            background: linear-gradient(135deg, #f1c40f, #f39c12); 
+            color: #1a1a1a; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px; 
+            margin-top: 10px;
+            box-shadow: 0 4px 0 #d35400;
+            transition: all 0.1s;
+        }
+        button:active { transform: translateY(4px); box-shadow: 0 0 0 #d35400; }
+        
+        /* --- ADMIN BOX --- */
+        .admin-box { 
+            background: #2c3e50; 
+            border: 2px solid #34495e; 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-top: 20px;
+        }
+        .link-output { 
+            background: #000; color: #2ecc71; 
+            padding: 15px; margin-top: 15px; 
+            word-break: break-all; font-family: monospace; 
+            border-radius: 5px; border: 1px solid #27ae60;
+        }
+
+        /* --- GRID SYSTEM --- */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); 
+            gap: 6px; 
+            margin-top: 20px; 
+        }
+        
+        .tile { 
+            background: #34495e; 
+            height: 40px; 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; 
+            font-size: 12px; color: #7f8c8d; 
+            border-radius: 5px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            user-select: none;
+        }
+        
+        .tile:active { transform: scale(0.95); }
+        .tile.open { background: #2c3e50; color: #2c3e50; cursor: default; box-shadow: none; border: 1px solid #222; }
+        
+        .tile.win { 
+            background: #f1c40f; 
+            color: #fff; 
+            font-size: 24px; 
+            z-index: 10;
+            animation: bounce 0.6s infinite alternate;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+
+        @keyframes bounce { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+        /* --- STATUS BAR --- */
+        .status-bar {
+            position: sticky; top: 0; 
+            background: #1a1a1a; 
+            padding: 10px; 
+            z-index: 50; 
+            border-bottom: 1px solid #333;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        /* --- WINNING MODAL POPUP --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2c3e50, #000);
+            border: 2px solid #f1c40f;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(241, 196, 15, 0.3);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon { font-size: 60px; margin-bottom: 10px; display: block; }
+        .modal-title { color: #f1c40f; margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 2px; }
+        .modal-info { margin: 20px 0; color: #bdc3c7; font-size: 18px; line-height: 1.6; }
+        .highlight { color: #fff; font-weight: bold; font-size: 20px; }
+        .win-tile-display { font-size: 40px; color: #f1c40f; font-weight: bold; display: block; margin: 10px 0; }
+
+        /* Confetti Effect (CSS Only) */
+        .confetti {
+            position: absolute; width: 10px; height: 10px; background-color: #f1c40f;
+            animation: confetti-fall 3s linear infinite;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1;}
+            100% { transform: translateY(300px) rotate(360deg); opacity: 0;}
+        }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>MLBB Gold Chest Hunt</h1>
+    <h2 style="color: #f1c40f; text-shadow: 0 0 10px rgba(241,196,15,0.5);">MLBB CHEST HUNT</h2>
 
-    <!-- 1. ADMIN PANEL (Only visible if no game is loaded) -->
+    <!-- 1. ADMIN PANEL -->
     <div id="adminPanel" class="admin-box">
-        <h3>👮 Admin: Create Game</h3>
-        <p>Where do you want to hide the chest? (1-1000)</p>
+        <h3>👮 Admin Setup</h3>
+        <p>Enter the winning tile number (1-1000)</p>
         <input type="number" id="adminNum" placeholder="e.g. 20" min="1" max="1000">
         <br>
-        <button onclick="generateLink()">Generate Play Link</button>
-        <div id="linkOutput" class="link-display"></div>
+        <button onclick="generateLink()">Create Game Link</button>
+        <div id="linkOutput" class="link-output hidden"></div>
     </div>
 
-    <!-- 2. PLAYER LOGIN -->
+    <!-- 2. LOGIN PANEL -->
     <div id="loginPanel" class="hidden">
         <h3>👤 Player Login</h3>
+        <p>Enter details to start hunting</p>
         <input type="text" id="mlbbId" placeholder="MLBB ID">
-        <input type="text" id="mlbbServer" placeholder="Server ID">
+        <input type="text" id="mlbbServer" placeholder="Server (e.g. 1234)">
         <br>
-        <button onclick="startGame()">Start Game</button>
+        <button onclick="startGame()">ENTER GAME</button>
     </div>
 
-    <!-- 3. GAME GRID -->
+    <!-- 3. GAME PANEL -->
     <div id="gamePanel" class="hidden">
-        <p>Player: <span id="displayPlayer" style="color:#f39c12"></span> | <span id="status">Ready</span></p>
+        <div class="status-bar">
+            ID: <span id="displayPlayer" style="color:#f1c40f; font-weight:bold;"></span> 
+            | <span id="status">Ready</span>
+        </div>
         <div class="grid" id="grid"></div>
+    </div>
+</div>
+
+<!-- 4. WINNING POPUP MODAL -->
+<div id="winModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <!-- Decoration -->
+        <span class="confetti" style="left: 10%; animation-delay: 0s;"></span>
+        <span class="confetti" style="left: 30%; animation-delay: 0.5s; background: red;"></span>
+        <span class="confetti" style="left: 70%; animation-delay: 1s; background: blue;"></span>
+        <span class="confetti" style="left: 90%; animation-delay: 0.2s;"></span>
+
+        <span class="modal-icon">🏆</span>
+        <h1 class="modal-title">VICTORY!</h1>
+        
+        <div class="modal-info">
+            <span class="highlight" id="winIdDisplay"></span><br>
+            Server: <span id="winServerDisplay"></span>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; margin-bottom: 20px;">
+            <span style="font-size: 14px; color: #aaa;">Gold Chest Found At Tile</span>
+            <span class="win-tile-display" id="winTileDisplay">0</span>
+        </div>
+
+        <button onclick="location.reload()">PLAY AGAIN</button>
     </div>
 </div>
 
 <script>
     const TOTAL_TILES = 1000;
-    const COOLDOWN_MS = 100; // 0.5 seconds
+    const COOLDOWN_MS = 500; // 0.5 seconds cooldown
     
     let secretTile = 0;
     let canClick = true;
 
-    // --- ON LOAD: Check if this is Admin or Player ---
+    // --- INIT ---
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const secretCode = urlParams.get('game');
 
         if (secretCode) {
-            // PLAYER MODE: Found a game code in URL
+            // Player Mode
             document.getElementById('adminPanel').classList.add('hidden');
             document.getElementById('loginPanel').classList.remove('hidden');
             try {
-                // Decode the number from Base64 so players can't easily read URL
                 secretTile = parseInt(atob(secretCode));
-            } catch(e) {
-                alert("Invalid Game Link");
-            }
+            } catch(e) { alert("Invalid Link"); }
         } else {
-            // ADMIN MODE: No code, let user create one
+            // Admin Mode
             document.getElementById('adminPanel').style.display = 'block';
         }
     };
 
-    // --- ADMIN: Generate Link ---
+    // --- ADMIN ---
     function generateLink() {
         const num = document.getElementById('adminNum').value;
-        if(num < 1 || num > 1000) return alert("Pick 1-1000");
+        if(num < 1 || num > 1000) return alert("Please pick 1-1000");
 
-        // Simple encoding to hide the number in the URL
-        const code = btoa(num); 
+        const code = btoa(num);
         const link = window.location.href.split('?')[0] + "?game=" + code;
 
         const out = document.getElementById('linkOutput');
-        out.style.display = 'block';
-        out.innerHTML = `Send this to player:<br><br><a href="${link}" style="color:#0f0">${link}</a>`;
+        out.classList.remove('hidden');
+        out.innerHTML = `Send this link:<br><br><a href="${link}" style="color:#2ecc71">${link}</a>`;
     }
 
-    // --- PLAYER: Start Game ---
+    // --- PLAYER START ---
     function startGame() {
         const id = document.getElementById('mlbbId').value;
         const server = document.getElementById('mlbbServer').value;
-        if(!id || !server) return alert("Enter Info");
+        if(!id || !server) return alert("Please fill all fields");
 
-        document.getElementById('displayPlayer').innerText = id + " (" + server + ")";
+        document.getElementById('displayPlayer').innerText = id;
         document.getElementById('loginPanel').classList.add('hidden');
         document.getElementById('gamePanel').classList.remove('hidden');
         
         renderGrid();
     }
 
-    // --- RENDER GRID ---
     function renderGrid() {
         const grid = document.getElementById('grid');
         let html = "";
         for(let i=1; i<=TOTAL_TILES; i++) {
-            html += `<div class="tile" id="t${i}" onclick="clickTile(${i})">${i}</div>`;
+            // Using onmousedown for faster reaction than onclick on some phones
+            html += `<div class="tile" id="t${i}" onmousedown="clickTile(${i})">${i}</div>`;
         }
         grid.innerHTML = html;
     }
 
-    // --- GAME LOGIC ---
+    // --- GAMEPLAY ---
     function clickTile(num) {
         if(!canClick) return;
         const tile = document.getElementById(`t${num}`);
+        
+        // Ignore if already open or won
         if(tile.classList.contains('open') || tile.classList.contains('win')) return;
 
-        // Cooldown
+        // 1. Cooldown Logic
         canClick = false;
-        document.getElementById('status').innerText = "Cooldown...";
-        document.getElementById('status').style.color = "red";
+        const status = document.getElementById('status');
+        status.innerText = "Wait...";
+        status.style.color = "#e74c3c"; // Red
         
         setTimeout(() => {
             canClick = true;
-            document.getElementById('status').innerText = "Ready";
-            document.getElementById('status').style.color = "#fff";
+            status.innerText = "Ready";
+            status.style.color = "#2ecc71"; // Green
         }, COOLDOWN_MS);
 
-        // Check Win
+        // 2. Check Win/Loss
         if(num === secretTile) {
+            // WINNER!
             tile.classList.add('win');
-            tile.innerHTML = "💰"; // Gold Chest
-            alert(`🎉 FOUND IT! \nChest was at ${num}\nWinner: ${document.getElementById('mlbbId').value}`);
+            tile.innerHTML = "💰"; 
+            showWinModal(num);
         } else {
+            // Empty
             tile.classList.add('open');
-            tile.style.background = "#222"; // Hide logic
+            tile.innerHTML = ""; // Clear number to look "empty"
         }
+    }
+
+    // --- NEW POPUP FUNCTION ---
+    function showWinModal(winningNumber) {
+        const id = document.getElementById('mlbbId').value;
+        const server = document.getElementById('mlbbServer').value;
+
+        // Populate Modal Data
+        document.getElementById('winIdDisplay').innerText = id;
+        document.getElementById('winServerDisplay').innerText = server;
+        document.getElementById('winTileDisplay').innerText = winningNumber;
+
+        // Show Modal
+        document.getElementById('winModal').classList.remove('hidden');
     }
 </script>
 
