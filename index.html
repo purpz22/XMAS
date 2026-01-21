@@ -3,402 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLBB Treasure Hunt</title>
+    <title>StoreZ</title>
     <style>
-        /* --- GENERAL STYLES --- */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #1a1a1a; 
-            color: #ecf0f1; 
-            text-align: center; 
-            margin: 0; 
-            padding: 0;
-            overflow-x: hidden; 
+        :root {
+            --primary: #d4af37; --bg: #0f1014; --card-bg: #1b1e26;
+            --text: #ffffff; --danger: #ff4d4d; --sale: #ff0000; --success: #00c851;
         }
+
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; }
+
+        /* Ticker */
+        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 30px; border-bottom: 1px solid #333; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; line-height: 30px;}
+        .ticker-item { display: inline-block; padding: 0 2rem; color: var(--primary); font-size: 0.9rem; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* Nav */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #161920; border-bottom: 2px solid #333; }
+        .logo { font-size: 1.5rem; color: var(--primary); font-weight: bold; text-transform: uppercase; }
+        .admin-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; cursor: pointer; border-radius: 4px; }
         
-        .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            padding-bottom: 100px; 
-        }
+        .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
 
-        .hidden { display: none !important; }
+        /* Admin UI */
+        #adminArea { display: none; }
+        .admin-section { background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px solid #444; margin-bottom: 20px; }
+        .admin-header { color: var(--primary); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
         
-        /* --- INPUTS & BUTTONS --- */
-        input { 
-            padding: 12px; width: 70%; margin: 8px 0; 
-            border-radius: 8px; border: 1px solid #444; 
-            background: #333; color: white; text-align: center; font-size: 16px;
-        }
+        .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; margin-bottom: 10px; }
+        label { display: block; color: #aaa; font-size: 0.85rem; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; background: #0f1014; border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; }
         
-        button { 
-            padding: 12px 25px; 
-            background: linear-gradient(135deg, #f1c40f, #f39c12); 
-            color: #1a1a1a; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 16px; 
-            margin-top: 10px;
-            box-shadow: 0 4px 0 #d35400;
-            transition: all 0.1s;
-        }
-        button:active { transform: translateY(4px); box-shadow: 0 0 0 #d35400; }
+        .btn { padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; color: black; }
+        .btn-save { background: var(--primary); }
+        .btn-green { background: var(--success); color: white; }
+        .btn-del { background: var(--danger); color: white; width: auto; padding: 2px 8px; }
+        .btn-move { background: #444; color: white; width: auto; padding: 2px 8px; margin-right: 2px; }
+        .btn-io { background-color: #2196F3; color: white; margin-bottom: 10px; }
+        .file-input { display: none; }
 
-        /* --- HOW TO PLAY BOX --- */
-        .rules-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #444;
-            border-left: 4px solid #f1c40f;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: left;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #bdc3c7;
-        }
-        .rules-title { color: #f1c40f; font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; }
+        /* Controls & Sorting */
+        .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;}
+        .cat-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+        .cat-tab { background: #1b1e26; border: 1px solid #444; color: #aaa; padding: 8px 16px; border-radius: 20px; cursor: pointer; white-space: nowrap; }
+        .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; }
+        .sort-select { width: auto; padding: 8px; margin-bottom: 0; }
+
+        /* Store Grid */
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid #333; position: relative; display: flex; flex-direction: column; transition: transform 0.2s; }
         
-        /* --- ADMIN BOX --- */
-        .admin-box { 
-            background: #2c3e50; 
-            border: 2px solid #34495e; 
-            padding: 20px; 
-            border-radius: 15px; 
-            margin-top: 20px;
-        }
-        .link-output { 
-            background: #000; color: #2ecc71; 
-            padding: 15px; margin-top: 15px; 
-            word-break: break-all; font-family: monospace; 
-            border-radius: 5px; border: 1px solid #27ae60;
-        }
-
-        /* --- GRID SYSTEM --- */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); 
-            gap: 6px; 
-            margin-top: 20px; 
-        }
+        /* Drag Styles */
+        .card.draggable { cursor: grab; border: 1px dashed #666; }
+        .card.dragging { opacity: 0.5; border: 2px dashed var(--primary); }
+        .card:hover { transform: translateY(-5px); border-color: #555; }
         
-        .tile { 
-            background: #34495e; 
-            height: 40px; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; 
-            font-size: 12px; color: #7f8c8d; 
-            border-radius: 5px;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            user-select: none;
-            transition: transform 0.1s;
-        }
+        .card-img-top { width: 100%; height: 160px; object-fit: cover; pointer-events: none; }
+        .card-body { padding: 15px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { margin: 0 0 5px 0; color: #fff; font-size: 1.1rem; pointer-events: none; }
+        .price-container { margin-bottom: 15px; pointer-events: none; }
+        .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
+        .old-price { text-decoration: line-through; color: #666; font-size: 0.9rem; margin-right: 5px; }
+        .sale-badge { position: absolute; top: 10px; right: 10px; background: var(--sale); color: white; padding: 3px 8px; border-radius: 3px; font-weight: bold; font-size: 0.8rem; }
         
-        .tile:active { transform: scale(0.95); }
-
-        /* INCORRECT TILE STYLE (RED X) */
-        .tile.miss {
-            background-color: #1a1a1a;
-            border: 2px solid #e74c3c; /* Red Border */
-            color: #e74c3c;            /* Red Text */
-            cursor: default;
-            font-size: 20px;
-            font-weight: bold;
-            box-shadow: none;
-            animation: shake 0.2s;
-        }
-        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } 100% { transform: translateX(0); } }
+        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 10px 0; background: linear-gradient(45deg, #005f99, #0088cc); color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
         
-        /* WINNING TILE STYLE */
-        .tile.win { 
-            background: #f1c40f; 
-            color: #fff; 
-            font-size: 24px; 
-            z-index: 10;
-            animation: bounce 0.6s infinite alternate;
-            box-shadow: 0 0 15px #f1c40f;
-            border: 2px solid #fff;
-        }
+        .admin-controls { display: flex; gap: 5px; margin-top: 10px; }
+        .edit-btn { background: #2196F3; color: white; border: none; padding: 5px; border-radius: 3px; cursor: pointer; flex: 1; }
 
-        @keyframes bounce { from { transform: scale(1); } to { transform: scale(1.1); } }
-
-        /* --- STATUS BAR --- */
-        .status-bar {
-            position: sticky; top: 0; 
-            background: #1a1a1a; 
-            padding: 10px; 
-            z-index: 50; 
-            border-bottom: 1px solid #333;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
-        }
-
-        /* --- WINNING MODAL POPUP --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #2c3e50, #000);
-            border: 2px solid #f1c40f;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(241, 196, 15, 0.3);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-icon { font-size: 60px; margin-bottom: 10px; display: block; }
-        .modal-title { color: #f1c40f; margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 2px; }
-        .modal-info { margin: 20px 0; color: #bdc3c7; font-size: 18px; line-height: 1.6; }
-        .highlight { color: #fff; font-weight: bold; font-size: 22px; }
-        
-        .win-tile-box {
-            background: rgba(255,255,255,0.1); 
-            padding: 10px; 
-            border-radius: 10px; 
-            margin-bottom: 20px;
-        }
-        .win-tile-display { font-size: 35px; color: #f1c40f; font-weight: bold; display: block; }
-
-        /* IMPORTANT MESSAGE STYLES */
-        .instruction-box {
-            border-top: 1px solid #555;
-            padding-top: 15px;
-            margin-top: 20px;
-            animation: flashBorder 2s infinite;
-        }
-        
-        .camera-icon { font-size: 30px; display: block; margin-bottom: 5px; }
-
-        .important-text {
-            color: #f1c40f;
-            font-weight: bold;
-            font-size: 18px;
-            text-transform: uppercase;
-            animation: blinkText 1.5s infinite;
-        }
-
-        .senator-name {
-            color: #fff;
-            font-size: 20px;
-            font-weight: bold;
-            text-decoration: underline;
-            text-decoration-color: #f1c40f;
-        }
-
-        @keyframes blinkText { 50% { opacity: 0.5; } }
-
-        /* Confetti */
-        .confetti {
-            position: absolute; width: 10px; height: 10px; background-color: #f1c40f;
-            animation: confetti-fall 3s linear infinite;
-        }
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1;}
-            100% { transform: translateY(300px) rotate(360deg); opacity: 0;}
-        }
-
+        .list-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2 style="color: #f1c40f; text-shadow: 0 0 10px rgba(241,196,15,0.5);">MLBB CHEST HUNT</h2>
+    <div class="ticker-wrap"><div class="ticker" id="buyerTicker"></div></div>
 
-    <!-- 1. ADMIN PANEL -->
-    <div id="adminPanel" class="admin-box">
-        <h3>👮 Admin Setup</h3>
-        <p>Enter the winning tile number (1-1000)</p>
-        <input type="number" id="adminNum" placeholder="e.g. 20" min="1" max="1000">
-        <br>
-        <button onclick="generateLink()">Create Game Link</button>
-        <div id="linkOutput" class="link-output hidden"></div>
+    <nav>
+        <div class="logo">StoreZ</div>
+        <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
+    </nav>
+
+    <div class="container">
+        <!-- ADMIN PANEL -->
+        <div id="adminArea">
+            
+            <!-- DATA MANAGER (NEW) -->
+            <div class="admin-section">
+                <h4 class="admin-header">Data Manager (Backup/Restore)</h4>
+                <p style="font-size:0.8rem; color:#aaa;">Use this to backup your cloud data or import items from the old version.</p>
+                <button class="btn btn-io" onclick="exportFromFirebase()">⬇ Download Cloud Backup (JSON)</button>
+                <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Import JSON to Cloud</button>
+                <input type="file" id="jsonInput" class="file-input" accept=".json" onchange="importToFirebase(this)">
+            </div>
+
+            <div class="admin-section">
+                <h4 class="admin-header">Settings</h4>
+                <div class="form-group">
+                    <label>Global Buy Link</label>
+                    <input type="text" id="globalLink" placeholder="https://m.me/Page">
+                    <button class="btn btn-green" onclick="saveGlobalSettings()">Save Settings</button>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h4 class="admin-header">Categories</h4>
+                <div class="form-row">
+                    <input type="text" id="catName" placeholder="Category Name" style="flex:1">
+                    <button class="btn btn-save" style="width:auto; margin:0;" onclick="addCategory()">Add</button>
+                </div>
+                <div id="catList" style="margin-top:10px;"></div>
+            </div>
+
+            <div class="admin-section">
+                <h4 class="admin-header">Add / Edit Item</h4>
+                <input type="hidden" id="editItemId">
+                <div class="form-row">
+                    <div class="form-group"><label>Name</label><input type="text" id="itemName"></div>
+                    <div class="form-group"><label>Category</label><select id="itemCatSelect"></select></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Price</label><input type="number" id="itemPrice"></div>
+                    <div class="form-group"><label>Sale Price</label><input type="number" id="itemSale"></div>
+                </div>
+                <div class="form-group"><label>Image</label><input type="text" id="itemImg"></div>
+                <div class="form-group"><label>Custom Link</label><input type="text" id="itemLink"></div>
+                <button class="btn btn-save" onclick="saveItem()">Save Item</button>
+                <button class="btn" style="background:#444; color:white;" onclick="clearForm()">Clear</button>
+            </div>
+
+            <div class="admin-section">
+                <h4 class="admin-header">Add Fake Buyer</h4>
+                <div class="form-row">
+                    <input type="text" id="buyerName" placeholder="Name" style="flex:1">
+                    <input type="text" id="buyerItem" placeholder="Item" style="flex:1">
+                    <button class="btn btn-save" style="width:auto; margin:0;" onclick="addBuyer()">Add</button>
+                </div>
+                <div id="buyerList" style="margin-top:10px; max-height:100px; overflow-y:auto;"></div>
+            </div>
+        </div>
+
+        <!-- PUBLIC STORE CONTROLS -->
+        <div class="controls-row">
+            <div class="cat-tabs" id="catTabs"></div>
+            <select id="sortSelect" class="sort-select" onchange="renderStore()">
+                <option value="default">Default Order</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+                <option value="az">Name: A-Z</option>
+            </select>
+        </div>
+
+        <div class="store-grid" id="storeGrid"></div>
     </div>
 
-    <!-- 2. LOGIN PANEL -->
-    <div id="loginPanel" class="hidden">
+    <!-- FIREBASE SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc, updateDoc, setDoc, query, orderBy, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        // ------------------------------------------------------------------
+        // PASTE YOUR FIREBASE CONFIG HERE
+        // ------------------------------------------------------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
+  authDomain: "storez-68603.firebaseapp.com",
+  projectId: "storez-68603",
+  storageBucket: "storez-68603.firebasestorage.app",
+  messagingSenderId: "555550726462",
+  appId: "1:555550726462:web:98cfd4a27cfdb04209346f"
+};        // ------------------------------------------------------------------
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // State
+        let itemsData = [];
+        let categoriesData = [];
+        let globalLink = "#";
+        let currentCat = "All";
+        let isAdmin = false;
+
+        // --- AUTH ---
+        window.handleAuth = () => {
+            if (auth.currentUser) {
+                signOut(auth).then(() => alert("Logged Out"));
+            } else {
+                const email = prompt("Email:");
+                const pass = prompt("Password:");
+                if(email && pass) signInWithEmailAndPassword(auth, email, pass).catch(e => alert(e.message));
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            const btn = document.getElementById("authBtn");
+            const panel = document.getElementById("adminArea");
+            isAdmin = !!user;
+            if (user) {
+                btn.innerText = "Logout";
+                btn.style.background = "var(--primary)";
+                btn.style.color = "black";
+                panel.style.display = "block";
+            } else {
+                btn.innerText = "Admin Login";
+                btn.style.background = "transparent";
+                btn.style.color = "var(--primary)";
+                panel.style.display = "none";
+            }
+            renderStore();
+        });
+
+        // --- DATA SYNC ---
         
-        <!-- HOW TO PLAY DESCRIPTION -->
-        <div class="rules-box">
-            <span class="rules-title">📜 HOW TO PLAY:</span>
-            1. Enter your <strong>MLBB ID</strong> and <strong>Server</strong>.<br>
-            2. Tap the tiles to find the hidden <strong>Gold Chest</strong>.<br>
-            3. If a tile turns <strong>RED with an X</strong>, it is empty.<br>
-            4. If you find the chest, <strong>Screenshot</strong> the victory screen!
-        </div>
+        onSnapshot(doc(db, "settings", "global"), (doc) => {
+            if(doc.exists()) {
+                globalLink = doc.data().link || "#";
+                document.getElementById("globalLink").value = globalLink;
+                renderStore();
+            }
+        });
 
-        <h3>👤 Player Login</h3>
-        <p>Enter details to start hunting</p>
-        <input type="text" id="mlbbId" placeholder="MLBB ID">
-        <input type="text" id="mlbbServer" placeholder="Server (e.g. 1234)">
-        <br>
-        <button onclick="startGame()">ENTER GAME</button>
-    </div>
+        const qCat = query(collection(db, "categories"), orderBy("order", "asc"));
+        onSnapshot(qCat, (snapshot) => {
+            categoriesData = [];
+            snapshot.forEach((doc) => categoriesData.push({ id: doc.id, ...doc.data() }));
+            renderCategories();
+            renderCatList();
+        });
 
-    <!-- 3. GAME PANEL -->
-    <div id="gamePanel" class="hidden">
-        <div class="status-bar">
-            ID: <span id="displayPlayer" style="color:#f1c40f; font-weight:bold;"></span> 
-            | <span id="status">Ready</span>
-        </div>
-        <div class="grid" id="grid"></div>
-    </div>
-</div>
+        const qItems = query(collection(db, "items"), orderBy("order", "asc"));
+        onSnapshot(qItems, (snapshot) => {
+            itemsData = [];
+            snapshot.forEach((doc) => itemsData.push({ id: doc.id, ...doc.data() }));
+            renderStore();
+        });
 
-<!-- 4. WINNING POPUP MODAL -->
-<div id="winModal" class="modal-overlay hidden">
-    <div class="modal-content">
-        <!-- Confetti Decoration -->
-        <span class="confetti" style="left: 10%; animation-delay: 0s;"></span>
-        <span class="confetti" style="left: 30%; animation-delay: 0.5s; background: red;"></span>
-        <span class="confetti" style="left: 70%; animation-delay: 1s; background: blue;"></span>
-        <span class="confetti" style="left: 90%; animation-delay: 0.2s;"></span>
+        onSnapshot(query(collection(db, "buyers"), orderBy("createdAt", "desc")), (snapshot) => {
+            const buyers = [];
+            snapshot.forEach((doc) => buyers.push({ id: doc.id, ...doc.data() }));
+            renderTicker(buyers);
+            renderBuyerList(buyers);
+        });
 
-        <span class="modal-icon">🏆</span>
-        <h1 class="modal-title">VICTORY!</h1>
-        
-        <div class="modal-info">
-            Winner: <br>
-            <span class="highlight" id="winIdDisplay"></span> 
-            (<span id="winServerDisplay"></span>)
-        </div>
+        // --- IMPORT / EXPORT FUNCTIONS ---
 
-        <div class="win-tile-box">
-            <span style="font-size: 14px; color: #aaa;">Gold Chest Found At Tile</span>
-            <span class="win-tile-display" id="winTileDisplay">0</span>
-        </div>
+        window.exportFromFirebase = async () => {
+            const data = {
+                items: itemsData,
+                categories: categoriesData,
+                settings: { globalLink: globalLink }
+            };
+            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = "StoreZ_Cloud_Backup.json";
+            a.click();
+        };
 
-        <!-- NEW INSTRUCTION MESSAGE -->
-        <div class="instruction-box">
-            <span class="camera-icon">📸</span>
-            <p class="important-text">Screenshot This</p>
-            <p style="color: #bdc3c7;">and show it to</p>
-            <p class="senator-name">Senator Akai</p>
-        </div>
-    </div>
-</div>
+        window.importToFirebase = async (input) => {
+            const file = input.files[0];
+            if(!file) return;
 
-<script>
-    const TOTAL_TILES = 666;
-    const COOLDOWN_MS = 60; 
-    
-    let secretTile = 0;
-    let canClick = true;
+            if(!confirm("This will upload items from the JSON to Firebase. It will not delete existing items, but might create duplicates. Continue?")) return;
 
-    // --- INIT ---
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const secretCode = urlParams.get('game');
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const json = JSON.parse(e.target.result);
+                    const batch = writeBatch(db);
+                    let count = 0;
 
-        if (secretCode) {
-            // Player Mode
-            document.getElementById('adminPanel').classList.add('hidden');
-            document.getElementById('loginPanel').classList.remove('hidden');
-            try {
-                secretTile = parseInt(atob(secretCode));
-            } catch(e) { alert("Invalid Link"); }
-        } else {
-            // Admin Mode
-            document.getElementById('adminPanel').style.display = 'block';
+                    // Import Categories
+                    if(json.categories) {
+                        json.categories.forEach(cat => {
+                            const ref = doc(collection(db, "categories"));
+                            batch.set(ref, { name: cat.name, order: cat.order || 0 });
+                            count++;
+                        });
+                    }
+
+                    // Import Items
+                    if(json.items) {
+                        json.items.forEach(item => {
+                            const ref = doc(collection(db, "items"));
+                            batch.set(ref, {
+                                name: item.name,
+                                price: item.price,
+                                salePrice: item.salePrice || "",
+                                catId: item.catId, // NOTE: Old IDs might not match new Category IDs. You might need to edit items.
+                                image: item.image || "",
+                                link: item.link || item.buyLink || "",
+                                order: item.order || 0
+                            });
+                            count++;
+                        });
+                    }
+
+                    // Import Settings
+                    if(json.settings && json.settings.globalLink) {
+                        const ref = doc(db, "settings", "global");
+                        batch.set(ref, { link: json.settings.globalLink });
+                    }
+
+                    await batch.commit();
+                    alert(`Successfully imported ${count} documents!`);
+
+                } catch(err) {
+                    alert("Error parsing JSON or uploading: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        // --- CORE FUNCTIONS ---
+
+        window.saveGlobalSettings = async () => {
+            await setDoc(doc(db, "settings", "global"), { link: document.getElementById("globalLink").value });
+            alert("Saved!");
+        };
+
+        window.addCategory = async () => {
+            const name = document.getElementById("catName").value;
+            if(name) {
+                const order = categoriesData.length > 0 ? categoriesData[categoriesData.length-1].order + 1 : 1;
+                await addDoc(collection(db, "categories"), { name, order });
+                document.getElementById("catName").value = "";
+            }
+        };
+
+        window.moveCategory = async (index, direction) => {
+            if((direction === -1 && index === 0) || (direction === 1 && index === categoriesData.length - 1)) return;
+            const current = categoriesData[index];
+            const neighbor = categoriesData[index + direction];
+            await updateDoc(doc(db, "categories", current.id), { order: neighbor.order });
+            await updateDoc(doc(db, "categories", neighbor.id), { order: current.order });
+        };
+
+        window.deleteCategory = async (id) => { if(confirm("Delete category?")) await deleteDoc(doc(db, "categories", id)); };
+
+        function renderCategories() {
+            const container = document.getElementById("catTabs");
+            const select = document.getElementById("itemCatSelect");
+            
+            let tabs = `<div class="cat-tab ${currentCat === 'All' ? 'active' : ''}" onclick="window.setCat('All')">All</div>`;
+            let opts = `<option value="">Select...</option>`;
+
+            categoriesData.forEach(c => {
+                tabs += `<div class="cat-tab ${currentCat === c.id ? 'active' : ''}" onclick="window.setCat('${c.id}')">${c.name}</div>`;
+                opts += `<option value="${c.id}">${c.name}</option>`;
+            });
+            container.innerHTML = tabs;
+            select.innerHTML = opts;
         }
-    };
 
-    // --- ADMIN ---
-    function generateLink() {
-        const num = document.getElementById('adminNum').value;
-        if(num < 1 || num > 1000) return alert("Please pick 1-1000");
+        window.setCat = (id) => { currentCat = id; renderStore(); };
 
-        const code = btoa(num);
-        const link = window.location.href.split('?')[0] + "?game=" + code;
-
-        const out = document.getElementById('linkOutput');
-        out.classList.remove('hidden');
-        out.innerHTML = `Send this link:<br><br><a href="${link}" style="color:#2ecc71">${link}</a>`;
-    }
-
-    // --- PLAYER START ---
-    function startGame() {
-        const id = document.getElementById('mlbbId').value;
-        const server = document.getElementById('mlbbServer').value;
-        if(!id || !server) return alert("Please fill all fields");
-
-        document.getElementById('displayPlayer').innerText = id;
-        document.getElementById('loginPanel').classList.add('hidden');
-        document.getElementById('gamePanel').classList.remove('hidden');
-        
-        renderGrid();
-    }
-
-    function renderGrid() {
-        const grid = document.getElementById('grid');
-        let html = "";
-        for(let i=1; i<=TOTAL_TILES; i++) {
-            // using onmousedown for better responsiveness
-            html += `<div class="tile" id="t${i}" onmousedown="clickTile(${i})">${i}</div>`;
+        function renderCatList() {
+            const list = document.getElementById("catList");
+            list.innerHTML = "";
+            categoriesData.forEach((c, i) => {
+                list.innerHTML += `
+                    <div class="list-item">
+                        <span>${c.name}</span> 
+                        <div>
+                            <button class="btn-move" onclick="moveCategory(${i}, -1)">▲</button>
+                            <button class="btn-move" onclick="moveCategory(${i}, 1)">▼</button>
+                            <button class="btn-del" onclick="deleteCategory('${c.id}')">X</button>
+                        </div>
+                    </div>`;
+            });
         }
-        grid.innerHTML = html;
-    }
 
-    // --- GAMEPLAY ---
-    function clickTile(num) {
-        if(!canClick) return;
-        const tile = document.getElementById(`t${num}`);
+        window.saveItem = async () => {
+            const id = document.getElementById("editItemId").value;
+            const data = {
+                name: document.getElementById("itemName").value,
+                price: Number(document.getElementById("itemPrice").value),
+                salePrice: document.getElementById("itemSale").value,
+                catId: document.getElementById("itemCatSelect").value,
+                image: document.getElementById("itemImg").value,
+                link: document.getElementById("itemLink").value
+            };
+            
+            if(!data.name || !data.price || !data.catId) { alert("Missing info"); return; }
+
+            if(id) {
+                await updateDoc(doc(db, "items", id), data);
+            } else {
+                const order = itemsData.length > 0 ? Math.max(...itemsData.map(i=>i.order||0)) + 1 : 1;
+                data.order = order;
+                await addDoc(collection(db, "items"), data);
+            }
+            window.clearForm();
+        };
+
+        window.deleteItem = async (id) => { if(confirm("Delete?")) await deleteDoc(doc(db, "items", id)); };
         
-        // Prevent clicking if already opened (either miss or win)
-        if(tile.classList.contains('miss') || tile.classList.contains('win')) return;
+        window.editItem = (id) => {
+            const item = itemsData.find(i => i.id === id);
+            document.getElementById("editItemId").value = item.id;
+            document.getElementById("itemName").value = item.name;
+            document.getElementById("itemPrice").value = item.price;
+            document.getElementById("itemSale").value = item.salePrice;
+            document.getElementById("itemCatSelect").value = item.catId;
+            document.getElementById("itemImg").value = item.image;
+            document.getElementById("itemLink").value = item.link;
+            document.getElementById("adminArea").scrollIntoView();
+        };
 
-        // Cooldown Logic
-        canClick = false;
-        const status = document.getElementById('status');
-        status.innerText = "Wait...";
-        status.style.color = "#e74c3c";
-        
-        setTimeout(() => {
-            canClick = true;
-            status.innerText = "Ready";
-            status.style.color = "#2ecc71";
-        }, COOLDOWN_MS);
+        window.clearForm = () => {
+            document.querySelectorAll("#adminArea input").forEach(i => i.value = "");
+            document.getElementById("itemCatSelect").value = "";
+        };
 
-        // Check Win/Loss
-        if(num === secretTile) {
-            // WINNER
-            tile.classList.add('win');
-            tile.innerHTML = "💰"; 
-            showWinModal(num);
-        } else {
-            // INCORRECT (Red X)
-            tile.classList.add('miss');
-            tile.innerHTML = "✕"; // Red X symbol
+        let draggedId = null;
+        window.dragStart = (e, id) => { draggedId = id; e.target.classList.add('dragging'); };
+        window.dragOver = (e) => { e.preventDefault(); };
+        window.drop = async (e, targetId) => {
+            e.preventDefault();
+            document.querySelector('.dragging')?.classList.remove('dragging');
+            if(draggedId === targetId) return;
+
+            const dragItem = itemsData.find(i => i.id === draggedId);
+            const targetItem = itemsData.find(i => i.id === targetId);
+            await updateDoc(doc(db, "items", draggedId), { order: targetItem.order || 0 });
+            await updateDoc(doc(db, "items", targetId), { order: dragItem.order || 0 });
+        };
+
+        window.renderStore = () => {
+            const grid = document.getElementById("storeGrid");
+            const sortMode = document.getElementById("sortSelect").value;
+            grid.innerHTML = "";
+            
+            let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
+
+            if(sortMode === 'low') filtered.sort((a,b) => (Number(a.salePrice)||a.price) - (Number(b.salePrice)||b.price));
+            if(sortMode === 'high') filtered.sort((a,b) => (Number(b.salePrice)||b.price) - (Number(a.salePrice)||a.price));
+            if(sortMode === 'az') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+            filtered.forEach(item => {
+                const onSale = item.salePrice && Number(item.salePrice) < item.price;
+                let priceHtml = `<span class="current-price">₱${item.price}</span>`;
+                let badge = "";
+                if(onSale) {
+                    priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price" style="color:red">₱${item.salePrice}</span>`;
+                    badge = `<div class="sale-badge">SALE</div>`;
+                }
+
+                let finalLink = item.link || globalLink;
+                if(!finalLink.startsWith("http")) finalLink = "https://" + finalLink;
+
+                let adminHtml = "";
+                let dragAttr = "";
+
+                if(isAdmin) {
+                    adminHtml = `<div class="admin-controls"><button class="edit-btn" onclick="editItem('${item.id}')">Edit</button><button class="btn-del" onclick="deleteItem('${item.id}')">Del</button></div>`;
+                    if(sortMode === 'default') {
+                        dragAttr = `draggable="true" ondragstart="dragStart(event, '${item.id}')" ondragover="dragOver(event)" ondrop="drop(event, '${item.id}')" class="card draggable"`;
+                    } else {
+                        dragAttr = `class="card"`;
+                    }
+                } else {
+                    dragAttr = `class="card"`;
+                }
+
+                grid.innerHTML += `
+                    <div ${dragAttr}>
+                        ${badge}
+                        <img src="${item.image || 'https://placehold.co/200x150?text=No+Image'}" class="card-img-top">
+                        <div class="card-body">
+                            <h3 class="card-title">${item.name}</h3>
+                            <div class="price-container">${priceHtml}</div>
+                            <a href="${finalLink}" target="_blank" class="buy-btn">Buy Now</a>
+                            ${adminHtml}
+                        </div>
+                    </div>`;
+            });
+        };
+
+        window.addBuyer = async () => {
+            const name = document.getElementById("buyerName").value;
+            const item = document.getElementById("buyerItem").value;
+            if(name && item) {
+                await addDoc(collection(db, "buyers"), { name, item, createdAt: Date.now() });
+                document.getElementById("buyerName").value = "";
+            }
+        };
+        window.deleteBuyer = async (id) => await deleteDoc(doc(db, "buyers", id));
+
+        function renderTicker(buyers) {
+            let html = "";
+            buyers.slice(0, 15).forEach(b => html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`);
+            if(buyers.length > 0 && buyers.length < 5) html += html + html;
+            document.getElementById("buyerTicker").innerHTML = html;
         }
-    }
 
-    // --- WINNING POPUP ---
-    function showWinModal(winningNumber) {
-        const id = document.getElementById('mlbbId').value;
-        const server = document.getElementById('mlbbServer').value;
-
-        document.getElementById('winIdDisplay').innerText = id;
-        document.getElementById('winServerDisplay').innerText = server;
-        document.getElementById('winTileDisplay').innerText = winningNumber;
-
-        document.getElementById('winModal').classList.remove('hidden');
-    }
-</script>
-
+        function renderBuyerList(buyers) {
+            const list = document.getElementById("buyerList");
+            list.innerHTML = "";
+            buyers.forEach(b => {
+                list.innerHTML += `<div class="list-item"><span>${b.name}</span> <button class="btn-del" onclick="deleteBuyer('${b.id}')">X</button></div>`;
+            });
+        }
+    </script>
 </body>
 </html>
