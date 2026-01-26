@@ -3,97 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StoreZ</title>
+    <title>StoreZ | Premium Shop</title>
     <style>
         :root {
-            --primary: #d4af37; --bg: #0f1014; --card-bg: #1b1e26;
-            --text: #ffffff; --danger: #ff4d4d; --sale: #ff0000; --success: #00c851;
-            --chat-user: #005f99; --chat-admin: #333;
+            --primary: #d4af37; /* Gold */
+            --primary-hover: #b5952f;
+            --bg: #121212; 
+            --card-bg: #1e1e1e;
+            --text: #e0e0e0; 
+            --text-muted: #a0a0a0;
+            --danger: #ef5350; 
+            --sale: #ff3d00; 
+            --chat-user: #1565c0; 
+            --chat-admin: #424242;
+            --modal-overlay: rgba(0, 0, 0, 0.85);
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; }
 
-        /* Ticker */
-        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 30px; border-bottom: 1px solid #333; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; line-height: 30px;}
-        .ticker-item { display: inline-block; padding: 0 2rem; color: #888; font-size: 0.85rem; }
-        .ticker-item b { color: var(--primary); }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        /* --- NAVIGATION --- */
+        nav { display: flex; justify-content: center; align-items: center; padding: 20px; background: #1a1a1a; border-bottom: 1px solid #333; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .logo { font-size: 1.8rem; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: color 0.3s; }
+        .logo:hover { color: #fff; text-shadow: 0 0 10px var(--primary); }
 
-        /* Nav */
-        nav { display: flex; justify-content: center; align-items: center; padding: 20px; background: #161920; border-bottom: 2px solid #333; position: relative; }
-        .logo { font-size: 2rem; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
-        
-        /* The hidden login container */
         #secretLogin { position: absolute; top: 20px; right: 20px; display: none; z-index: 999; }
-        .admin-btn { background: var(--primary); border: 1px solid var(--primary); color: #000; padding: 5px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .admin-btn { background: var(--primary); border: none; color: #000; padding: 6px 16px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 0.8rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
-        .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
+        /* --- LAYOUT --- */
+        .container { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
+        
+        /* --- CONTROLS --- */
+        .cat-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+        .cat-tab { background: #2a2a2a; border: 1px solid #444; color: var(--text-muted); padding: 8px 24px; border-radius: 30px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+        .cat-tab:hover { background: #333; color: #fff; }
+        .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; border-color: var(--primary); box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
 
-        /* Admin UI */
-        #adminArea { display: none; border-left: 2px solid var(--primary); padding-left: 15px; margin-bottom: 30px;}
-        .admin-section { background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px solid #444; margin-bottom: 20px; }
-        .admin-header { color: var(--primary); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
+        /* --- STORE GRID --- */
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border-color: #555; }
         
-        .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .form-group { flex: 1; min-width: 200px; margin-bottom: 10px; }
-        label { display: block; color: #aaa; font-size: 0.85rem; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 10px; background: #0f1014; border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; }
+        .card-img-top { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid #333; }
+        .card-body { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { margin: 0 0 8px 0; color: #fff; font-size: 1.15rem; font-weight: 600; }
         
-        .btn { padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; color: black; }
-        .btn-save { background: var(--primary); }
-        .btn-del { background: var(--danger); color: white; width: auto; padding: 2px 8px; }
+        .price-container { margin-bottom: 15px; min-height: 28px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
+        .old-price { text-decoration: line-through; color: #666; font-size: 0.95rem; }
+        .sale-badge { position: absolute; top: 12px; right: 12px; background: var(--sale); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 10; }
+
+        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 12px 0; background: linear-gradient(135deg, #005f99, #004470); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: filter 0.2s; }
+        .buy-btn:hover { filter: brightness(1.1); }
+        .buy-btn:active { transform: scale(0.98); }
+
+        /* --- ADMIN PANEL --- */
+        #adminArea { display: none; border-left: 3px solid var(--primary); padding-left: 20px; margin-bottom: 40px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 0 10px 10px 0; }
+        .admin-section { background: #252525; padding: 20px; border-radius: 8px; border: 1px solid #444; margin-bottom: 20px; }
+        .admin-header { color: var(--primary); margin: 0 0 15px 0; border-bottom: 1px solid #444; padding-bottom: 10px; font-size: 1.1rem; }
+        
+        .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; margin-bottom: 12px; }
+        label { display: block; color: #bbb; font-size: 0.8rem; margin-bottom: 6px; font-weight: 500; }
+        input, select { width: 100%; padding: 10px; background: #121212; border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; outline: none; transition: border 0.2s; }
+        input:focus, select:focus { border-color: var(--primary); }
+        
+        .btn { padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; color: black; font-size: 0.9rem; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
+        .btn-save { background: var(--primary); color: #000; }
+        .btn-del { background: var(--danger); color: white; width: auto; padding: 4px 10px; font-size: 0.8rem; }
         .btn-io { background-color: #2196F3; color: white; margin-bottom: 10px; }
         .file-input { display: none; }
 
-        /* Store Grid */
-        .cat-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
-        .cat-tab { background: #1b1e26; border: 1px solid #444; color: #aaa; padding: 8px 20px; border-radius: 20px; cursor: pointer; }
-        .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; }
+        /* --- MODALS --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-box { background: #222; padding: 30px; border-radius: 12px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s; position: relative; }
-        .card:hover { transform: translateY(-5px); border-color: #555; }
+        /* --- CHAT SYSTEM --- */
+        .chat-container { display: flex; flex-direction: column; height: 400px; }
+        .chat-box { flex-grow: 1; background: #0f0f0f; border: 1px solid #333; border-radius: 8px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; scroll-behavior: smooth; }
         
-        .card-img-top { width: 100%; height: 180px; object-fit: cover; }
-        .card-body { padding: 15px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { margin: 0 0 5px 0; color: #fff; font-size: 1.1rem; }
+        .message { padding: 10px 14px; border-radius: 18px; font-size: 0.95rem; max-width: 80%; word-wrap: break-word; line-height: 1.4; animation: slideUp 0.2s ease; }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .price-container { margin-bottom: 10px; min-height: 25px; }
-        .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
-        .old-price { text-decoration: line-through; color: #666; font-size: 0.9rem; margin-right: 5px; }
-        .sale-badge { position: absolute; top: 10px; right: 10px; background: var(--sale); color: white; padding: 3px 8px; border-radius: 3px; font-weight: bold; font-size: 0.8rem; z-index: 10; }
+        .msg-system { align-self: center; background: #2a2a2a; color: #aaa; font-size: 0.8rem; border-radius: 8px; padding: 5px 10px; }
+        .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border-bottom-right-radius: 4px; }
+        .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border-bottom-left-radius: 4px; border: 1px solid #444; }
+        
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 25px; border: 1px solid #444; background: #1a1a1a; color: white; }
+        .chat-input-area button { width: auto; padding: 0 20px; border-radius: 25px; margin: 0; }
 
-        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 10px 0; background: linear-gradient(45deg, #005f99, #0088cc); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
-
-        /* MODAL & CHAT STYLES */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-box { background: var(--card-bg); padding: 25px; border-radius: 10px; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; }
-        .chat-box { width: 100%; height: 300px; background: #000; border: 1px solid #333; margin-top: 10px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .message { padding: 8px 12px; border-radius: 15px; font-size: 0.9rem; max-width: 80%; word-wrap: break-word; }
-        .msg-system { align-self: center; background: #333; color: #aaa; font-size: 0.8rem; }
-        .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border-bottom-right-radius: 2px; }
-        .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border-bottom-left-radius: 2px; border: 1px solid #555; }
-        .chat-input-area { display: flex; gap: 5px; margin-top: 10px; }
-        
         /* Admin Chat List */
-        .admin-chat-item { background: #111; padding: 10px; margin-bottom: 5px; border: 1px solid #333; cursor: pointer; display: flex; justify-content: space-between; align-items: center;}
-        .admin-chat-item:hover { background: #222; }
-        .admin-chat-item.active { border-color: var(--primary); }
-        .badge { background: red; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; }
+        .admin-chat-item { background: #1a1a1a; padding: 12px; margin-bottom: 8px; border: 1px solid #333; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .admin-chat-item:hover { background: #2a2a2a; }
+        .admin-chat-item.active { border-color: var(--primary); background: #222; }
+        .badge { background: var(--sale); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
 
-        .list-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
+        .list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
     </style>
 </head>
 <body>
 
-    <div class="ticker-wrap"><div class="ticker" id="buyerTicker"></div></div>
-
     <nav>
         <!-- Click logo 5 times to reveal admin if hash fails -->
         <div class="logo" onclick="clickLogo()">StoreZ</div>
-        
-        <!-- Secret Login Button Container -->
         <div id="secretLogin">
             <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
         </div>
@@ -101,100 +115,120 @@
 
     <div class="container">
         
-        <!-- ADMIN PANEL -->
+        <!-- ADMIN DASHBOARD -->
         <div id="adminArea">
-            <h2 style="color:var(--primary);">Admin Dashboard</h2>
+            <h2 style="color:var(--primary); margin-top:0;">Admin Dashboard</h2>
             
             <!-- LIVE CHATS -->
             <div class="admin-section">
-                <h4 class="admin-header">Live Orders & Chats</h4>
+                <h4 class="admin-header">Live Orders & Customer Chats</h4>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <!-- Chat List -->
                     <div style="flex: 1; min-width: 250px;">
-                        <label>Active Conversations</label>
-                        <div id="adminChatList" style="height: 300px; overflow-y: auto; border: 1px solid #333; background: #000;"></div>
-                    </div>
-                    <div style="flex: 2; min-width: 300px; display: none;" id="adminChatWindow">
-                        <label id="adminChatTitle">Chatting with...</label>
-                        <div id="adminMessages" class="chat-box"></div>
-                        <div class="chat-input-area">
-                            <input type="text" id="adminMsgInput" placeholder="Type to customer...">
-                            <button class="btn btn-save" style="width: auto;" onclick="sendAdminMessage()">Send</button>
+                        <label>Active Orders</label>
+                        <div id="adminChatList" style="height: 350px; overflow-y: auto; border: 1px solid #333; background: #000; padding:10px; border-radius:8px;">
+                            <div style="color:#666; text-align:center; padding:20px;">No active orders</div>
                         </div>
-                        <button class="btn btn-del" style="margin-top: 10px;" onclick="closeCurrentChat()">Close & Delete Order</button>
+                    </div>
+                    <!-- Chat Window -->
+                    <div style="flex: 2; min-width: 300px; display: none;" id="adminChatWindow">
+                        <label id="adminChatTitle" style="color:var(--primary);">Chatting with...</label>
+                        <div class="chat-container" style="height: 300px;">
+                            <div id="adminMessages" class="chat-box"></div>
+                            <div class="chat-input-area">
+                                <input type="text" id="adminMsgInput" placeholder="Reply to customer..." onkeypress="handleEnter(event, sendAdminMessage)">
+                                <button class="btn btn-save" onclick="sendAdminMessage()">Send</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-del" style="margin-top: 15px;" onclick="closeCurrentChat()">✅ Complete Order & Delete Chat</button>
                     </div>
                 </div>
             </div>
 
             <!-- PRODUCT MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">Add / Edit Item</h4>
+                <h4 class="admin-header">Add / Edit Product</h4>
                 <input type="hidden" id="editItemId">
                 <div class="form-row">
-                    <div class="form-group"><label>Name</label><input type="text" id="itemName"></div>
+                    <div class="form-group"><label>Product Name</label><input type="text" id="itemName" placeholder="e.g. 100 Diamonds"></div>
                     <div class="form-group"><label>Category</label><select id="itemCatSelect"></select></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Original Price</label><input type="number" id="itemPrice"></div>
-                    <div class="form-group"><label>Sale Price (Optional)</label><input type="number" id="itemSale"></div>
+                    <div class="form-group"><label>Original Price (₱)</label><input type="number" id="itemPrice" placeholder="0.00"></div>
+                    <div class="form-group"><label>Sale Price (₱ - Optional)</label><input type="number" id="itemSale" placeholder="Leave empty if not on sale"></div>
                 </div>
-                <div class="form-group"><label>Image URL</label><input type="text" id="itemImg"></div>
+                <div class="form-group"><label>Image URL</label><input type="text" id="itemImg" placeholder="https://..."></div>
                 
-                <button class="btn btn-save" onclick="saveItem()">Save Item</button>
-                <button class="btn" style="background:#444; color:white;" onclick="clearForm()">Clear</button>
+                <button class="btn btn-save" onclick="saveItem()">Save Product</button>
+                <button class="btn" style="background:#333; color:#aaa; margin-top:10px;" onclick="clearForm()">Clear Form</button>
             </div>
 
+            <!-- BACKUP & CATEGORIES -->
             <div class="admin-section">
-                <h4 class="admin-header">Data Backup</h4>
-                <button class="btn btn-io" onclick="exportFromFirebase()">⬇ Backup Data</button>
-                <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Restore Data</button>
-                <input type="file" id="jsonInput" class="file-input" accept=".json" onchange="importToFirebase(this)">
+                <h4 class="admin-header">System Tools</h4>
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
+                    <button class="btn btn-io" onclick="exportFromFirebase()">⬇ Backup Database</button>
+                    <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Restore Database</button>
+                    <input type="file" id="jsonInput" class="file-input" accept=".json" onchange="importToFirebase(this)">
+                </div>
                 
-                <h4 class="admin-header" style="margin-top:20px;">Categories</h4>
+                <h4 class="admin-header">Manage Categories</h4>
                 <div class="form-row">
                     <input type="text" id="catName" placeholder="New Category Name">
                     <button class="btn btn-save" style="width:auto;" onclick="addCategory()">Add</button>
                 </div>
-                <div id="catList" style="margin-top:10px;"></div>
+                <div id="catList" style="margin-top:15px;"></div>
             </div>
         </div>
 
         <!-- PUBLIC STORE -->
         <div class="cat-tabs" id="catTabs"></div>
-        <div class="store-grid" id="storeGrid"></div>
+        <div class="store-grid" id="storeGrid">
+            <!-- Items inject here -->
+             <p style="text-align:center; width:100%; color:#666; margin-top:50px;">Loading Store...</p>
+        </div>
     </div>
 
     <!-- CUSTOMER ORDER MODAL -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-box">
-            <h3 style="color:var(--primary)" id="modalItemName">Buying Item</h3>
-            <p>Please enter your MLBB ID to proceed.</p>
-            <input type="text" id="customerMlbbId" placeholder="User ID (e.g. 12345678)" style="text-align:center; font-size: 1.1rem; width: 100%; box-sizing:border-box;">
-            <button class="btn btn-save" style="margin-top:15px;" onclick="submitOrder()">Start Order</button>
+            <h3 style="color:var(--primary); margin-bottom:5px;" id="modalItemName">Confirm Order</h3>
+            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Enter your Game ID to begin the transaction.</p>
+            
+            <input type="text" id="customerMlbbId" placeholder="Game ID / User ID" style="text-align:center; font-size: 1.1rem; padding: 12px; margin-bottom:15px;">
+            
+            <button class="btn btn-save" onclick="submitOrder()">Proceed to Chat</button>
             <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('orderModal')">Cancel</button>
         </div>
     </div>
 
     <!-- CUSTOMER CHAT MODAL -->
     <div id="customerChatModal" class="modal-overlay">
-        <div class="modal-box" style="max-width: 500px;">
-            <h3 style="color:var(--primary)">Private Conversation</h3>
+        <div class="modal-box" style="max-width: 500px; height: 80vh; display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="color:var(--primary); margin:0;">Support Chat</h3>
+                <!-- No close button here to prevent accidental closing, they must refresh to minimize -->
+                <span style="font-size:0.8rem; color:#666;">ID: <span id="displayChatId"></span></span>
+            </div>
+            
             <div id="customerMessages" class="chat-box"></div>
+            
             <div class="chat-input-area" id="customerInputArea">
-                <input type="text" id="customerMsgInput" placeholder="Message to Admin...">
+                <input type="text" id="customerMsgInput" placeholder="Message to Admin..." onkeypress="handleEnter(event, sendCustomerMessage)">
                 <button class="btn btn-save" style="width: auto;" onclick="sendCustomerMessage()">Send</button>
             </div>
-            <p style="font-size:0.8rem; color:#666; margin-top:5px;">Do not refresh the page or you will lose the chat.</p>
+            <p style="font-size:0.75rem; color:#555; margin-top:10px;">Refresh the page if you get stuck. Your chat is saved automatically.</p>
         </div>
     </div>
 
     <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc, updateDoc, setDoc, query, orderBy, where, writeBatch, arrayUnion, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, writeBatch, arrayUnion, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
         // ------------------------------------------------------------------
-        // PASTE YOUR CONFIG HERE
+        // FIREBASE CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
           authDomain: "storez-68603.firebaseapp.com",
@@ -222,25 +256,48 @@
         let activeAdminChatId = null;
         let chatUnsubscribe = null;
 
-        // --- SECRET ROUTE CHECK ---
+        // --- 1. SESSION RECOVERY (NEW) ---
+        // This runs immediately to check if user has a chat open
+        async function checkSavedSession() {
+            const savedId = localStorage.getItem('storez_active_chat');
+            if(savedId) {
+                // Verify if it still exists in DB (Admin might have deleted it)
+                const docRef = doc(db, "chats", savedId);
+                try {
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        console.log("Restoring session:", savedId);
+                        resumeCustomerChat(savedId);
+                    } else {
+                        console.log("Session invalid (chat deleted)");
+                        localStorage.removeItem('storez_active_chat');
+                    }
+                } catch (e) {
+                    console.error("Error checking session", e);
+                }
+            }
+        }
+        
+        // Wait for DOM then check session
+        window.addEventListener('DOMContentLoaded', checkSavedSession);
+
+
+        // --- 2. ADMIN & AUTH ---
         function checkSecretRoute() {
             const isSecret = window.location.hash.includes('nimda');
             const loginDiv = document.getElementById("secretLogin");
             if(isSecret) loginDiv.style.display = "block";
         }
-        window.checkSecretRoute = checkSecretRoute; // Expose to global
-        window.setInterval(checkSecretRoute, 1000); // Check every second to be sure
+        window.setInterval(checkSecretRoute, 1000);
 
-        // Backup: Click logo 5 times to show login
         window.clickLogo = () => {
             logoClicks++;
             if(logoClicks >= 5) {
                 document.getElementById("secretLogin").style.display = "block";
-                alert("Admin Button Revealed");
+                alert("Admin Access Unlocked");
             }
         };
 
-        // --- AUTH ---
         window.handleAuth = () => {
             if (auth.currentUser) {
                 signOut(auth).then(() => window.location.reload());
@@ -266,28 +323,7 @@
             renderStore();
         });
 
-        // --- DATA SYNC ---
-        // Load Ticker (Who Bought)
-        const qTicker = query(collection(db, "chats"), orderBy("timestamp", "desc"), limit(10));
-        onSnapshot(qTicker, (snapshot) => {
-            let html = "";
-            if(snapshot.empty) {
-                 html = `<div class="ticker-item">Welcome to StoreZ!</div>`;
-            } else {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if(data.mlbbId && data.itemName) {
-                        // Mask the ID (e.g. 123456 -> 123***)
-                        let maskedId = data.mlbbId.length > 4 ? data.mlbbId.substring(0, 3) + "***" : "User";
-                        html += `<div class="ticker-item">🎉 ID: <b>${maskedId}</b> bought <b>${data.itemName}</b></div>`;
-                    }
-                });
-                // Duplicate content for smooth scrolling
-                if(snapshot.size < 5) html += html + html; 
-            }
-            document.getElementById("buyerTicker").innerHTML = html;
-        });
-
+        // --- 3. DATA SYNC ---
         const qCat = query(collection(db, "categories"), orderBy("order", "asc"));
         onSnapshot(qCat, (snapshot) => {
             categoriesData = [];
@@ -303,7 +339,7 @@
             renderStore();
         });
 
-        // --- CUSTOMER ORDER & CHAT FLOW ---
+        // --- 4. CUSTOMER ORDER LOGIC ---
         
         window.openBuyModal = (itemJson) => {
             const item = JSON.parse(decodeURIComponent(itemJson));
@@ -311,6 +347,7 @@
             document.getElementById("modalItemName").innerText = "Buying: " + item.name;
             document.getElementById("customerMlbbId").value = "";
             document.getElementById("orderModal").style.display = "flex";
+            document.getElementById("customerMlbbId").focus();
         };
 
         window.closeModal = (id) => {
@@ -319,17 +356,16 @@
 
         window.submitOrder = async () => {
             const mlbbId = document.getElementById("customerMlbbId").value.trim();
-            if(!mlbbId) return alert("Please enter MLBB ID");
+            if(!mlbbId) return alert("Please enter ID");
 
             const btn = document.querySelector("#orderModal .btn-save");
-            btn.innerText = "Processing...";
+            const originalText = btn.innerText;
+            btn.innerText = "Connecting...";
             btn.disabled = true;
 
             try {
-                // Determine price to save
-                let finalPrice = currentItemBuying.salePrice ? currentItemBuying.salePrice : currentItemBuying.price;
+                let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
 
-                // Create Chat Session
                 const chatRef = await addDoc(collection(db, "chats"), {
                     mlbbId: mlbbId,
                     itemName: currentItemBuying.name,
@@ -338,34 +374,43 @@
                     timestamp: Date.now(),
                     messages: [{
                         sender: 'system',
-                        text: `Order started for ${currentItemBuying.name} @ ₱${finalPrice}. ID: ${mlbbId}. Please wait for admin.`,
+                        text: `Order: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}\n\nWaiting for agent...`,
                         time: Date.now()
                     }]
                 });
 
-                activeCustomerChatId = chatRef.id;
+                // SAVE SESSION TO LOCAL STORAGE
+                localStorage.setItem('storez_active_chat', chatRef.id);
+
                 closeModal("orderModal");
-                document.getElementById("customerChatModal").style.display = "flex";
-                
-                // Listen to chat
-                onSnapshot(doc(db, "chats", activeCustomerChatId), (docSnap) => {
-                    if(docSnap.exists()) {
-                        const data = docSnap.data();
-                        renderMessages(data.messages, "customerMessages");
-                    } else {
-                        alert("Chat ended by admin.");
-                        window.location.reload();
-                    }
-                });
+                resumeCustomerChat(chatRef.id);
 
             } catch (error) {
-                console.error("Error creating order:", error);
-                alert("Error starting order: " + error.message);
+                console.error(error);
+                alert("Connection failed. Check internet.");
             } finally {
-                btn.innerText = "Start Order";
+                btn.innerText = originalText;
                 btn.disabled = false;
             }
         };
+
+        function resumeCustomerChat(chatId) {
+            activeCustomerChatId = chatId;
+            document.getElementById("customerChatModal").style.display = "flex";
+            document.getElementById("displayChatId").innerText = chatId.slice(0,5);
+
+            onSnapshot(doc(db, "chats", chatId), (docSnap) => {
+                if(docSnap.exists()) {
+                    const data = docSnap.data();
+                    renderMessages(data.messages, "customerMessages");
+                } else {
+                    // Chat deleted by admin
+                    alert("This session has ended.");
+                    localStorage.removeItem('storez_active_chat');
+                    window.location.reload();
+                }
+            });
+        }
 
         window.sendCustomerMessage = async () => {
             const input = document.getElementById("customerMsgInput");
@@ -376,7 +421,11 @@
             try {
                 await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion(msg) });
                 input.value = "";
-            } catch(e) { console.error(e); alert("Message failed. Check internet."); }
+            } catch(e) { console.error(e); }
+        };
+
+        window.handleEnter = (e, func) => {
+            if(e.key === 'Enter') func();
         };
 
         function renderMessages(msgs, divId) {
@@ -386,28 +435,42 @@
                 let cls = "msg-system";
                 if(m.sender === 'user') cls = "msg-user";
                 if(m.sender === 'admin') cls = "msg-admin";
-                container.innerHTML += `<div class="message ${cls}">${m.text}</div>`;
+                // Convert newlines to breaks for system msgs
+                const safeText = m.text.replace(/\n/g, '<br>');
+                container.innerHTML += `<div class="message ${cls}">${safeText}</div>`;
             });
             container.scrollTop = container.scrollHeight;
         }
 
-        // --- ADMIN CHAT FLOW ---
+        // --- 5. ADMIN CHAT LOGIC ---
 
         function initAdminChatListener() {
             const q = query(collection(db, "chats"), orderBy("timestamp", "desc"));
             onSnapshot(q, (snapshot) => {
                 const list = document.getElementById("adminChatList");
                 list.innerHTML = "";
+                if(snapshot.empty) {
+                    list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>No active orders.</div>";
+                    return;
+                }
                 snapshot.forEach(d => {
                     const chat = d.data();
                     const isActive = activeAdminChatId === d.id ? "active" : "";
+                    
+                    // Format time
+                    const date = new Date(chat.timestamp);
+                    const timeStr = date.getHours() + ":" + String(date.getMinutes()).padStart(2, '0');
+
                     list.innerHTML += `
                         <div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
                             <div>
-                                <strong>${chat.mlbbId}</strong><br>
-                                <span style="font-size:0.8rem; color:#aaa;">${chat.itemName} (₱${chat.itemPrice})</span>
+                                <strong style="color:white; font-size:1rem;">${chat.mlbbId}</strong>
+                                <div style="font-size:0.8rem; color:#aaa; margin-top:2px;">${chat.itemName}</div>
                             </div>
-                            <div class="badge">Open</div>
+                            <div style="text-align:right;">
+                                <div class="badge">OPEN</div>
+                                <div style="font-size:0.7rem; color:#666; margin-top:4px;">${timeStr}</div>
+                            </div>
                         </div>`;
                 });
             });
@@ -415,12 +478,12 @@
 
         window.openAdminChat = (chatId) => {
             activeAdminChatId = chatId;
-            document.getElementById("adminChatWindow").style.display = "flex";
+            document.getElementById("adminChatWindow").style.display = "block";
             if(chatUnsubscribe) chatUnsubscribe();
             chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (docSnap) => {
                 if(docSnap.exists()) {
                     const data = docSnap.data();
-                    document.getElementById("adminChatTitle").innerText = `Chat: ${data.mlbbId} (${data.itemName})`;
+                    document.getElementById("adminChatTitle").innerText = `Chatting with: ${data.mlbbId}`;
                     renderMessages(data.messages, "adminMessages");
                 } else {
                     document.getElementById("adminChatWindow").style.display = "none";
@@ -439,14 +502,57 @@
 
         window.closeCurrentChat = async () => {
             if(!activeAdminChatId) return;
-            if(confirm("Close order and delete chat history?")) {
+            if(confirm("Are you sure? This will delete the order and close the customer's chat.")) {
                 await deleteDoc(doc(db, "chats", activeAdminChatId));
                 document.getElementById("adminChatWindow").style.display = "none";
                 activeAdminChatId = null;
             }
         };
 
-        // --- STORE & CATEGORY LOGIC ---
+        // --- 6. STORE RENDERING ---
+        
+        window.renderStore = () => {
+            const grid = document.getElementById("storeGrid");
+            grid.innerHTML = "";
+            let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = "<p style='color:#555; width:100%; text-align:center; margin-top:40px; font-size:1.2rem;'>No items in this category.</p>";
+                return;
+            }
+
+            filtered.forEach(item => {
+                let adminHtml = "";
+                if(isAdmin) adminHtml = `<div style="padding:10px; display:flex; gap:10px;"><button class="btn btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" onclick="deleteItem('${item.id}')">Delete</button></div>`;
+                const itemString = encodeURIComponent(JSON.stringify(item));
+                
+                // Price Logic
+                let priceHtml = `<div class="current-price">₱${item.price}</div>`;
+                let badgeHtml = "";
+                
+                if(item.salePrice && Number(item.salePrice) < Number(item.price)) {
+                     priceHtml = `
+                        <span class="old-price">₱${item.price}</span>
+                        <span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>
+                     `;
+                     badgeHtml = `<div class="sale-badge">SALE</div>`;
+                }
+
+                grid.innerHTML += `
+                    <div class="card">
+                        ${badgeHtml}
+                        <img src="${item.image || 'https://placehold.co/300x200/222/555?text=No+Image'}" class="card-img-top" alt="${item.name}">
+                        <div class="card-body">
+                            <h3 class="card-title">${item.name}</h3>
+                            <div class="price-container">${priceHtml}</div>
+                            <button onclick="openBuyModal('${itemString}')" class="buy-btn">Buy Now</button>
+                            ${adminHtml}
+                        </div>
+                    </div>`;
+            });
+        };
+
+        // --- 7. CATEGORY LOGIC ---
         window.addCategory = async () => {
             const name = document.getElementById("catName").value;
             if(name) {
@@ -462,7 +568,7 @@
             const container = document.getElementById("catTabs");
             const select = document.getElementById("itemCatSelect");
             let tabs = `<div class="cat-tab ${currentCat === 'All' ? 'active' : ''}" onclick="window.setCat('All')">All</div>`;
-            let opts = `<option value="">Select...</option>`;
+            let opts = `<option value="">Select Category...</option>`;
             categoriesData.forEach(c => {
                 tabs += `<div class="cat-tab ${currentCat === c.id ? 'active' : ''}" onclick="window.setCat('${c.id}')">${c.name}</div>`;
                 opts += `<option value="${c.id}">${c.name}</option>`;
@@ -477,20 +583,26 @@
             const list = document.getElementById("catList");
             list.innerHTML = "";
             categoriesData.forEach((c) => {
-                list.innerHTML += `<div class="list-item"><span>${c.name}</span><button class="btn-del" onclick="deleteCategory('${c.id}')">X</button></div>`;
+                list.innerHTML += `<div class="list-item"><span>${c.name}</span><button class="btn-del" onclick="deleteCategory('${c.id}')">Delete</button></div>`;
             });
         }
 
+        // --- 8. ITEM CRUD ---
         window.saveItem = async () => {
             const id = document.getElementById("editItemId").value;
             const data = {
                 name: document.getElementById("itemName").value,
                 price: Number(document.getElementById("itemPrice").value),
-                salePrice: Number(document.getElementById("itemSale").value) || null, // Capture Sale Price
+                salePrice: document.getElementById("itemSale").value,
                 catId: document.getElementById("itemCatSelect").value,
                 image: document.getElementById("itemImg").value
             };
-            if(!data.name || !data.price || !data.catId) { alert("Missing info"); return; }
+            if(!data.name || !data.price || !data.catId) { alert("Please fill Name, Price and Category"); return; }
+            
+            // Clean sale price
+            if(!data.salePrice) delete data.salePrice;
+            else data.salePrice = Number(data.salePrice);
+
             if(id) await updateDoc(doc(db, "items", id), data);
             else {
                 const order = itemsData.length > 0 ? Math.max(...itemsData.map(i=>i.order||0)) + 1 : 1;
@@ -500,7 +612,7 @@
             window.clearForm();
         };
 
-        window.deleteItem = async (id) => { if(confirm("Delete?")) await deleteDoc(doc(db, "items", id)); };
+        window.deleteItem = async (id) => { if(confirm("Delete item?")) await deleteDoc(doc(db, "items", id)); };
         
         window.editItem = (id) => {
             const item = itemsData.find(i => i.id === id);
@@ -510,49 +622,16 @@
             document.getElementById("itemSale").value = item.salePrice || "";
             document.getElementById("itemCatSelect").value = item.catId;
             document.getElementById("itemImg").value = item.image;
-            document.getElementById("adminArea").scrollIntoView();
+            document.getElementById("adminArea").scrollIntoView({behavior: "smooth"});
         };
 
         window.clearForm = () => {
             document.querySelectorAll("#adminArea input").forEach(i => i.value = "");
             document.getElementById("itemCatSelect").value = "";
+            document.getElementById("editItemId").value = "";
         };
 
-        window.renderStore = () => {
-            const grid = document.getElementById("storeGrid");
-            grid.innerHTML = "";
-            let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
-            if(filtered.length === 0) grid.innerHTML = "<p style='color:#666; width:100%; text-align:center;'>No items found.</p>";
-            filtered.forEach(item => {
-                let adminHtml = "";
-                if(isAdmin) adminHtml = `<div style="padding:5px; display:flex; gap:5px;"><button class="btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn-del" onclick="deleteItem('${item.id}')">Del</button></div>`;
-                const itemString = encodeURIComponent(JSON.stringify(item));
-                
-                // SALE PRICE LOGIC
-                let priceHtml = `<div class="current-price">₱${item.price}</div>`;
-                let badgeHtml = "";
-                if(item.salePrice && item.salePrice < item.price) {
-                     priceHtml = `
-                        <span class="old-price">₱${item.price}</span>
-                        <span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>
-                     `;
-                     badgeHtml = `<div class="sale-badge">SALE</div>`;
-                }
-
-                grid.innerHTML += `
-                    <div class="card">
-                        ${badgeHtml}
-                        <img src="${item.image || 'https://placehold.co/200x150?text=No+Image'}" class="card-img-top">
-                        <div class="card-body">
-                            <h3 class="card-title">${item.name}</h3>
-                            <div class="price-container">${priceHtml}</div>
-                            <button onclick="openBuyModal('${itemString}')" class="buy-btn">Buy Now</button>
-                            ${adminHtml}
-                        </div>
-                    </div>`;
-            });
-        };
-
+        // --- 9. BACKUP ---
         window.exportFromFirebase = async () => {
             const data = { items: itemsData, categories: categoriesData };
             const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
@@ -563,7 +642,7 @@
 
         window.importToFirebase = async (input) => {
             const file = input.files[0];
-            if(!file || !confirm("Import data?")) return;
+            if(!file || !confirm("Overwrite data? This might create duplicates if not careful.")) return;
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const json = JSON.parse(e.target.result);
@@ -571,7 +650,7 @@
                 if(json.categories) json.categories.forEach(cat => batch.set(doc(collection(db, "categories")), { name: cat.name, order: cat.order || 0 }));
                 if(json.items) json.items.forEach(item => batch.set(doc(collection(db, "items")), { name: item.name, price: item.price, catId: item.catId, image: item.image || "", order: item.order || 0 }));
                 await batch.commit();
-                alert("Done!");
+                alert("Restoration Complete!");
             };
             reader.readAsText(file);
         };
