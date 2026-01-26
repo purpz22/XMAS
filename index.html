@@ -21,7 +21,7 @@
 
         body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; padding-bottom: 80px; }
 
-        /* --- TICKER (NEW) --- */
+        /* --- TICKER --- */
         .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 32px; border-bottom: 1px solid #333; position: relative; z-index: 50; }
         .ticker { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; line-height: 32px; padding-left: 100%; }
         .ticker-item { display: inline-block; padding: 0 2rem; color: #aaa; font-size: 0.85rem; }
@@ -49,42 +49,31 @@
         .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border-color: #555; }
-        
         .card-img-top { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid #333; }
         .card-body { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
         .card-title { margin: 0 0 8px 0; color: #fff; font-size: 1.15rem; font-weight: 600; }
-        
         .price-container { margin-bottom: 15px; min-height: 28px; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
         .old-price { text-decoration: line-through; color: #666; font-size: 0.95rem; }
         .sale-badge { position: absolute; top: 12px; right: 12px; background: var(--sale); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 10; }
-
         .buy-btn { margin-top: auto; display: block; width: 100%; padding: 12px 0; background: linear-gradient(135deg, #005f99, #004470); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: filter 0.2s; }
         .buy-btn:hover { filter: brightness(1.1); }
-        .buy-btn:active { transform: scale(0.98); }
 
         /* --- ADMIN PANEL --- */
         #adminArea { display: none; border-left: 3px solid var(--primary); padding-left: 20px; margin-bottom: 40px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 0 10px 10px 0; }
         .admin-section { background: #252525; padding: 20px; border-radius: 8px; border: 1px solid #444; margin-bottom: 20px; }
         .admin-header { color: var(--primary); margin: 0 0 15px 0; border-bottom: 1px solid #444; padding-bottom: 10px; font-size: 1.1rem; }
-        
         .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
         .form-group { flex: 1; min-width: 200px; margin-bottom: 12px; }
         label { display: block; color: #bbb; font-size: 0.8rem; margin-bottom: 6px; font-weight: 500; }
         input, select { width: 100%; padding: 10px; background: #121212; border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; outline: none; transition: border 0.2s; }
         input:focus, select:focus { border-color: var(--primary); }
-        
         .btn { padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; color: black; font-size: 0.9rem; transition: opacity 0.2s; }
         .btn:hover { opacity: 0.9; }
         .btn-save { background: var(--primary); color: #000; }
         .btn-del { background: var(--danger); color: white; width: auto; padding: 4px 10px; font-size: 0.8rem; }
         .btn-io { background-color: #2196F3; color: white; margin-bottom: 10px; }
         .file-input { display: none; }
-
-        /* --- MODALS --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-box { background: #222; padding: 25px; border-radius: 12px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.3s ease; }
-        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         /* --- CHAT SYSTEM --- */
         .chat-container { display: flex; flex-direction: column; height: 400px; }
@@ -96,18 +85,24 @@
         .msg-system { align-self: center; background: #2a2a2a; color: #aaa; font-size: 0.8rem; border-radius: 8px; padding: 5px 10px; }
         .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border-bottom-right-radius: 4px; }
         .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border-bottom-left-radius: 4px; border: 1px solid #444; }
+        .msg-receipt { align-self: center; background: #1b1e26; border: 1px dashed var(--primary); color: var(--primary); text-align: center; width: 80%; }
         
-        .chat-input-area { display: flex; gap: 10px; }
+        .msg-image { max-width: 200px; border-radius: 10px; margin-top: 5px; cursor: pointer; border: 1px solid #444; }
+
+        .chat-input-area { display: flex; gap: 10px; align-items: center; }
         .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 25px; border: 1px solid #444; background: #1a1a1a; color: white; }
         .chat-input-area button { width: auto; padding: 0 20px; border-radius: 25px; margin: 0; }
+        
+        /* Upload Button */
+        .upload-label { cursor: pointer; font-size: 1.5rem; color: #aaa; padding: 0 5px; transition: color 0.2s; }
+        .upload-label:hover { color: var(--primary); }
 
-        /* MINIMIZED CHAT BUBBLE */
+        /* MINIMIZED BUBBLE */
         #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; padding: 15px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: none; z-index: 2000; animation: slideUp 0.3s; border: 2px solid white; display: flex; align-items: center; gap: 10px;}
         #minimizedChat:hover { transform: scale(1.05); }
         #minimizedChat.new-msg { background: var(--danger); color: white; animation: pulse 1s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 61, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0); } }
         
-        /* Minimize Button */
         .btn-min { background: transparent; border: 1px solid #666; color: #aaa; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size: 1.2rem; line-height: 0; padding-bottom: 5px; }
         .btn-min:hover { border-color: white; color: white; }
 
@@ -115,8 +110,13 @@
         .admin-chat-item { background: #1a1a1a; padding: 12px; margin-bottom: 8px; border: 1px solid #333; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
         .admin-chat-item:hover { background: #2a2a2a; }
         .admin-chat-item.active { border-color: var(--primary); background: #222; }
-        .badge { background: var(--sale); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
+        .badge { background: #444; color: #aaa; padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
+        .badge.open { background: var(--sale); color: white; }
+        .badge.done { background: var(--success); color: black; }
 
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-box { background: #222; padding: 25px; border-radius: 12px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
     </style>
 </head>
@@ -139,24 +139,29 @@
             <h2 style="color:var(--primary); margin-top:0;">Admin Dashboard</h2>
             
             <div class="admin-section">
-                <h4 class="admin-header">Live Orders & Customer Chats</h4>
+                <h4 class="admin-header">Live Orders & Chats</h4>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 250px;">
                         <label>Active Orders</label>
-                        <div id="adminChatList" style="height: 350px; overflow-y: auto; border: 1px solid #333; background: #000; padding:10px; border-radius:8px;">
+                        <div id="adminChatList" style="height: 400px; overflow-y: auto; border: 1px solid #333; background: #000; padding:10px; border-radius:8px;">
                             <div style="color:#666; text-align:center; padding:20px;">No active orders</div>
                         </div>
                     </div>
                     <div style="flex: 2; min-width: 300px; display: none;" id="adminChatWindow">
                         <label id="adminChatTitle" style="color:var(--primary);">Chatting with...</label>
-                        <div class="chat-container" style="height: 300px;">
+                        <div class="chat-container" style="height: 350px;">
                             <div id="adminMessages" class="chat-box"></div>
                             <div class="chat-input-area">
-                                <input type="text" id="adminMsgInput" placeholder="Reply to customer..." onkeypress="handleEnter(event, sendAdminMessage)">
+                                <label for="adminImgInput" class="upload-label">📎</label>
+                                <input type="file" id="adminImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'admin')">
+                                <input type="text" id="adminMsgInput" placeholder="Reply..." onkeypress="handleEnter(event, sendAdminMessage)">
                                 <button class="btn btn-save" onclick="sendAdminMessage()">Send</button>
                             </div>
                         </div>
-                        <button class="btn btn-del" style="margin-top: 15px;" onclick="closeCurrentChat()">✅ Complete Order & Delete Chat</button>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button class="btn btn-save" style="background:var(--success); color:white;" onclick="sendReceipt()">🧾 Send Receipt</button>
+                            <button class="btn btn-del" onclick="closeCurrentChat()">🗑 Delete Chat</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,10 +169,9 @@
             <!-- TICKER MANAGER -->
             <div class="admin-section">
                 <h4 class="admin-header">📢 Ticker Manager (Who Bought)</h4>
-                <p style="font-size:0.8rem; color:#888;">Add fake purchases here to display on the public ticker.</p>
                 <div class="form-row">
-                    <input type="text" id="buyerName" placeholder="Buyer Name (e.g. John D.)">
-                    <input type="text" id="buyerItem" placeholder="Item Bought (e.g. 500 Diamonds)">
+                    <input type="text" id="buyerName" placeholder="Buyer Name">
+                    <input type="text" id="buyerItem" placeholder="Item Bought">
                     <button class="btn btn-save" style="width:auto;" onclick="addBuyer()">Add to Ticker</button>
                 </div>
                 <div id="buyerList" style="margin-top:10px; max-height: 150px; overflow-y:auto; border:1px solid #333; padding:5px; border-radius:5px;"></div>
@@ -236,14 +240,16 @@
                     <h3 style="color:var(--primary); margin:0;">Support Chat</h3>
                     <span style="font-size:0.8rem; color:#666;">ID: <span id="displayChatId"></span></span>
                 </div>
-                <!-- MINIMIZE BUTTON -->
                 <button class="btn-min" onclick="minimizeChat()" title="Minimize to browse">_</button>
             </div>
             
             <div id="customerMessages" class="chat-box"></div>
             
             <div class="chat-input-area" id="customerInputArea">
-                <input type="text" id="customerMsgInput" placeholder="Message to Admin..." onkeypress="handleEnter(event, sendCustomerMessage)">
+                <label for="customerImgInput" class="upload-label" title="Send Screenshot">📎</label>
+                <input type="file" id="customerImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'user')">
+                
+                <input type="text" id="customerMsgInput" placeholder="Message..." onkeypress="handleEnter(event, sendCustomerMessage)">
                 <button class="btn btn-save" style="width: auto;" onclick="sendCustomerMessage()">Send</button>
             </div>
         </div>
@@ -272,7 +278,7 @@
         // State
         let itemsData = [], categoriesData = [], currentCat = "All", isAdmin = false, logoClicks = 0;
         let currentItemBuying = null, activeCustomerChatId = null, activeAdminChatId = null, chatUnsubscribe = null;
-        let isChatMinimized = false;
+        let isChatMinimized = false, currentChatData = null;
 
         // --- SESSION & MINIMIZE LOGIC ---
         async function checkSavedSession() {
@@ -280,11 +286,8 @@
             if(savedId) {
                 try {
                     const docSnap = await getDoc(doc(db, "chats", savedId));
-                    if (docSnap.exists()) {
-                        resumeCustomerChat(savedId);
-                    } else {
-                        localStorage.removeItem('storez_active_chat');
-                    }
+                    if (docSnap.exists()) resumeCustomerChat(savedId);
+                    else localStorage.removeItem('storez_active_chat');
                 } catch (e) { console.error(e); }
             }
         }
@@ -300,11 +303,44 @@
             isChatMinimized = false;
             document.getElementById('customerChatModal').style.display = 'flex';
             document.getElementById('minimizedChat').style.display = 'none';
-            document.getElementById('minimizedChat').classList.remove('new-msg'); // Remove alert style
+            document.getElementById('minimizedChat').classList.remove('new-msg'); 
             document.getElementById('minimizedText').innerText = "Active Chat";
-            // Scroll to bottom
             const container = document.getElementById("customerMessages");
             container.scrollTop = container.scrollHeight;
+        };
+
+        // --- IMAGE COMPRESSION & UPLOAD ---
+        window.handleImageUpload = async (input, sender) => {
+            const file = input.files[0];
+            if(!file) return;
+
+            // Simple compressor
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = async () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 600;
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7); // Compress
+                    
+                    // Send
+                    const chatId = sender === 'user' ? activeCustomerChatId : activeAdminChatId;
+                    if(chatId) {
+                        await updateDoc(doc(db, "chats", chatId), { 
+                            messages: arrayUnion({ sender: sender, image: dataUrl, text: "Sent an image", time: Date.now() }) 
+                        });
+                    }
+                }
+            }
+            input.value = ""; // Reset
         };
 
         // --- AUTH ---
@@ -329,7 +365,7 @@
             document.getElementById("adminArea").style.display = user ? "block" : "none";
             if(user) initAdminChatListener();
             renderStore();
-            renderBuyerList(); // For Admin
+            if(user) renderBuyerList();
         });
 
         // --- DATA ---
@@ -342,19 +378,13 @@
             renderStore();
         });
 
-        // --- TICKER LOGIC (NEW) ---
+        // --- TICKER ---
         onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
-            let html = "";
-            let buyers = [];
+            let html = "", buyers = [];
             snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
-            
-            if(buyers.length === 0) {
-                 html = `<div class="ticker-item">Welcome to StoreZ Premium Shop!</div>`;
-            } else {
-                buyers.forEach(b => {
-                    html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`;
-                });
-                // Duplicate for smooth loop if short
+            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to StoreZ!</div>`;
+            else {
+                buyers.forEach(b => html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`);
                 if(buyers.length < 5) html += html + html; 
             }
             document.getElementById("tickerContent").innerHTML = html;
@@ -370,23 +400,14 @@
             }
         };
 
-        window.deleteBuyer = async (id) => {
-            if(confirm("Remove this entry?")) await deleteDoc(doc(db, "buyers", id));
-        };
-
+        window.deleteBuyer = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "buyers", id)); };
         function renderBuyerList() {
-            // Re-use the existing snapshot query but filter inside a function if we want live admin updates
-            // OR set up a specific listener for admin list. 
-            // For simplicity, we use a new listener just for the admin list UI
             onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
                 const list = document.getElementById("buyerList");
                 list.innerHTML = "";
                 snap.forEach(d => {
                     const b = d.data();
-                    list.innerHTML += `<div class="list-item" style="font-size:0.8rem;">
-                        <span>${b.name} - ${b.item}</span>
-                        <button class="btn-del" onclick="deleteBuyer('${d.id}')">Del</button>
-                    </div>`;
+                    list.innerHTML += `<div class="list-item" style="font-size:0.8rem;"><span>${b.name} - ${b.item}</span><button class="btn-del" onclick="deleteBuyer('${d.id}')">Del</button></div>`;
                 });
             });
         }
@@ -394,7 +415,7 @@
         // --- CUSTOMER LOGIC ---
         window.openBuyModal = (itemJson) => {
             if(activeCustomerChatId) {
-                if(confirm("You have an active chat. Close it to start new?")) localStorage.removeItem('storez_active_chat');
+                if(confirm("Active chat open. Close it?")) localStorage.removeItem('storez_active_chat');
                 else return;
             }
             const item = JSON.parse(decodeURIComponent(itemJson));
@@ -434,6 +455,7 @@
             onSnapshot(doc(db, "chats", chatId), (docSnap) => {
                 if(docSnap.exists()) {
                     const data = docSnap.data();
+                    currentChatData = data;
                     renderMessages(data.messages, "customerMessages");
                     if(isChatMinimized) {
                         const lastMsg = data.messages[data.messages.length - 1];
@@ -462,10 +484,15 @@
             const container = document.getElementById(divId);
             container.innerHTML = "";
             msgs.forEach(m => {
+                let content = m.text.replace(/\n/g, '<br>');
+                if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="window.open(this.src)">`;
+                
                 let cls = "msg-system";
                 if(m.sender === 'user') cls = "msg-user";
                 if(m.sender === 'admin') cls = "msg-admin";
-                container.innerHTML += `<div class="message ${cls}">${m.text.replace(/\n/g, '<br>')}</div>`;
+                if(m.text.includes("RECEIPT")) cls = "msg-receipt";
+
+                container.innerHTML += `<div class="message ${cls}">${content}</div>`;
             });
             container.scrollTop = container.scrollHeight;
         }
@@ -479,9 +506,12 @@
                 snap.forEach(d => {
                     const chat = d.data();
                     const isActive = activeAdminChatId === d.id ? "active" : "";
+                    const badgeClass = chat.status === 'done' ? 'badge done' : 'badge open';
+                    const badgeText = chat.status === 'done' ? 'DONE' : 'OPEN';
+                    
                     list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
                             <div><strong style="color:white;">${chat.mlbbId}</strong><div style="font-size:0.8rem; color:#aaa;">${chat.itemName}</div></div>
-                            <div class="badge">OPEN</div></div>`;
+                            <div class="${badgeClass}">${badgeText}</div></div>`;
                 });
             });
         }
@@ -489,7 +519,11 @@
             activeAdminChatId = chatId; document.getElementById("adminChatWindow").style.display = "block";
             if(chatUnsubscribe) chatUnsubscribe();
             chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => {
-                if(s.exists()) { document.getElementById("adminChatTitle").innerText = `Chat: ${s.data().mlbbId}`; renderMessages(s.data().messages, "adminMessages"); }
+                if(s.exists()) { 
+                    currentChatData = s.data();
+                    document.getElementById("adminChatTitle").innerText = `Chat: ${s.data().mlbbId}`; 
+                    renderMessages(s.data().messages, "adminMessages"); 
+                }
                 else document.getElementById("adminChatWindow").style.display = "none";
             });
         };
@@ -499,8 +533,29 @@
             await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) });
             input.value = "";
         };
+
+        window.sendReceipt = async () => {
+            if(!activeAdminChatId || !currentChatData) return;
+            const r = `
+🧾 OFFICIAL RECEIPT
+------------------
+ID: ${currentChatData.mlbbId}
+Item: ${currentChatData.itemName}
+Price: ₱${currentChatData.itemPrice}
+Status: ✅ COMPLETED
+------------------
+Thank you for buying at StoreZ!
+            `;
+            await updateDoc(doc(db, "chats", activeAdminChatId), { 
+                status: 'done',
+                messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) 
+            });
+            // Auto add to ticker
+            await addDoc(collection(db, "buyers"), { name: "Customer " + currentChatData.mlbbId.slice(0,3), item: currentChatData.itemName, timestamp: Date.now() });
+        };
+
         window.closeCurrentChat = async () => {
-            if(activeAdminChatId && confirm("Complete Order?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; }
+            if(activeAdminChatId && confirm("Permanently Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; }
         };
 
         // --- STORE & CRUD ---
