@@ -19,7 +19,14 @@
             --modal-overlay: rgba(0, 0, 0, 0.85);
         }
 
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; padding-bottom: 80px; }
+
+        /* --- TICKER (NEW) --- */
+        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 32px; border-bottom: 1px solid #333; position: relative; z-index: 50; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; line-height: 32px; padding-left: 100%; }
+        .ticker-item { display: inline-block; padding: 0 2rem; color: #aaa; font-size: 0.85rem; }
+        .ticker-item b { color: var(--primary); }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
         /* --- NAVIGATION --- */
         nav { display: flex; justify-content: center; align-items: center; padding: 20px; background: #1a1a1a; border-bottom: 1px solid #333; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
@@ -76,7 +83,7 @@
 
         /* --- MODALS --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-box { background: #222; padding: 30px; border-radius: 12px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.3s ease; }
+        .modal-box { background: #222; padding: 25px; border-radius: 12px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.3s ease; }
         @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         /* --- CHAT SYSTEM --- */
@@ -94,6 +101,16 @@
         .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 25px; border: 1px solid #444; background: #1a1a1a; color: white; }
         .chat-input-area button { width: auto; padding: 0 20px; border-radius: 25px; margin: 0; }
 
+        /* MINIMIZED CHAT BUBBLE */
+        #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; padding: 15px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: none; z-index: 2000; animation: slideUp 0.3s; border: 2px solid white; display: flex; align-items: center; gap: 10px;}
+        #minimizedChat:hover { transform: scale(1.05); }
+        #minimizedChat.new-msg { background: var(--danger); color: white; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 61, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0); } }
+        
+        /* Minimize Button */
+        .btn-min { background: transparent; border: 1px solid #666; color: #aaa; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size: 1.2rem; line-height: 0; padding-bottom: 5px; }
+        .btn-min:hover { border-color: white; color: white; }
+
         /* Admin Chat List */
         .admin-chat-item { background: #1a1a1a; padding: 12px; margin-bottom: 8px; border: 1px solid #333; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
         .admin-chat-item:hover { background: #2a2a2a; }
@@ -105,8 +122,10 @@
 </head>
 <body>
 
+    <!-- TICKER BAR -->
+    <div class="ticker-wrap"><div class="ticker" id="tickerContent"></div></div>
+
     <nav>
-        <!-- Click logo 5 times to reveal admin if hash fails -->
         <div class="logo" onclick="clickLogo()">StoreZ</div>
         <div id="secretLogin">
             <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
@@ -119,18 +138,15 @@
         <div id="adminArea">
             <h2 style="color:var(--primary); margin-top:0;">Admin Dashboard</h2>
             
-            <!-- LIVE CHATS -->
             <div class="admin-section">
                 <h4 class="admin-header">Live Orders & Customer Chats</h4>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                    <!-- Chat List -->
                     <div style="flex: 1; min-width: 250px;">
                         <label>Active Orders</label>
                         <div id="adminChatList" style="height: 350px; overflow-y: auto; border: 1px solid #333; background: #000; padding:10px; border-radius:8px;">
                             <div style="color:#666; text-align:center; padding:20px;">No active orders</div>
                         </div>
                     </div>
-                    <!-- Chat Window -->
                     <div style="flex: 2; min-width: 300px; display: none;" id="adminChatWindow">
                         <label id="adminChatTitle" style="color:var(--primary);">Chatting with...</label>
                         <div class="chat-container" style="height: 300px;">
@@ -145,7 +161,18 @@
                 </div>
             </div>
 
-            <!-- PRODUCT MANAGER -->
+            <!-- TICKER MANAGER -->
+            <div class="admin-section">
+                <h4 class="admin-header">📢 Ticker Manager (Who Bought)</h4>
+                <p style="font-size:0.8rem; color:#888;">Add fake purchases here to display on the public ticker.</p>
+                <div class="form-row">
+                    <input type="text" id="buyerName" placeholder="Buyer Name (e.g. John D.)">
+                    <input type="text" id="buyerItem" placeholder="Item Bought (e.g. 500 Diamonds)">
+                    <button class="btn btn-save" style="width:auto;" onclick="addBuyer()">Add to Ticker</button>
+                </div>
+                <div id="buyerList" style="margin-top:10px; max-height: 150px; overflow-y:auto; border:1px solid #333; padding:5px; border-radius:5px;"></div>
+            </div>
+
             <div class="admin-section">
                 <h4 class="admin-header">Add / Edit Product</h4>
                 <input type="hidden" id="editItemId">
@@ -158,12 +185,10 @@
                     <div class="form-group"><label>Sale Price (₱ - Optional)</label><input type="number" id="itemSale" placeholder="Leave empty if not on sale"></div>
                 </div>
                 <div class="form-group"><label>Image URL</label><input type="text" id="itemImg" placeholder="https://..."></div>
-                
                 <button class="btn btn-save" onclick="saveItem()">Save Product</button>
                 <button class="btn" style="background:#333; color:#aaa; margin-top:10px;" onclick="clearForm()">Clear Form</button>
             </div>
 
-            <!-- BACKUP & CATEGORIES -->
             <div class="admin-section">
                 <h4 class="admin-header">System Tools</h4>
                 <div style="display:flex; gap:10px; margin-bottom:20px;">
@@ -171,7 +196,6 @@
                     <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Restore Database</button>
                     <input type="file" id="jsonInput" class="file-input" accept=".json" onchange="importToFirebase(this)">
                 </div>
-                
                 <h4 class="admin-header">Manage Categories</h4>
                 <div class="form-row">
                     <input type="text" id="catName" placeholder="New Category Name">
@@ -184,9 +208,13 @@
         <!-- PUBLIC STORE -->
         <div class="cat-tabs" id="catTabs"></div>
         <div class="store-grid" id="storeGrid">
-            <!-- Items inject here -->
              <p style="text-align:center; width:100%; color:#666; margin-top:50px;">Loading Store...</p>
         </div>
+    </div>
+
+    <!-- MINIMIZED CHAT BUBBLE -->
+    <div id="minimizedChat" onclick="maximizeChat()" style="display:none;">
+        <span style="font-size:1.5rem">💬</span> <span id="minimizedText">Active Chat</span>
     </div>
 
     <!-- CUSTOMER ORDER MODAL -->
@@ -194,9 +222,7 @@
         <div class="modal-box">
             <h3 style="color:var(--primary); margin-bottom:5px;" id="modalItemName">Confirm Order</h3>
             <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Enter your Game ID to begin the transaction.</p>
-            
             <input type="text" id="customerMlbbId" placeholder="Game ID / User ID" style="text-align:center; font-size: 1.1rem; padding: 12px; margin-bottom:15px;">
-            
             <button class="btn btn-save" onclick="submitOrder()">Proceed to Chat</button>
             <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('orderModal')">Cancel</button>
         </div>
@@ -205,10 +231,13 @@
     <!-- CUSTOMER CHAT MODAL -->
     <div id="customerChatModal" class="modal-overlay">
         <div class="modal-box" style="max-width: 500px; height: 80vh; display:flex; flex-direction:column;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3 style="color:var(--primary); margin:0;">Support Chat</h3>
-                <!-- No close button here to prevent accidental closing, they must refresh to minimize -->
-                <span style="font-size:0.8rem; color:#666;">ID: <span id="displayChatId"></span></span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
+                <div>
+                    <h3 style="color:var(--primary); margin:0;">Support Chat</h3>
+                    <span style="font-size:0.8rem; color:#666;">ID: <span id="displayChatId"></span></span>
+                </div>
+                <!-- MINIMIZE BUTTON -->
+                <button class="btn-min" onclick="minimizeChat()" title="Minimize to browse">_</button>
             </div>
             
             <div id="customerMessages" class="chat-box"></div>
@@ -217,7 +246,6 @@
                 <input type="text" id="customerMsgInput" placeholder="Message to Admin..." onkeypress="handleEnter(event, sendCustomerMessage)">
                 <button class="btn btn-save" style="width: auto;" onclick="sendCustomerMessage()">Send</button>
             </div>
-            <p style="font-size:0.75rem; color:#555; margin-top:10px;">Refresh the page if you get stuck. Your chat is saved automatically.</p>
         </div>
     </div>
 
@@ -227,8 +255,7 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, writeBatch, arrayUnion, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-        // ------------------------------------------------------------------
-        // FIREBASE CONFIG
+        // CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
           authDomain: "storez-68603.firebaseapp.com",
@@ -237,111 +264,139 @@
           messagingSenderId: "555550726462",
           appId: "1:555550726462:web:98cfd4a27cfdb04209346f"
         };
-        // ------------------------------------------------------------------
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
         // State
-        let itemsData = [];
-        let categoriesData = [];
-        let currentCat = "All";
-        let isAdmin = false;
-        let logoClicks = 0;
+        let itemsData = [], categoriesData = [], currentCat = "All", isAdmin = false, logoClicks = 0;
+        let currentItemBuying = null, activeCustomerChatId = null, activeAdminChatId = null, chatUnsubscribe = null;
+        let isChatMinimized = false;
 
-        // Chat State
-        let currentItemBuying = null;
-        let activeCustomerChatId = null;
-        let activeAdminChatId = null;
-        let chatUnsubscribe = null;
-
-        // --- 1. SESSION RECOVERY (NEW) ---
-        // This runs immediately to check if user has a chat open
+        // --- SESSION & MINIMIZE LOGIC ---
         async function checkSavedSession() {
             const savedId = localStorage.getItem('storez_active_chat');
             if(savedId) {
-                // Verify if it still exists in DB (Admin might have deleted it)
-                const docRef = doc(db, "chats", savedId);
                 try {
-                    const docSnap = await getDoc(docRef);
+                    const docSnap = await getDoc(doc(db, "chats", savedId));
                     if (docSnap.exists()) {
-                        console.log("Restoring session:", savedId);
                         resumeCustomerChat(savedId);
                     } else {
-                        console.log("Session invalid (chat deleted)");
                         localStorage.removeItem('storez_active_chat');
                     }
-                } catch (e) {
-                    console.error("Error checking session", e);
-                }
+                } catch (e) { console.error(e); }
             }
         }
-        
-        // Wait for DOM then check session
         window.addEventListener('DOMContentLoaded', checkSavedSession);
 
+        window.minimizeChat = () => {
+            isChatMinimized = true;
+            document.getElementById('customerChatModal').style.display = 'none';
+            document.getElementById('minimizedChat').style.display = 'flex';
+        };
 
-        // --- 2. ADMIN & AUTH ---
-        function checkSecretRoute() {
-            const isSecret = window.location.hash.includes('nimda');
-            const loginDiv = document.getElementById("secretLogin");
-            if(isSecret) loginDiv.style.display = "block";
+        window.maximizeChat = () => {
+            isChatMinimized = false;
+            document.getElementById('customerChatModal').style.display = 'flex';
+            document.getElementById('minimizedChat').style.display = 'none';
+            document.getElementById('minimizedChat').classList.remove('new-msg'); // Remove alert style
+            document.getElementById('minimizedText').innerText = "Active Chat";
+            // Scroll to bottom
+            const container = document.getElementById("customerMessages");
+            container.scrollTop = container.scrollHeight;
+        };
+
+        // --- AUTH ---
+        window.checkSecretRoute = () => {
+            if(window.location.hash.includes('nimda')) document.getElementById("secretLogin").style.display = "block";
         }
         window.setInterval(checkSecretRoute, 1000);
-
         window.clickLogo = () => {
             logoClicks++;
-            if(logoClicks >= 5) {
-                document.getElementById("secretLogin").style.display = "block";
-                alert("Admin Access Unlocked");
-            }
+            if(logoClicks >= 5) { document.getElementById("secretLogin").style.display = "block"; alert("Admin Access Unlocked"); }
         };
-
         window.handleAuth = () => {
-            if (auth.currentUser) {
-                signOut(auth).then(() => window.location.reload());
+            if (auth.currentUser) signOut(auth).then(() => window.location.reload());
+            else {
+                const e = prompt("Admin Email:"), p = prompt("Password:");
+                if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert(err.message));
+            }
+        };
+        onAuthStateChanged(auth, (user) => {
+            isAdmin = !!user;
+            document.getElementById("authBtn").innerText = user ? "Logout" : "Admin Login";
+            document.getElementById("adminArea").style.display = user ? "block" : "none";
+            if(user) initAdminChatListener();
+            renderStore();
+            renderBuyerList(); // For Admin
+        });
+
+        // --- DATA ---
+        onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => {
+            categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() }));
+            renderCategories(); renderCatList();
+        });
+        onSnapshot(query(collection(db, "items"), orderBy("order", "asc")), (snap) => {
+            itemsData = []; snap.forEach(d => itemsData.push({ id: d.id, ...d.data() }));
+            renderStore();
+        });
+
+        // --- TICKER LOGIC (NEW) ---
+        onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
+            let html = "";
+            let buyers = [];
+            snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
+            
+            if(buyers.length === 0) {
+                 html = `<div class="ticker-item">Welcome to StoreZ Premium Shop!</div>`;
             } else {
-                const email = prompt("Admin Email:");
-                const pass = prompt("Password:");
-                if(email && pass) signInWithEmailAndPassword(auth, email, pass).catch(e => alert(e.message));
+                buyers.forEach(b => {
+                    html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`;
+                });
+                // Duplicate for smooth loop if short
+                if(buyers.length < 5) html += html + html; 
+            }
+            document.getElementById("tickerContent").innerHTML = html;
+        });
+
+        window.addBuyer = async () => {
+            const name = document.getElementById("buyerName").value;
+            const item = document.getElementById("buyerItem").value;
+            if(name && item) {
+                await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() });
+                document.getElementById("buyerName").value = "";
+                document.getElementById("buyerItem").value = "";
             }
         };
 
-        onAuthStateChanged(auth, (user) => {
-            const btn = document.getElementById("authBtn");
-            const panel = document.getElementById("adminArea");
-            isAdmin = !!user;
-            if (user) {
-                btn.innerText = "Logout";
-                panel.style.display = "block";
-                initAdminChatListener();
-            } else {
-                btn.innerText = "Admin Login";
-                panel.style.display = "none";
-            }
-            renderStore();
-        });
+        window.deleteBuyer = async (id) => {
+            if(confirm("Remove this entry?")) await deleteDoc(doc(db, "buyers", id));
+        };
 
-        // --- 3. DATA SYNC ---
-        const qCat = query(collection(db, "categories"), orderBy("order", "asc"));
-        onSnapshot(qCat, (snapshot) => {
-            categoriesData = [];
-            snapshot.forEach((doc) => categoriesData.push({ id: doc.id, ...doc.data() }));
-            renderCategories();
-            renderCatList();
-        });
+        function renderBuyerList() {
+            // Re-use the existing snapshot query but filter inside a function if we want live admin updates
+            // OR set up a specific listener for admin list. 
+            // For simplicity, we use a new listener just for the admin list UI
+            onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
+                const list = document.getElementById("buyerList");
+                list.innerHTML = "";
+                snap.forEach(d => {
+                    const b = d.data();
+                    list.innerHTML += `<div class="list-item" style="font-size:0.8rem;">
+                        <span>${b.name} - ${b.item}</span>
+                        <button class="btn-del" onclick="deleteBuyer('${d.id}')">Del</button>
+                    </div>`;
+                });
+            });
+        }
 
-        const qItems = query(collection(db, "items"), orderBy("order", "asc"));
-        onSnapshot(qItems, (snapshot) => {
-            itemsData = [];
-            snapshot.forEach((doc) => itemsData.push({ id: doc.id, ...doc.data() }));
-            renderStore();
-        });
-
-        // --- 4. CUSTOMER ORDER LOGIC ---
-        
+        // --- CUSTOMER LOGIC ---
         window.openBuyModal = (itemJson) => {
+            if(activeCustomerChatId) {
+                if(confirm("You have an active chat. Close it to start new?")) localStorage.removeItem('storez_active_chat');
+                else return;
+            }
             const item = JSON.parse(decodeURIComponent(itemJson));
             currentItemBuying = item;
             document.getElementById("modalItemName").innerText = "Buying: " + item.name;
@@ -350,62 +405,45 @@
             document.getElementById("customerMlbbId").focus();
         };
 
-        window.closeModal = (id) => {
-            document.getElementById(id).style.display = "none";
-        };
+        window.closeModal = (id) => document.getElementById(id).style.display = "none";
 
         window.submitOrder = async () => {
             const mlbbId = document.getElementById("customerMlbbId").value.trim();
             if(!mlbbId) return alert("Please enter ID");
-
             const btn = document.querySelector("#orderModal .btn-save");
-            const originalText = btn.innerText;
-            btn.innerText = "Connecting...";
-            btn.disabled = true;
+            btn.innerText = "Connecting..."; btn.disabled = true;
 
             try {
                 let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
-
                 const chatRef = await addDoc(collection(db, "chats"), {
-                    mlbbId: mlbbId,
-                    itemName: currentItemBuying.name,
-                    itemPrice: finalPrice,
-                    status: 'open',
-                    timestamp: Date.now(),
-                    messages: [{
-                        sender: 'system',
-                        text: `Order: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}\n\nWaiting for agent...`,
-                        time: Date.now()
-                    }]
+                    mlbbId: mlbbId, itemName: currentItemBuying.name, itemPrice: finalPrice, status: 'open', timestamp: Date.now(),
+                    messages: [{ sender: 'system', text: `Order: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}\n\nWaiting for agent...`, time: Date.now() }]
                 });
-
-                // SAVE SESSION TO LOCAL STORAGE
                 localStorage.setItem('storez_active_chat', chatRef.id);
-
                 closeModal("orderModal");
                 resumeCustomerChat(chatRef.id);
-
-            } catch (error) {
-                console.error(error);
-                alert("Connection failed. Check internet.");
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
+            } catch (error) { alert("Connection failed."); } 
+            finally { btn.innerText = "Proceed to Chat"; btn.disabled = false; }
         };
 
         function resumeCustomerChat(chatId) {
             activeCustomerChatId = chatId;
-            document.getElementById("customerChatModal").style.display = "flex";
+            maximizeChat(); 
             document.getElementById("displayChatId").innerText = chatId.slice(0,5);
 
             onSnapshot(doc(db, "chats", chatId), (docSnap) => {
                 if(docSnap.exists()) {
                     const data = docSnap.data();
                     renderMessages(data.messages, "customerMessages");
+                    if(isChatMinimized) {
+                        const lastMsg = data.messages[data.messages.length - 1];
+                        if(lastMsg && lastMsg.sender === 'admin') {
+                            document.getElementById("minimizedChat").classList.add('new-msg');
+                            document.getElementById('minimizedText').innerText = "New Message!";
+                        }
+                    }
                 } else {
-                    // Chat deleted by admin
-                    alert("This session has ended.");
+                    alert("Chat closed by admin.");
                     localStorage.removeItem('storez_active_chat');
                     window.location.reload();
                 }
@@ -416,17 +454,9 @@
             const input = document.getElementById("customerMsgInput");
             const text = input.value.trim();
             if(!text || !activeCustomerChatId) return;
-
-            const msg = { sender: 'user', text: text, time: Date.now() };
-            try {
-                await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion(msg) });
-                input.value = "";
-            } catch(e) { console.error(e); }
+            try { await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion({ sender: 'user', text: text, time: Date.now() }) }); input.value = ""; } catch(e) {}
         };
-
-        window.handleEnter = (e, func) => {
-            if(e.key === 'Enter') func();
-        };
+        window.handleEnter = (e, func) => { if(e.key === 'Enter') func(); };
 
         function renderMessages(msgs, divId) {
             const container = document.getElementById(divId);
@@ -435,224 +465,84 @@
                 let cls = "msg-system";
                 if(m.sender === 'user') cls = "msg-user";
                 if(m.sender === 'admin') cls = "msg-admin";
-                // Convert newlines to breaks for system msgs
-                const safeText = m.text.replace(/\n/g, '<br>');
-                container.innerHTML += `<div class="message ${cls}">${safeText}</div>`;
+                container.innerHTML += `<div class="message ${cls}">${m.text.replace(/\n/g, '<br>')}</div>`;
             });
             container.scrollTop = container.scrollHeight;
         }
 
-        // --- 5. ADMIN CHAT LOGIC ---
-
+        // --- ADMIN ---
         function initAdminChatListener() {
-            const q = query(collection(db, "chats"), orderBy("timestamp", "desc"));
-            onSnapshot(q, (snapshot) => {
+            onSnapshot(query(collection(db, "chats"), orderBy("timestamp", "desc")), (snap) => {
                 const list = document.getElementById("adminChatList");
                 list.innerHTML = "";
-                if(snapshot.empty) {
-                    list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>No active orders.</div>";
-                    return;
-                }
-                snapshot.forEach(d => {
+                if(snap.empty) { list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>No active orders.</div>"; return; }
+                snap.forEach(d => {
                     const chat = d.data();
                     const isActive = activeAdminChatId === d.id ? "active" : "";
-                    
-                    // Format time
-                    const date = new Date(chat.timestamp);
-                    const timeStr = date.getHours() + ":" + String(date.getMinutes()).padStart(2, '0');
-
-                    list.innerHTML += `
-                        <div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
-                            <div>
-                                <strong style="color:white; font-size:1rem;">${chat.mlbbId}</strong>
-                                <div style="font-size:0.8rem; color:#aaa; margin-top:2px;">${chat.itemName}</div>
-                            </div>
-                            <div style="text-align:right;">
-                                <div class="badge">OPEN</div>
-                                <div style="font-size:0.7rem; color:#666; margin-top:4px;">${timeStr}</div>
-                            </div>
-                        </div>`;
+                    list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
+                            <div><strong style="color:white;">${chat.mlbbId}</strong><div style="font-size:0.8rem; color:#aaa;">${chat.itemName}</div></div>
+                            <div class="badge">OPEN</div></div>`;
                 });
             });
         }
-
         window.openAdminChat = (chatId) => {
-            activeAdminChatId = chatId;
-            document.getElementById("adminChatWindow").style.display = "block";
+            activeAdminChatId = chatId; document.getElementById("adminChatWindow").style.display = "block";
             if(chatUnsubscribe) chatUnsubscribe();
-            chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (docSnap) => {
-                if(docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById("adminChatTitle").innerText = `Chatting with: ${data.mlbbId}`;
-                    renderMessages(data.messages, "adminMessages");
-                } else {
-                    document.getElementById("adminChatWindow").style.display = "none";
-                }
+            chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => {
+                if(s.exists()) { document.getElementById("adminChatTitle").innerText = `Chat: ${s.data().mlbbId}`; renderMessages(s.data().messages, "adminMessages"); }
+                else document.getElementById("adminChatWindow").style.display = "none";
             });
         };
-
         window.sendAdminMessage = async () => {
             const input = document.getElementById("adminMsgInput");
-            const text = input.value.trim();
-            if(!text || !activeAdminChatId) return;
-            const msg = { sender: 'admin', text: text, time: Date.now() };
-            await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion(msg) });
+            if(!input.value.trim() || !activeAdminChatId) return;
+            await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) });
             input.value = "";
         };
-
         window.closeCurrentChat = async () => {
-            if(!activeAdminChatId) return;
-            if(confirm("Are you sure? This will delete the order and close the customer's chat.")) {
-                await deleteDoc(doc(db, "chats", activeAdminChatId));
-                document.getElementById("adminChatWindow").style.display = "none";
-                activeAdminChatId = null;
-            }
+            if(activeAdminChatId && confirm("Complete Order?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; }
         };
 
-        // --- 6. STORE RENDERING ---
-        
+        // --- STORE & CRUD ---
         window.renderStore = () => {
             const grid = document.getElementById("storeGrid");
             grid.innerHTML = "";
             let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
-            
-            if(filtered.length === 0) {
-                grid.innerHTML = "<p style='color:#555; width:100%; text-align:center; margin-top:40px; font-size:1.2rem;'>No items in this category.</p>";
-                return;
-            }
-
+            if(filtered.length === 0) { grid.innerHTML = "<p style='color:#555; width:100%; text-align:center; margin-top:40px;'>No items.</p>"; return; }
             filtered.forEach(item => {
-                let adminHtml = "";
-                if(isAdmin) adminHtml = `<div style="padding:10px; display:flex; gap:10px;"><button class="btn btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" onclick="deleteItem('${item.id}')">Delete</button></div>`;
-                const itemString = encodeURIComponent(JSON.stringify(item));
-                
-                // Price Logic
-                let priceHtml = `<div class="current-price">₱${item.price}</div>`;
-                let badgeHtml = "";
-                
-                if(item.salePrice && Number(item.salePrice) < Number(item.price)) {
-                     priceHtml = `
-                        <span class="old-price">₱${item.price}</span>
-                        <span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>
-                     `;
-                     badgeHtml = `<div class="sale-badge">SALE</div>`;
-                }
-
-                grid.innerHTML += `
-                    <div class="card">
-                        ${badgeHtml}
-                        <img src="${item.image || 'https://placehold.co/300x200/222/555?text=No+Image'}" class="card-img-top" alt="${item.name}">
-                        <div class="card-body">
-                            <h3 class="card-title">${item.name}</h3>
-                            <div class="price-container">${priceHtml}</div>
-                            <button onclick="openBuyModal('${itemString}')" class="buy-btn">Buy Now</button>
-                            ${adminHtml}
-                        </div>
-                    </div>`;
+                let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:10px;"><button class="btn btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" onclick="deleteItem('${item.id}')">Del</button></div>` : "";
+                let priceHtml = `<div class="current-price">₱${item.price}</div>`, badge = "";
+                if(item.salePrice && Number(item.salePrice) < Number(item.price)) { priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>`; badge = `<div class="sale-badge">SALE</div>`; }
+                grid.innerHTML += `<div class="card">${badge}<img src="${item.image || 'https://placehold.co/300x200/222/555?text=Item'}" class="card-img-top"><div class="card-body"><h3 class="card-title">${item.name}</h3><div class="price-container">${priceHtml}</div><button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>${adminHtml}</div></div>`;
             });
         };
-
-        // --- 7. CATEGORY LOGIC ---
-        window.addCategory = async () => {
-            const name = document.getElementById("catName").value;
-            if(name) {
-                const order = categoriesData.length > 0 ? categoriesData[categoriesData.length-1].order + 1 : 1;
-                await addDoc(collection(db, "categories"), { name, order });
-                document.getElementById("catName").value = "";
-            }
+        window.addCategory = async () => { const n = document.getElementById("catName").value; if(n) await addDoc(collection(db, "categories"), { name: n, order: Date.now() }); document.getElementById("catName").value = ""; };
+        window.deleteCategory = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "categories", id)); };
+        window.renderCategories = () => {
+            const c = document.getElementById("catTabs"), s = document.getElementById("itemCatSelect");
+            c.innerHTML = `<div class="cat-tab ${currentCat==='All'?'active':''}" onclick="window.setCat('All')">All</div>` + categoriesData.map(x=>`<div class="cat-tab ${currentCat===x.id?'active':''}" onclick="window.setCat('${x.id}')">${x.name}</div>`).join('');
+            s.innerHTML = `<option value="">Category...</option>` + categoriesData.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');
         };
-
-        window.deleteCategory = async (id) => { if(confirm("Delete category?")) await deleteDoc(doc(db, "categories", id)); };
-
-        function renderCategories() {
-            const container = document.getElementById("catTabs");
-            const select = document.getElementById("itemCatSelect");
-            let tabs = `<div class="cat-tab ${currentCat === 'All' ? 'active' : ''}" onclick="window.setCat('All')">All</div>`;
-            let opts = `<option value="">Select Category...</option>`;
-            categoriesData.forEach(c => {
-                tabs += `<div class="cat-tab ${currentCat === c.id ? 'active' : ''}" onclick="window.setCat('${c.id}')">${c.name}</div>`;
-                opts += `<option value="${c.id}">${c.name}</option>`;
-            });
-            container.innerHTML = tabs;
-            select.innerHTML = opts;
-        }
-
         window.setCat = (id) => { currentCat = id; renderStore(); };
-
-        function renderCatList() {
-            const list = document.getElementById("catList");
-            list.innerHTML = "";
-            categoriesData.forEach((c) => {
-                list.innerHTML += `<div class="list-item"><span>${c.name}</span><button class="btn-del" onclick="deleteCategory('${c.id}')">Delete</button></div>`;
-            });
-        }
-
-        // --- 8. ITEM CRUD ---
+        window.renderCatList = () => { document.getElementById("catList").innerHTML = categoriesData.map(x=>`<div class="list-item"><span>${x.name}</span><button class="btn-del" onclick="deleteCategory('${x.id}')">X</button></div>`).join(''); };
         window.saveItem = async () => {
             const id = document.getElementById("editItemId").value;
-            const data = {
-                name: document.getElementById("itemName").value,
-                price: Number(document.getElementById("itemPrice").value),
-                salePrice: document.getElementById("itemSale").value,
-                catId: document.getElementById("itemCatSelect").value,
-                image: document.getElementById("itemImg").value
-            };
-            if(!data.name || !data.price || !data.catId) { alert("Please fill Name, Price and Category"); return; }
-            
-            // Clean sale price
-            if(!data.salePrice) delete data.salePrice;
-            else data.salePrice = Number(data.salePrice);
-
+            const data = { name: document.getElementById("itemName").value, price: Number(document.getElementById("itemPrice").value), salePrice: document.getElementById("itemSale").value, catId: document.getElementById("itemCatSelect").value, image: document.getElementById("itemImg").value };
+            if(!data.name || !data.price || !data.catId) return alert("Info missing");
+            if(!data.salePrice) delete data.salePrice; else data.salePrice = Number(data.salePrice);
             if(id) await updateDoc(doc(db, "items", id), data);
-            else {
-                const order = itemsData.length > 0 ? Math.max(...itemsData.map(i=>i.order||0)) + 1 : 1;
-                data.order = order;
-                await addDoc(collection(db, "items"), data);
-            }
+            else await addDoc(collection(db, "items"), { ...data, order: Date.now() });
             window.clearForm();
         };
-
-        window.deleteItem = async (id) => { if(confirm("Delete item?")) await deleteDoc(doc(db, "items", id)); };
-        
+        window.deleteItem = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "items", id)); };
         window.editItem = (id) => {
-            const item = itemsData.find(i => i.id === id);
-            document.getElementById("editItemId").value = item.id;
-            document.getElementById("itemName").value = item.name;
-            document.getElementById("itemPrice").value = item.price;
-            document.getElementById("itemSale").value = item.salePrice || "";
-            document.getElementById("itemCatSelect").value = item.catId;
-            document.getElementById("itemImg").value = item.image;
-            document.getElementById("adminArea").scrollIntoView({behavior: "smooth"});
+            const i = itemsData.find(x => x.id === id); document.getElementById("editItemId").value = i.id; document.getElementById("itemName").value = i.name; document.getElementById("itemPrice").value = i.price; document.getElementById("itemSale").value = i.salePrice||""; document.getElementById("itemCatSelect").value = i.catId; document.getElementById("itemImg").value = i.image; document.getElementById("adminArea").scrollIntoView();
         };
-
-        window.clearForm = () => {
-            document.querySelectorAll("#adminArea input").forEach(i => i.value = "");
-            document.getElementById("itemCatSelect").value = "";
-            document.getElementById("editItemId").value = "";
-        };
-
-        // --- 9. BACKUP ---
-        window.exportFromFirebase = async () => {
-            const data = { items: itemsData, categories: categoriesData };
-            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = "StoreZ_Backup.json";
-            a.click();
-        };
-
-        window.importToFirebase = async (input) => {
-            const file = input.files[0];
-            if(!file || !confirm("Overwrite data? This might create duplicates if not careful.")) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const json = JSON.parse(e.target.result);
-                const batch = writeBatch(db);
-                if(json.categories) json.categories.forEach(cat => batch.set(doc(collection(db, "categories")), { name: cat.name, order: cat.order || 0 }));
-                if(json.items) json.items.forEach(item => batch.set(doc(collection(db, "items")), { name: item.name, price: item.price, catId: item.catId, image: item.image || "", order: item.order || 0 }));
-                await batch.commit();
-                alert("Restoration Complete!");
-            };
-            reader.readAsText(file);
+        window.clearForm = () => { document.querySelectorAll("#adminArea input").forEach(x=>x.value=""); document.getElementById("itemCatSelect").value=""; document.getElementById("editItemId").value=""; };
+        window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "StoreZ_Backup.json"; a.click(); };
+        window.importToFirebase = async (i) => {
+            if(!i.files[0] || !confirm("Import?")) return;
+            const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]);
         };
     </script>
 </body>
