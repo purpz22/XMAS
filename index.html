@@ -13,13 +13,20 @@
 
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; }
 
+        /* Ticker */
+        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 30px; border-bottom: 1px solid #333; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; line-height: 30px;}
+        .ticker-item { display: inline-block; padding: 0 2rem; color: #888; font-size: 0.85rem; }
+        .ticker-item b { color: var(--primary); }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
         /* Nav */
-        nav { display: flex; justify-content: center; align-items: center; padding: 20px; background: #161920; border-bottom: 2px solid #333; }
-        .logo { font-size: 2rem; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        nav { display: flex; justify-content: center; align-items: center; padding: 20px; background: #161920; border-bottom: 2px solid #333; position: relative; }
+        .logo { font-size: 2rem; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
         
         /* The hidden login container */
-        #secretLogin { position: absolute; top: 10px; right: 10px; display: none; }
-        .admin-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; cursor: pointer; border-radius: 4px; }
+        #secretLogin { position: absolute; top: 20px; right: 20px; display: none; z-index: 999; }
+        .admin-btn { background: var(--primary); border: 1px solid var(--primary); color: #000; padding: 5px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
 
         .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
 
@@ -45,13 +52,18 @@
         .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; }
 
         .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s; }
+        .card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s; position: relative; }
         .card:hover { transform: translateY(-5px); border-color: #555; }
         
         .card-img-top { width: 100%; height: 180px; object-fit: cover; }
         .card-body { padding: 15px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
         .card-title { margin: 0 0 5px 0; color: #fff; font-size: 1.1rem; }
+        
+        .price-container { margin-bottom: 10px; min-height: 25px; }
         .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
+        .old-price { text-decoration: line-through; color: #666; font-size: 0.9rem; margin-right: 5px; }
+        .sale-badge { position: absolute; top: 10px; right: 10px; background: var(--sale); color: white; padding: 3px 8px; border-radius: 3px; font-weight: bold; font-size: 0.8rem; z-index: 10; }
+
         .buy-btn { margin-top: auto; display: block; width: 100%; padding: 10px 0; background: linear-gradient(45deg, #005f99, #0088cc); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
 
         /* MODAL & CHAT STYLES */
@@ -75,8 +87,12 @@
 </head>
 <body>
 
+    <div class="ticker-wrap"><div class="ticker" id="buyerTicker"></div></div>
+
     <nav>
-        <div class="logo">StoreZ</div>
+        <!-- Click logo 5 times to reveal admin if hash fails -->
+        <div class="logo" onclick="clickLogo()">StoreZ</div>
+        
         <!-- Secret Login Button Container -->
         <div id="secretLogin">
             <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
@@ -118,9 +134,11 @@
                     <div class="form-group"><label>Category</label><select id="itemCatSelect"></select></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Price</label><input type="number" id="itemPrice"></div>
-                    <div class="form-group"><label>Image URL</label><input type="text" id="itemImg"></div>
+                    <div class="form-group"><label>Original Price</label><input type="number" id="itemPrice"></div>
+                    <div class="form-group"><label>Sale Price (Optional)</label><input type="number" id="itemSale"></div>
                 </div>
+                <div class="form-group"><label>Image URL</label><input type="text" id="itemImg"></div>
+                
                 <button class="btn btn-save" onclick="saveItem()">Save Item</button>
                 <button class="btn" style="background:#444; color:white;" onclick="clearForm()">Clear</button>
             </div>
@@ -150,7 +168,7 @@
         <div class="modal-box">
             <h3 style="color:var(--primary)" id="modalItemName">Buying Item</h3>
             <p>Please enter your MLBB ID to proceed.</p>
-            <input type="text" id="customerMlbbId" placeholder="User ID (e.g. 12345678)" style="text-align:center; font-size: 1.1rem;">
+            <input type="text" id="customerMlbbId" placeholder="User ID (e.g. 12345678)" style="text-align:center; font-size: 1.1rem; width: 100%; box-sizing:border-box;">
             <button class="btn btn-save" style="margin-top:15px;" onclick="submitOrder()">Start Order</button>
             <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('orderModal')">Cancel</button>
         </div>
@@ -172,12 +190,11 @@
     <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc, updateDoc, setDoc, query, orderBy, where, writeBatch, arrayUnion } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc, updateDoc, setDoc, query, orderBy, where, writeBatch, arrayUnion, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
         // ------------------------------------------------------------------
-        // PASTE YOUR FIREBASE CONFIG HERE
-        // ------------------------------------------------------------------
+        // PASTE YOUR CONFIG HERE
         const firebaseConfig = {
           apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
           authDomain: "storez-68603.firebaseapp.com",
@@ -197,6 +214,7 @@
         let categoriesData = [];
         let currentCat = "All";
         let isAdmin = false;
+        let logoClicks = 0;
 
         // Chat State
         let currentItemBuying = null;
@@ -206,17 +224,21 @@
 
         // --- SECRET ROUTE CHECK ---
         function checkSecretRoute() {
-            // Checks if URL ends with /nimda OR has #nimda hash
-            const isSecret = window.location.pathname.endsWith('/nimda') || window.location.hash === '#nimda';
+            const isSecret = window.location.hash.includes('nimda');
             const loginDiv = document.getElementById("secretLogin");
-            if(isSecret) {
-                loginDiv.style.display = "block";
-            } else {
-                loginDiv.style.display = "none";
-            }
+            if(isSecret) loginDiv.style.display = "block";
         }
-        window.addEventListener('load', checkSecretRoute);
-        window.addEventListener('hashchange', checkSecretRoute);
+        window.checkSecretRoute = checkSecretRoute; // Expose to global
+        window.setInterval(checkSecretRoute, 1000); // Check every second to be sure
+
+        // Backup: Click logo 5 times to show login
+        window.clickLogo = () => {
+            logoClicks++;
+            if(logoClicks >= 5) {
+                document.getElementById("secretLogin").style.display = "block";
+                alert("Admin Button Revealed");
+            }
+        };
 
         // --- AUTH ---
         window.handleAuth = () => {
@@ -245,6 +267,27 @@
         });
 
         // --- DATA SYNC ---
+        // Load Ticker (Who Bought)
+        const qTicker = query(collection(db, "chats"), orderBy("timestamp", "desc"), limit(10));
+        onSnapshot(qTicker, (snapshot) => {
+            let html = "";
+            if(snapshot.empty) {
+                 html = `<div class="ticker-item">Welcome to StoreZ!</div>`;
+            } else {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if(data.mlbbId && data.itemName) {
+                        // Mask the ID (e.g. 123456 -> 123***)
+                        let maskedId = data.mlbbId.length > 4 ? data.mlbbId.substring(0, 3) + "***" : "User";
+                        html += `<div class="ticker-item">🎉 ID: <b>${maskedId}</b> bought <b>${data.itemName}</b></div>`;
+                    }
+                });
+                // Duplicate content for smooth scrolling
+                if(snapshot.size < 5) html += html + html; 
+            }
+            document.getElementById("buyerTicker").innerHTML = html;
+        });
+
         const qCat = query(collection(db, "categories"), orderBy("order", "asc"));
         onSnapshot(qCat, (snapshot) => {
             categoriesData = [];
@@ -278,40 +321,50 @@
             const mlbbId = document.getElementById("customerMlbbId").value.trim();
             if(!mlbbId) return alert("Please enter MLBB ID");
 
-            // Create Chat Session in Firestore
-            const chatRef = await addDoc(collection(db, "chats"), {
-                mlbbId: mlbbId,
-                itemName: currentItemBuying.name,
-                itemPrice: currentItemBuying.price,
-                status: 'open',
-                timestamp: Date.now(),
-                messages: [{
-                    sender: 'system',
-                    text: `Order started for ${currentItemBuying.name}. ID: ${mlbbId}. Please wait for admin.`,
-                    time: Date.now()
-                }]
-            });
+            const btn = document.querySelector("#orderModal .btn-save");
+            btn.innerText = "Processing...";
+            btn.disabled = true;
 
-            activeCustomerChatId = chatRef.id;
-            closeModal("orderModal");
-            document.getElementById("customerChatModal").style.display = "flex";
-            
-            // Listen to this specific chat
-            onSnapshot(doc(db, "chats", activeCustomerChatId), (docSnap) => {
-                if(docSnap.exists()) {
-                    const data = docSnap.data();
-                    // If admin deleted it
-                    if(!data) { 
-                        alert("Chat closed by admin."); 
-                        window.location.reload(); 
-                        return;
+            try {
+                // Determine price to save
+                let finalPrice = currentItemBuying.salePrice ? currentItemBuying.salePrice : currentItemBuying.price;
+
+                // Create Chat Session
+                const chatRef = await addDoc(collection(db, "chats"), {
+                    mlbbId: mlbbId,
+                    itemName: currentItemBuying.name,
+                    itemPrice: finalPrice,
+                    status: 'open',
+                    timestamp: Date.now(),
+                    messages: [{
+                        sender: 'system',
+                        text: `Order started for ${currentItemBuying.name} @ ₱${finalPrice}. ID: ${mlbbId}. Please wait for admin.`,
+                        time: Date.now()
+                    }]
+                });
+
+                activeCustomerChatId = chatRef.id;
+                closeModal("orderModal");
+                document.getElementById("customerChatModal").style.display = "flex";
+                
+                // Listen to chat
+                onSnapshot(doc(db, "chats", activeCustomerChatId), (docSnap) => {
+                    if(docSnap.exists()) {
+                        const data = docSnap.data();
+                        renderMessages(data.messages, "customerMessages");
+                    } else {
+                        alert("Chat ended by admin.");
+                        window.location.reload();
                     }
-                    renderMessages(data.messages, "customerMessages");
-                } else {
-                    alert("Chat closed.");
-                    window.location.reload();
-                }
-            });
+                });
+
+            } catch (error) {
+                console.error("Error creating order:", error);
+                alert("Error starting order: " + error.message);
+            } finally {
+                btn.innerText = "Start Order";
+                btn.disabled = false;
+            }
         };
 
         window.sendCustomerMessage = async () => {
@@ -320,10 +373,10 @@
             if(!text || !activeCustomerChatId) return;
 
             const msg = { sender: 'user', text: text, time: Date.now() };
-            await updateDoc(doc(db, "chats", activeCustomerChatId), {
-                messages: arrayUnion(msg)
-            });
-            input.value = "";
+            try {
+                await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion(msg) });
+                input.value = "";
+            } catch(e) { console.error(e); alert("Message failed. Check internet."); }
         };
 
         function renderMessages(msgs, divId) {
@@ -341,7 +394,6 @@
         // --- ADMIN CHAT FLOW ---
 
         function initAdminChatListener() {
-            // Listen for all OPEN chats
             const q = query(collection(db, "chats"), orderBy("timestamp", "desc"));
             onSnapshot(q, (snapshot) => {
                 const list = document.getElementById("adminChatList");
@@ -353,7 +405,7 @@
                         <div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
                             <div>
                                 <strong>${chat.mlbbId}</strong><br>
-                                <span style="font-size:0.8rem; color:#aaa;">${chat.itemName}</span>
+                                <span style="font-size:0.8rem; color:#aaa;">${chat.itemName} (₱${chat.itemPrice})</span>
                             </div>
                             <div class="badge">Open</div>
                         </div>`;
@@ -364,10 +416,7 @@
         window.openAdminChat = (chatId) => {
             activeAdminChatId = chatId;
             document.getElementById("adminChatWindow").style.display = "flex";
-            
-            // Unsubscribe previous listener if exists
             if(chatUnsubscribe) chatUnsubscribe();
-
             chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (docSnap) => {
                 if(docSnap.exists()) {
                     const data = docSnap.data();
@@ -383,11 +432,8 @@
             const input = document.getElementById("adminMsgInput");
             const text = input.value.trim();
             if(!text || !activeAdminChatId) return;
-
             const msg = { sender: 'admin', text: text, time: Date.now() };
-            await updateDoc(doc(db, "chats", activeAdminChatId), {
-                messages: arrayUnion(msg)
-            });
+            await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion(msg) });
             input.value = "";
         };
 
@@ -400,9 +446,7 @@
             }
         };
 
-
         // --- STORE & CATEGORY LOGIC ---
-
         window.addCategory = async () => {
             const name = document.getElementById("catName").value;
             if(name) {
@@ -417,10 +461,8 @@
         function renderCategories() {
             const container = document.getElementById("catTabs");
             const select = document.getElementById("itemCatSelect");
-            
             let tabs = `<div class="cat-tab ${currentCat === 'All' ? 'active' : ''}" onclick="window.setCat('All')">All</div>`;
             let opts = `<option value="">Select...</option>`;
-
             categoriesData.forEach(c => {
                 tabs += `<div class="cat-tab ${currentCat === c.id ? 'active' : ''}" onclick="window.setCat('${c.id}')">${c.name}</div>`;
                 opts += `<option value="${c.id}">${c.name}</option>`;
@@ -435,11 +477,7 @@
             const list = document.getElementById("catList");
             list.innerHTML = "";
             categoriesData.forEach((c) => {
-                list.innerHTML += `
-                    <div class="list-item">
-                        <span>${c.name}</span> 
-                        <button class="btn-del" onclick="deleteCategory('${c.id}')">X</button>
-                    </div>`;
+                list.innerHTML += `<div class="list-item"><span>${c.name}</span><button class="btn-del" onclick="deleteCategory('${c.id}')">X</button></div>`;
             });
         }
 
@@ -448,15 +486,13 @@
             const data = {
                 name: document.getElementById("itemName").value,
                 price: Number(document.getElementById("itemPrice").value),
+                salePrice: Number(document.getElementById("itemSale").value) || null, // Capture Sale Price
                 catId: document.getElementById("itemCatSelect").value,
                 image: document.getElementById("itemImg").value
             };
-            
             if(!data.name || !data.price || !data.catId) { alert("Missing info"); return; }
-
-            if(id) {
-                await updateDoc(doc(db, "items", id), data);
-            } else {
+            if(id) await updateDoc(doc(db, "items", id), data);
+            else {
                 const order = itemsData.length > 0 ? Math.max(...itemsData.map(i=>i.order||0)) + 1 : 1;
                 data.order = order;
                 await addDoc(collection(db, "items"), data);
@@ -471,6 +507,7 @@
             document.getElementById("editItemId").value = item.id;
             document.getElementById("itemName").value = item.name;
             document.getElementById("itemPrice").value = item.price;
+            document.getElementById("itemSale").value = item.salePrice || "";
             document.getElementById("itemCatSelect").value = item.catId;
             document.getElementById("itemImg").value = item.image;
             document.getElementById("adminArea").scrollIntoView();
@@ -484,26 +521,31 @@
         window.renderStore = () => {
             const grid = document.getElementById("storeGrid");
             grid.innerHTML = "";
-            
             let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
-
             if(filtered.length === 0) grid.innerHTML = "<p style='color:#666; width:100%; text-align:center;'>No items found.</p>";
-
             filtered.forEach(item => {
                 let adminHtml = "";
-                if(isAdmin) {
-                    adminHtml = `<div style="padding:5px; display:flex; gap:5px;"><button class="btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn-del" onclick="deleteItem('${item.id}')">Del</button></div>`;
-                }
-
-                // Prepare item for modal
+                if(isAdmin) adminHtml = `<div style="padding:5px; display:flex; gap:5px;"><button class="btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn-del" onclick="deleteItem('${item.id}')">Del</button></div>`;
                 const itemString = encodeURIComponent(JSON.stringify(item));
+                
+                // SALE PRICE LOGIC
+                let priceHtml = `<div class="current-price">₱${item.price}</div>`;
+                let badgeHtml = "";
+                if(item.salePrice && item.salePrice < item.price) {
+                     priceHtml = `
+                        <span class="old-price">₱${item.price}</span>
+                        <span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>
+                     `;
+                     badgeHtml = `<div class="sale-badge">SALE</div>`;
+                }
 
                 grid.innerHTML += `
                     <div class="card">
+                        ${badgeHtml}
                         <img src="${item.image || 'https://placehold.co/200x150?text=No+Image'}" class="card-img-top">
                         <div class="card-body">
                             <h3 class="card-title">${item.name}</h3>
-                            <div class="current-price">₱${item.price}</div>
+                            <div class="price-container">${priceHtml}</div>
                             <button onclick="openBuyModal('${itemString}')" class="buy-btn">Buy Now</button>
                             ${adminHtml}
                         </div>
@@ -511,7 +553,6 @@
             });
         };
 
-        // --- BACKUP / RESTORE ---
         window.exportFromFirebase = async () => {
             const data = { items: itemsData, categories: categoriesData };
             const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
