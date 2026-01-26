@@ -8,25 +8,23 @@
         :root {
             --primary: #d4af37; --bg: #0f1014; --card-bg: #1b1e26;
             --text: #ffffff; --danger: #ff4d4d; --sale: #ff0000; --success: #00c851;
+            --chat-user: #005f99; --chat-admin: #333;
         }
 
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; }
 
-        /* Ticker */
-        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 30px; border-bottom: 1px solid #333; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; line-height: 30px;}
-        .ticker-item { display: inline-block; padding: 0 2rem; color: var(--primary); font-size: 0.9rem; }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
         /* Nav */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #161920; border-bottom: 2px solid #333; }
-        .logo { font-size: 1.5rem; color: var(--primary); font-weight: bold; text-transform: uppercase; }
-        .admin-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; cursor: pointer; border-radius: 4px; }
+        nav { display: flex; justify-content: center; align-items: center; padding: 20px; background: #161920; border-bottom: 2px solid #333; }
+        .logo { font-size: 2rem; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
         
-        .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+        /* The hidden login container */
+        #secretLogin { position: absolute; top: 10px; right: 10px; display: none; }
+        .admin-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; cursor: pointer; border-radius: 4px; }
+
+        .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
 
         /* Admin UI */
-        #adminArea { display: none; }
+        #adminArea { display: none; border-left: 2px solid var(--primary); padding-left: 15px; margin-bottom: 30px;}
         .admin-section { background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px solid #444; margin-bottom: 20px; }
         .admin-header { color: var(--primary); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
         
@@ -37,84 +35,81 @@
         
         .btn { padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; color: black; }
         .btn-save { background: var(--primary); }
-        .btn-green { background: var(--success); color: white; }
         .btn-del { background: var(--danger); color: white; width: auto; padding: 2px 8px; }
-        .btn-move { background: #444; color: white; width: auto; padding: 2px 8px; margin-right: 2px; }
         .btn-io { background-color: #2196F3; color: white; margin-bottom: 10px; }
         .file-input { display: none; }
 
-        /* Controls & Sorting */
-        .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;}
-        .cat-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
-        .cat-tab { background: #1b1e26; border: 1px solid #444; color: #aaa; padding: 8px 16px; border-radius: 20px; cursor: pointer; white-space: nowrap; }
-        .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; }
-        .sort-select { width: auto; padding: 8px; margin-bottom: 0; }
-
         /* Store Grid */
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid #333; position: relative; display: flex; flex-direction: column; transition: transform 0.2s; }
-        
-        /* Drag Styles */
-        .card.draggable { cursor: grab; border: 1px dashed #666; }
-        .card.dragging { opacity: 0.5; border: 2px dashed var(--primary); }
+        .cat-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .cat-tab { background: #1b1e26; border: 1px solid #444; color: #aaa; padding: 8px 20px; border-radius: 20px; cursor: pointer; }
+        .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; }
+
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s; }
         .card:hover { transform: translateY(-5px); border-color: #555; }
         
-        .card-img-top { width: 100%; height: 160px; object-fit: cover; pointer-events: none; }
+        .card-img-top { width: 100%; height: 180px; object-fit: cover; }
         .card-body { padding: 15px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { margin: 0 0 5px 0; color: #fff; font-size: 1.1rem; pointer-events: none; }
-        .price-container { margin-bottom: 15px; pointer-events: none; }
+        .card-title { margin: 0 0 5px 0; color: #fff; font-size: 1.1rem; }
         .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
-        .old-price { text-decoration: line-through; color: #666; font-size: 0.9rem; margin-right: 5px; }
-        .sale-badge { position: absolute; top: 10px; right: 10px; background: var(--sale); color: white; padding: 3px 8px; border-radius: 3px; font-weight: bold; font-size: 0.8rem; }
+        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 10px 0; background: linear-gradient(45deg, #005f99, #0088cc); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+
+        /* MODAL & CHAT STYLES */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-box { background: var(--card-bg); padding: 25px; border-radius: 10px; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; }
+        .chat-box { width: 100%; height: 300px; background: #000; border: 1px solid #333; margin-top: 10px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .message { padding: 8px 12px; border-radius: 15px; font-size: 0.9rem; max-width: 80%; word-wrap: break-word; }
+        .msg-system { align-self: center; background: #333; color: #aaa; font-size: 0.8rem; }
+        .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border-bottom-right-radius: 2px; }
+        .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border-bottom-left-radius: 2px; border: 1px solid #555; }
+        .chat-input-area { display: flex; gap: 5px; margin-top: 10px; }
         
-        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 10px 0; background: linear-gradient(45deg, #005f99, #0088cc); color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        
-        .admin-controls { display: flex; gap: 5px; margin-top: 10px; }
-        .edit-btn { background: #2196F3; color: white; border: none; padding: 5px; border-radius: 3px; cursor: pointer; flex: 1; }
+        /* Admin Chat List */
+        .admin-chat-item { background: #111; padding: 10px; margin-bottom: 5px; border: 1px solid #333; cursor: pointer; display: flex; justify-content: space-between; align-items: center;}
+        .admin-chat-item:hover { background: #222; }
+        .admin-chat-item.active { border-color: var(--primary); }
+        .badge { background: red; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; }
 
         .list-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
     </style>
 </head>
 <body>
 
-    <div class="ticker-wrap"><div class="ticker" id="buyerTicker"></div></div>
-
     <nav>
         <div class="logo">StoreZ</div>
-        <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
+        <!-- Secret Login Button Container -->
+        <div id="secretLogin">
+            <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
+        </div>
     </nav>
 
     <div class="container">
+        
         <!-- ADMIN PANEL -->
         <div id="adminArea">
+            <h2 style="color:var(--primary);">Admin Dashboard</h2>
             
-            <!-- DATA MANAGER (NEW) -->
+            <!-- LIVE CHATS -->
             <div class="admin-section">
-                <h4 class="admin-header">Data Manager (Backup/Restore)</h4>
-                <p style="font-size:0.8rem; color:#aaa;">Use this to backup your cloud data or import items from the old version.</p>
-                <button class="btn btn-io" onclick="exportFromFirebase()">⬇ Download Cloud Backup (JSON)</button>
-                <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Import JSON to Cloud</button>
-                <input type="file" id="jsonInput" class="file-input" accept=".json" onchange="importToFirebase(this)">
-            </div>
-
-            <div class="admin-section">
-                <h4 class="admin-header">Settings</h4>
-                <div class="form-group">
-                    <label>Global Buy Link</label>
-                    <input type="text" id="globalLink" placeholder="https://m.me/Page">
-                    <button class="btn btn-green" onclick="saveGlobalSettings()">Save Settings</button>
+                <h4 class="admin-header">Live Orders & Chats</h4>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <label>Active Conversations</label>
+                        <div id="adminChatList" style="height: 300px; overflow-y: auto; border: 1px solid #333; background: #000;"></div>
+                    </div>
+                    <div style="flex: 2; min-width: 300px; display: none;" id="adminChatWindow">
+                        <label id="adminChatTitle">Chatting with...</label>
+                        <div id="adminMessages" class="chat-box"></div>
+                        <div class="chat-input-area">
+                            <input type="text" id="adminMsgInput" placeholder="Type to customer...">
+                            <button class="btn btn-save" style="width: auto;" onclick="sendAdminMessage()">Send</button>
+                        </div>
+                        <button class="btn btn-del" style="margin-top: 10px;" onclick="closeCurrentChat()">Close & Delete Order</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="admin-section">
-                <h4 class="admin-header">Categories</h4>
-                <div class="form-row">
-                    <input type="text" id="catName" placeholder="Category Name" style="flex:1">
-                    <button class="btn btn-save" style="width:auto; margin:0;" onclick="addCategory()">Add</button>
-                </div>
-                <div id="catList" style="margin-top:10px;"></div>
-            </div>
-
+            <!-- PRODUCT MANAGER -->
             <div class="admin-section">
                 <h4 class="admin-header">Add / Edit Item</h4>
                 <input type="hidden" id="editItemId">
@@ -124,56 +119,74 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Price</label><input type="number" id="itemPrice"></div>
-                    <div class="form-group"><label>Sale Price</label><input type="number" id="itemSale"></div>
+                    <div class="form-group"><label>Image URL</label><input type="text" id="itemImg"></div>
                 </div>
-                <div class="form-group"><label>Image</label><input type="text" id="itemImg"></div>
-                <div class="form-group"><label>Custom Link</label><input type="text" id="itemLink"></div>
                 <button class="btn btn-save" onclick="saveItem()">Save Item</button>
                 <button class="btn" style="background:#444; color:white;" onclick="clearForm()">Clear</button>
             </div>
 
             <div class="admin-section">
-                <h4 class="admin-header">Add Fake Buyer</h4>
+                <h4 class="admin-header">Data Backup</h4>
+                <button class="btn btn-io" onclick="exportFromFirebase()">⬇ Backup Data</button>
+                <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Restore Data</button>
+                <input type="file" id="jsonInput" class="file-input" accept=".json" onchange="importToFirebase(this)">
+                
+                <h4 class="admin-header" style="margin-top:20px;">Categories</h4>
                 <div class="form-row">
-                    <input type="text" id="buyerName" placeholder="Name" style="flex:1">
-                    <input type="text" id="buyerItem" placeholder="Item" style="flex:1">
-                    <button class="btn btn-save" style="width:auto; margin:0;" onclick="addBuyer()">Add</button>
+                    <input type="text" id="catName" placeholder="New Category Name">
+                    <button class="btn btn-save" style="width:auto;" onclick="addCategory()">Add</button>
                 </div>
-                <div id="buyerList" style="margin-top:10px; max-height:100px; overflow-y:auto;"></div>
+                <div id="catList" style="margin-top:10px;"></div>
             </div>
         </div>
 
-        <!-- PUBLIC STORE CONTROLS -->
-        <div class="controls-row">
-            <div class="cat-tabs" id="catTabs"></div>
-            <select id="sortSelect" class="sort-select" onchange="renderStore()">
-                <option value="default">Default Order</option>
-                <option value="low">Price: Low to High</option>
-                <option value="high">Price: High to Low</option>
-                <option value="az">Name: A-Z</option>
-            </select>
-        </div>
-
+        <!-- PUBLIC STORE -->
+        <div class="cat-tabs" id="catTabs"></div>
         <div class="store-grid" id="storeGrid"></div>
+    </div>
+
+    <!-- CUSTOMER ORDER MODAL -->
+    <div id="orderModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="color:var(--primary)" id="modalItemName">Buying Item</h3>
+            <p>Please enter your MLBB ID to proceed.</p>
+            <input type="text" id="customerMlbbId" placeholder="User ID (e.g. 12345678)" style="text-align:center; font-size: 1.1rem;">
+            <button class="btn btn-save" style="margin-top:15px;" onclick="submitOrder()">Start Order</button>
+            <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('orderModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- CUSTOMER CHAT MODAL -->
+    <div id="customerChatModal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 500px;">
+            <h3 style="color:var(--primary)">Private Conversation</h3>
+            <div id="customerMessages" class="chat-box"></div>
+            <div class="chat-input-area" id="customerInputArea">
+                <input type="text" id="customerMsgInput" placeholder="Message to Admin...">
+                <button class="btn btn-save" style="width: auto;" onclick="sendCustomerMessage()">Send</button>
+            </div>
+            <p style="font-size:0.8rem; color:#666; margin-top:5px;">Do not refresh the page or you will lose the chat.</p>
+        </div>
     </div>
 
     <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc, updateDoc, setDoc, query, orderBy, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, deleteDoc, updateDoc, setDoc, query, orderBy, where, writeBatch, arrayUnion } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
         // ------------------------------------------------------------------
         // PASTE YOUR FIREBASE CONFIG HERE
         // ------------------------------------------------------------------
-const firebaseConfig = {
-  apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
-  authDomain: "storez-68603.firebaseapp.com",
-  projectId: "storez-68603",
-  storageBucket: "storez-68603.firebasestorage.app",
-  messagingSenderId: "555550726462",
-  appId: "1:555550726462:web:98cfd4a27cfdb04209346f"
-};        // ------------------------------------------------------------------
+        const firebaseConfig = {
+          apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
+          authDomain: "storez-68603.firebaseapp.com",
+          projectId: "storez-68603",
+          storageBucket: "storez-68603.firebasestorage.app",
+          messagingSenderId: "555550726462",
+          appId: "1:555550726462:web:98cfd4a27cfdb04209346f"
+        };
+        // ------------------------------------------------------------------
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -182,16 +195,35 @@ const firebaseConfig = {
         // State
         let itemsData = [];
         let categoriesData = [];
-        let globalLink = "#";
         let currentCat = "All";
         let isAdmin = false;
+
+        // Chat State
+        let currentItemBuying = null;
+        let activeCustomerChatId = null;
+        let activeAdminChatId = null;
+        let chatUnsubscribe = null;
+
+        // --- SECRET ROUTE CHECK ---
+        function checkSecretRoute() {
+            // Checks if URL ends with /nimda OR has #nimda hash
+            const isSecret = window.location.pathname.endsWith('/nimda') || window.location.hash === '#nimda';
+            const loginDiv = document.getElementById("secretLogin");
+            if(isSecret) {
+                loginDiv.style.display = "block";
+            } else {
+                loginDiv.style.display = "none";
+            }
+        }
+        window.addEventListener('load', checkSecretRoute);
+        window.addEventListener('hashchange', checkSecretRoute);
 
         // --- AUTH ---
         window.handleAuth = () => {
             if (auth.currentUser) {
-                signOut(auth).then(() => alert("Logged Out"));
+                signOut(auth).then(() => window.location.reload());
             } else {
-                const email = prompt("Email:");
+                const email = prompt("Admin Email:");
                 const pass = prompt("Password:");
                 if(email && pass) signInWithEmailAndPassword(auth, email, pass).catch(e => alert(e.message));
             }
@@ -203,28 +235,16 @@ const firebaseConfig = {
             isAdmin = !!user;
             if (user) {
                 btn.innerText = "Logout";
-                btn.style.background = "var(--primary)";
-                btn.style.color = "black";
                 panel.style.display = "block";
+                initAdminChatListener();
             } else {
                 btn.innerText = "Admin Login";
-                btn.style.background = "transparent";
-                btn.style.color = "var(--primary)";
                 panel.style.display = "none";
             }
             renderStore();
         });
 
         // --- DATA SYNC ---
-        
-        onSnapshot(doc(db, "settings", "global"), (doc) => {
-            if(doc.exists()) {
-                globalLink = doc.data().link || "#";
-                document.getElementById("globalLink").value = globalLink;
-                renderStore();
-            }
-        });
-
         const qCat = query(collection(db, "categories"), orderBy("order", "asc"));
         onSnapshot(qCat, (snapshot) => {
             categoriesData = [];
@@ -240,88 +260,148 @@ const firebaseConfig = {
             renderStore();
         });
 
-        onSnapshot(query(collection(db, "buyers"), orderBy("createdAt", "desc")), (snapshot) => {
-            const buyers = [];
-            snapshot.forEach((doc) => buyers.push({ id: doc.id, ...doc.data() }));
-            renderTicker(buyers);
-            renderBuyerList(buyers);
-        });
-
-        // --- IMPORT / EXPORT FUNCTIONS ---
-
-        window.exportFromFirebase = async () => {
-            const data = {
-                items: itemsData,
-                categories: categoriesData,
-                settings: { globalLink: globalLink }
-            };
-            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = "StoreZ_Cloud_Backup.json";
-            a.click();
+        // --- CUSTOMER ORDER & CHAT FLOW ---
+        
+        window.openBuyModal = (itemJson) => {
+            const item = JSON.parse(decodeURIComponent(itemJson));
+            currentItemBuying = item;
+            document.getElementById("modalItemName").innerText = "Buying: " + item.name;
+            document.getElementById("customerMlbbId").value = "";
+            document.getElementById("orderModal").style.display = "flex";
         };
 
-        window.importToFirebase = async (input) => {
-            const file = input.files[0];
-            if(!file) return;
+        window.closeModal = (id) => {
+            document.getElementById(id).style.display = "none";
+        };
 
-            if(!confirm("This will upload items from the JSON to Firebase. It will not delete existing items, but might create duplicates. Continue?")) return;
+        window.submitOrder = async () => {
+            const mlbbId = document.getElementById("customerMlbbId").value.trim();
+            if(!mlbbId) return alert("Please enter MLBB ID");
 
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                try {
-                    const json = JSON.parse(e.target.result);
-                    const batch = writeBatch(db);
-                    let count = 0;
+            // Create Chat Session in Firestore
+            const chatRef = await addDoc(collection(db, "chats"), {
+                mlbbId: mlbbId,
+                itemName: currentItemBuying.name,
+                itemPrice: currentItemBuying.price,
+                status: 'open',
+                timestamp: Date.now(),
+                messages: [{
+                    sender: 'system',
+                    text: `Order started for ${currentItemBuying.name}. ID: ${mlbbId}. Please wait for admin.`,
+                    time: Date.now()
+                }]
+            });
 
-                    // Import Categories
-                    if(json.categories) {
-                        json.categories.forEach(cat => {
-                            const ref = doc(collection(db, "categories"));
-                            batch.set(ref, { name: cat.name, order: cat.order || 0 });
-                            count++;
-                        });
+            activeCustomerChatId = chatRef.id;
+            closeModal("orderModal");
+            document.getElementById("customerChatModal").style.display = "flex";
+            
+            // Listen to this specific chat
+            onSnapshot(doc(db, "chats", activeCustomerChatId), (docSnap) => {
+                if(docSnap.exists()) {
+                    const data = docSnap.data();
+                    // If admin deleted it
+                    if(!data) { 
+                        alert("Chat closed by admin."); 
+                        window.location.reload(); 
+                        return;
                     }
-
-                    // Import Items
-                    if(json.items) {
-                        json.items.forEach(item => {
-                            const ref = doc(collection(db, "items"));
-                            batch.set(ref, {
-                                name: item.name,
-                                price: item.price,
-                                salePrice: item.salePrice || "",
-                                catId: item.catId, // NOTE: Old IDs might not match new Category IDs. You might need to edit items.
-                                image: item.image || "",
-                                link: item.link || item.buyLink || "",
-                                order: item.order || 0
-                            });
-                            count++;
-                        });
-                    }
-
-                    // Import Settings
-                    if(json.settings && json.settings.globalLink) {
-                        const ref = doc(db, "settings", "global");
-                        batch.set(ref, { link: json.settings.globalLink });
-                    }
-
-                    await batch.commit();
-                    alert(`Successfully imported ${count} documents!`);
-
-                } catch(err) {
-                    alert("Error parsing JSON or uploading: " + err.message);
+                    renderMessages(data.messages, "customerMessages");
+                } else {
+                    alert("Chat closed.");
+                    window.location.reload();
                 }
-            };
-            reader.readAsText(file);
+            });
         };
 
-        // --- CORE FUNCTIONS ---
+        window.sendCustomerMessage = async () => {
+            const input = document.getElementById("customerMsgInput");
+            const text = input.value.trim();
+            if(!text || !activeCustomerChatId) return;
 
-        window.saveGlobalSettings = async () => {
-            await setDoc(doc(db, "settings", "global"), { link: document.getElementById("globalLink").value });
-            alert("Saved!");
+            const msg = { sender: 'user', text: text, time: Date.now() };
+            await updateDoc(doc(db, "chats", activeCustomerChatId), {
+                messages: arrayUnion(msg)
+            });
+            input.value = "";
         };
+
+        function renderMessages(msgs, divId) {
+            const container = document.getElementById(divId);
+            container.innerHTML = "";
+            msgs.forEach(m => {
+                let cls = "msg-system";
+                if(m.sender === 'user') cls = "msg-user";
+                if(m.sender === 'admin') cls = "msg-admin";
+                container.innerHTML += `<div class="message ${cls}">${m.text}</div>`;
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // --- ADMIN CHAT FLOW ---
+
+        function initAdminChatListener() {
+            // Listen for all OPEN chats
+            const q = query(collection(db, "chats"), orderBy("timestamp", "desc"));
+            onSnapshot(q, (snapshot) => {
+                const list = document.getElementById("adminChatList");
+                list.innerHTML = "";
+                snapshot.forEach(d => {
+                    const chat = d.data();
+                    const isActive = activeAdminChatId === d.id ? "active" : "";
+                    list.innerHTML += `
+                        <div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
+                            <div>
+                                <strong>${chat.mlbbId}</strong><br>
+                                <span style="font-size:0.8rem; color:#aaa;">${chat.itemName}</span>
+                            </div>
+                            <div class="badge">Open</div>
+                        </div>`;
+                });
+            });
+        }
+
+        window.openAdminChat = (chatId) => {
+            activeAdminChatId = chatId;
+            document.getElementById("adminChatWindow").style.display = "flex";
+            
+            // Unsubscribe previous listener if exists
+            if(chatUnsubscribe) chatUnsubscribe();
+
+            chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (docSnap) => {
+                if(docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById("adminChatTitle").innerText = `Chat: ${data.mlbbId} (${data.itemName})`;
+                    renderMessages(data.messages, "adminMessages");
+                } else {
+                    document.getElementById("adminChatWindow").style.display = "none";
+                }
+            });
+        };
+
+        window.sendAdminMessage = async () => {
+            const input = document.getElementById("adminMsgInput");
+            const text = input.value.trim();
+            if(!text || !activeAdminChatId) return;
+
+            const msg = { sender: 'admin', text: text, time: Date.now() };
+            await updateDoc(doc(db, "chats", activeAdminChatId), {
+                messages: arrayUnion(msg)
+            });
+            input.value = "";
+        };
+
+        window.closeCurrentChat = async () => {
+            if(!activeAdminChatId) return;
+            if(confirm("Close order and delete chat history?")) {
+                await deleteDoc(doc(db, "chats", activeAdminChatId));
+                document.getElementById("adminChatWindow").style.display = "none";
+                activeAdminChatId = null;
+            }
+        };
+
+
+        // --- STORE & CATEGORY LOGIC ---
 
         window.addCategory = async () => {
             const name = document.getElementById("catName").value;
@@ -330,14 +410,6 @@ const firebaseConfig = {
                 await addDoc(collection(db, "categories"), { name, order });
                 document.getElementById("catName").value = "";
             }
-        };
-
-        window.moveCategory = async (index, direction) => {
-            if((direction === -1 && index === 0) || (direction === 1 && index === categoriesData.length - 1)) return;
-            const current = categoriesData[index];
-            const neighbor = categoriesData[index + direction];
-            await updateDoc(doc(db, "categories", current.id), { order: neighbor.order });
-            await updateDoc(doc(db, "categories", neighbor.id), { order: current.order });
         };
 
         window.deleteCategory = async (id) => { if(confirm("Delete category?")) await deleteDoc(doc(db, "categories", id)); };
@@ -362,15 +434,11 @@ const firebaseConfig = {
         function renderCatList() {
             const list = document.getElementById("catList");
             list.innerHTML = "";
-            categoriesData.forEach((c, i) => {
+            categoriesData.forEach((c) => {
                 list.innerHTML += `
                     <div class="list-item">
                         <span>${c.name}</span> 
-                        <div>
-                            <button class="btn-move" onclick="moveCategory(${i}, -1)">▲</button>
-                            <button class="btn-move" onclick="moveCategory(${i}, 1)">▼</button>
-                            <button class="btn-del" onclick="deleteCategory('${c.id}')">X</button>
-                        </div>
+                        <button class="btn-del" onclick="deleteCategory('${c.id}')">X</button>
                     </div>`;
             });
         }
@@ -380,10 +448,8 @@ const firebaseConfig = {
             const data = {
                 name: document.getElementById("itemName").value,
                 price: Number(document.getElementById("itemPrice").value),
-                salePrice: document.getElementById("itemSale").value,
                 catId: document.getElementById("itemCatSelect").value,
-                image: document.getElementById("itemImg").value,
-                link: document.getElementById("itemLink").value
+                image: document.getElementById("itemImg").value
             };
             
             if(!data.name || !data.price || !data.catId) { alert("Missing info"); return; }
@@ -405,10 +471,8 @@ const firebaseConfig = {
             document.getElementById("editItemId").value = item.id;
             document.getElementById("itemName").value = item.name;
             document.getElementById("itemPrice").value = item.price;
-            document.getElementById("itemSale").value = item.salePrice;
             document.getElementById("itemCatSelect").value = item.catId;
             document.getElementById("itemImg").value = item.image;
-            document.getElementById("itemLink").value = item.link;
             document.getElementById("adminArea").scrollIntoView();
         };
 
@@ -417,95 +481,59 @@ const firebaseConfig = {
             document.getElementById("itemCatSelect").value = "";
         };
 
-        let draggedId = null;
-        window.dragStart = (e, id) => { draggedId = id; e.target.classList.add('dragging'); };
-        window.dragOver = (e) => { e.preventDefault(); };
-        window.drop = async (e, targetId) => {
-            e.preventDefault();
-            document.querySelector('.dragging')?.classList.remove('dragging');
-            if(draggedId === targetId) return;
-
-            const dragItem = itemsData.find(i => i.id === draggedId);
-            const targetItem = itemsData.find(i => i.id === targetId);
-            await updateDoc(doc(db, "items", draggedId), { order: targetItem.order || 0 });
-            await updateDoc(doc(db, "items", targetId), { order: dragItem.order || 0 });
-        };
-
         window.renderStore = () => {
             const grid = document.getElementById("storeGrid");
-            const sortMode = document.getElementById("sortSelect").value;
             grid.innerHTML = "";
             
             let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
 
-            if(sortMode === 'low') filtered.sort((a,b) => (Number(a.salePrice)||a.price) - (Number(b.salePrice)||b.price));
-            if(sortMode === 'high') filtered.sort((a,b) => (Number(b.salePrice)||b.price) - (Number(a.salePrice)||a.price));
-            if(sortMode === 'az') filtered.sort((a,b) => a.name.localeCompare(b.name));
+            if(filtered.length === 0) grid.innerHTML = "<p style='color:#666; width:100%; text-align:center;'>No items found.</p>";
 
             filtered.forEach(item => {
-                const onSale = item.salePrice && Number(item.salePrice) < item.price;
-                let priceHtml = `<span class="current-price">₱${item.price}</span>`;
-                let badge = "";
-                if(onSale) {
-                    priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price" style="color:red">₱${item.salePrice}</span>`;
-                    badge = `<div class="sale-badge">SALE</div>`;
-                }
-
-                let finalLink = item.link || globalLink;
-                if(!finalLink.startsWith("http")) finalLink = "https://" + finalLink;
-
                 let adminHtml = "";
-                let dragAttr = "";
-
                 if(isAdmin) {
-                    adminHtml = `<div class="admin-controls"><button class="edit-btn" onclick="editItem('${item.id}')">Edit</button><button class="btn-del" onclick="deleteItem('${item.id}')">Del</button></div>`;
-                    if(sortMode === 'default') {
-                        dragAttr = `draggable="true" ondragstart="dragStart(event, '${item.id}')" ondragover="dragOver(event)" ondrop="drop(event, '${item.id}')" class="card draggable"`;
-                    } else {
-                        dragAttr = `class="card"`;
-                    }
-                } else {
-                    dragAttr = `class="card"`;
+                    adminHtml = `<div style="padding:5px; display:flex; gap:5px;"><button class="btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn-del" onclick="deleteItem('${item.id}')">Del</button></div>`;
                 }
+
+                // Prepare item for modal
+                const itemString = encodeURIComponent(JSON.stringify(item));
 
                 grid.innerHTML += `
-                    <div ${dragAttr}>
-                        ${badge}
+                    <div class="card">
                         <img src="${item.image || 'https://placehold.co/200x150?text=No+Image'}" class="card-img-top">
                         <div class="card-body">
                             <h3 class="card-title">${item.name}</h3>
-                            <div class="price-container">${priceHtml}</div>
-                            <a href="${finalLink}" target="_blank" class="buy-btn">Buy Now</a>
+                            <div class="current-price">₱${item.price}</div>
+                            <button onclick="openBuyModal('${itemString}')" class="buy-btn">Buy Now</button>
                             ${adminHtml}
                         </div>
                     </div>`;
             });
         };
 
-        window.addBuyer = async () => {
-            const name = document.getElementById("buyerName").value;
-            const item = document.getElementById("buyerItem").value;
-            if(name && item) {
-                await addDoc(collection(db, "buyers"), { name, item, createdAt: Date.now() });
-                document.getElementById("buyerName").value = "";
-            }
+        // --- BACKUP / RESTORE ---
+        window.exportFromFirebase = async () => {
+            const data = { items: itemsData, categories: categoriesData };
+            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = "StoreZ_Backup.json";
+            a.click();
         };
-        window.deleteBuyer = async (id) => await deleteDoc(doc(db, "buyers", id));
 
-        function renderTicker(buyers) {
-            let html = "";
-            buyers.slice(0, 15).forEach(b => html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`);
-            if(buyers.length > 0 && buyers.length < 5) html += html + html;
-            document.getElementById("buyerTicker").innerHTML = html;
-        }
-
-        function renderBuyerList(buyers) {
-            const list = document.getElementById("buyerList");
-            list.innerHTML = "";
-            buyers.forEach(b => {
-                list.innerHTML += `<div class="list-item"><span>${b.name}</span> <button class="btn-del" onclick="deleteBuyer('${b.id}')">X</button></div>`;
-            });
-        }
+        window.importToFirebase = async (input) => {
+            const file = input.files[0];
+            if(!file || !confirm("Import data?")) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const json = JSON.parse(e.target.result);
+                const batch = writeBatch(db);
+                if(json.categories) json.categories.forEach(cat => batch.set(doc(collection(db, "categories")), { name: cat.name, order: cat.order || 0 }));
+                if(json.items) json.items.forEach(item => batch.set(doc(collection(db, "items")), { name: item.name, price: item.price, catId: item.catId, image: item.image || "", order: item.order || 0 }));
+                await batch.commit();
+                alert("Done!");
+            };
+            reader.readAsText(file);
+        };
     </script>
 </body>
 </html>
