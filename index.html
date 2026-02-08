@@ -17,6 +17,8 @@
             --chat-user: #1565c0; 
             --chat-admin: #424242;
             --modal-overlay: rgba(0, 0, 0, 0.85);
+            --success: #4caf50;
+            --warning: #ff9800;
         }
 
         body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; padding-bottom: 80px; }
@@ -46,18 +48,45 @@
         .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; border-color: var(--primary); box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
 
         /* --- STORE GRID --- */
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; margin-bottom: 50px; }
         .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border-color: #555; }
-        .card-img-top { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid #333; }
+        
+        .card-img-wrapper { position: relative; width: 100%; height: 180px; }
+        .card-img-top { width: 100%; height: 100%; object-fit: cover; border-bottom: 1px solid #333; }
+        .sold-out-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; font-size: 1.2rem; backdrop-filter: blur(2px); }
+
         .card-body { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
         .card-title { margin: 0 0 8px 0; color: #fff; font-size: 1.15rem; font-weight: 600; }
-        .price-container { margin-bottom: 15px; min-height: 28px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        
+        .price-container { margin-bottom: 10px; min-height: 28px; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
         .old-price { text-decoration: line-through; color: #666; font-size: 0.95rem; }
+        
+        /* NEW STOCK STYLE */
+        .stock-status { font-size: 0.8rem; margin-bottom: 15px; font-weight: 500; letter-spacing: 0.5px; }
+        .stock-high { color: var(--success); }
+        .stock-low { color: var(--warning); animation: pulseText 1.5s infinite; }
+        .stock-out { color: var(--danger); text-decoration: line-through; opacity: 0.7; }
+        @keyframes pulseText { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
         .sale-badge { position: absolute; top: 12px; right: 12px; background: var(--sale); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 10; }
+
         .buy-btn { margin-top: auto; display: block; width: 100%; padding: 12px 0; background: linear-gradient(135deg, #005f99, #004470); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: filter 0.2s; }
         .buy-btn:hover { filter: brightness(1.1); }
+        .buy-btn:disabled { background: #333; color: #666; cursor: not-allowed; filter: none; border: 1px solid #444; }
+
+        /* --- PROOF GALLERY --- */
+        .section-title { text-align: center; color: var(--primary); margin: 40px 0 20px 0; text-transform: uppercase; letter-spacing: 2px; }
+        .proof-grid { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: var(--primary) #222; }
+        .proof-grid::-webkit-scrollbar { height: 8px; }
+        .proof-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .proof-card { min-width: 200px; max-width: 200px; background: #1a1a1a; border-radius: 8px; border: 1px solid #333; overflow: hidden; flex-shrink: 0; display:flex; flex-direction: column; }
+        .proof-img { width: 100%; height: 250px; object-fit: cover; cursor: pointer; transition: transform 0.3s; }
+        .proof-img:hover { opacity: 0.8; }
+        .proof-details { padding: 10px; background: #111; border-top: 1px solid #333; flex-grow: 1; display:flex; flex-direction:column; justify-content: space-between; }
+        .proof-caption { font-size: 0.85rem; color: #fff; margin-bottom: 5px; }
+        .proof-date { font-size: 0.75rem; color: #666; font-style: italic; text-align: right; }
 
         /* --- ADMIN PANEL --- */
         #adminArea { display: none; border-left: 3px solid var(--primary); padding-left: 20px; margin-bottom: 40px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 0 10px 10px 0; }
@@ -72,6 +101,7 @@
         .btn:hover { opacity: 0.9; }
         .btn-save { background: var(--primary); color: #000; }
         .btn-del { background: var(--danger); color: white; width: auto; padding: 4px 10px; font-size: 0.8rem; }
+        .btn-edit { background: #2196F3; color: white; width: auto; padding: 4px 10px; font-size: 0.8rem; margin-right: 5px; }
         .btn-io { background-color: #2196F3; color: white; margin-bottom: 10px; }
         .file-input { display: none; }
 
@@ -168,29 +198,55 @@
 
             <!-- TICKER MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">📢 Ticker Manager (Who Bought)</h4>
+                <h4 class="admin-header">📢 Ticker Manager</h4>
+                <input type="hidden" id="editTickerId">
                 <div class="form-row">
                     <input type="text" id="buyerName" placeholder="Buyer Name">
                     <input type="text" id="buyerItem" placeholder="Item Bought">
-                    <button class="btn btn-save" style="width:auto;" onclick="addBuyer()">Add to Ticker</button>
+                    <button class="btn btn-save" style="width:auto;" id="tickerBtn" onclick="saveBuyer()">Add to Ticker</button>
                 </div>
                 <div id="buyerList" style="margin-top:10px; max-height: 150px; overflow-y:auto; border:1px solid #333; padding:5px; border-radius:5px;"></div>
             </div>
 
+            <!-- PRODUCT MANAGER -->
             <div class="admin-section">
                 <h4 class="admin-header">Add / Edit Product</h4>
                 <input type="hidden" id="editItemId">
                 <div class="form-row">
-                    <div class="form-group"><label>Product Name</label><input type="text" id="itemName" placeholder="e.g. 100 Diamonds"></div>
+                    <div class="form-group"><label>Product Name</label><input type="text" id="itemName" placeholder="e.g. Starlight Member"></div>
                     <div class="form-group"><label>Category</label><select id="itemCatSelect"></select></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Original Price (₱)</label><input type="number" id="itemPrice" placeholder="0.00"></div>
                     <div class="form-group"><label>Sale Price (₱ - Optional)</label><input type="number" id="itemSale" placeholder="Leave empty if not on sale"></div>
                 </div>
-                <div class="form-group"><label>Image URL</label><input type="text" id="itemImg" placeholder="https://..."></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Stock Quantity</label><input type="number" id="itemStock" placeholder="e.g. 50"></div>
+                    <div class="form-group"><label>Image URL</label><input type="text" id="itemImg" placeholder="https://..."></div>
+                </div>
                 <button class="btn btn-save" onclick="saveItem()">Save Product</button>
                 <button class="btn" style="background:#333; color:#aaa; margin-top:10px;" onclick="clearForm()">Clear Form</button>
+            </div>
+
+            <!-- PROOF MANAGER -->
+            <div class="admin-section">
+                <h4 class="admin-header">📸 Manage Proofs</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Caption</label>
+                        <input type="text" id="proofCaption" placeholder="e.g. User 123*** bought 100 Diamonds">
+                    </div>
+                    <div class="form-group">
+                         <label>Date (Optional)</label>
+                         <input type="date" id="proofDate">
+                    </div>
+                    <div class="form-group">
+                         <label>Upload Screenshot (Auto-compresses)</label>
+                         <input type="file" id="proofFileInput" accept="image/*">
+                    </div>
+                </div>
+                <button class="btn btn-save" onclick="uploadProof()">Upload Proof</button>
+                <div id="proofListAdmin" style="margin-top:10px; max-height: 200px; overflow-y:auto;"></div>
             </div>
 
             <div class="admin-section">
@@ -214,6 +270,13 @@
         <div class="store-grid" id="storeGrid">
              <p style="text-align:center; width:100%; color:#666; margin-top:50px;">Loading Store...</p>
         </div>
+
+        <!-- PROOF GALLERY SECTION -->
+        <h3 class="section-title">Recent Transactions / Proofs</h3>
+        <div class="proof-grid" id="proofGrid">
+            <p style="text-align:center; width:100%; color:#555;">No proofs uploaded yet.</p>
+        </div>
+
     </div>
 
     <!-- MINIMIZED CHAT BUBBLE -->
@@ -309,38 +372,38 @@
             container.scrollTop = container.scrollHeight;
         };
 
-        // --- IMAGE COMPRESSION & UPLOAD ---
+        // --- IMAGE COMPRESSION HELPER ---
+        async function compressImage(file, maxWidth = 600) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const scaleSize = maxWidth / img.width;
+                        canvas.width = maxWidth;
+                        canvas.height = img.height * scaleSize;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.7));
+                    }
+                }
+            });
+        }
+
         window.handleImageUpload = async (input, sender) => {
             const file = input.files[0];
             if(!file) return;
-
-            // Simple compressor
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = async () => {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 600;
-                    const scaleSize = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * scaleSize;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7); // Compress
-                    
-                    // Send
-                    const chatId = sender === 'user' ? activeCustomerChatId : activeAdminChatId;
-                    if(chatId) {
-                        await updateDoc(doc(db, "chats", chatId), { 
-                            messages: arrayUnion({ sender: sender, image: dataUrl, text: "Sent an image", time: Date.now() }) 
-                        });
-                    }
-                }
+            const dataUrl = await compressImage(file);
+            const chatId = sender === 'user' ? activeCustomerChatId : activeAdminChatId;
+            if(chatId) {
+                await updateDoc(doc(db, "chats", chatId), { 
+                    messages: arrayUnion({ sender: sender, image: dataUrl, text: "Sent an image", time: Date.now() }) 
+                });
             }
-            input.value = ""; // Reset
+            input.value = "";
         };
 
         // --- AUTH ---
@@ -365,10 +428,10 @@
             document.getElementById("adminArea").style.display = user ? "block" : "none";
             if(user) initAdminChatListener();
             renderStore();
-            if(user) renderBuyerList();
+            if(user) { renderBuyerList(); }
         });
 
-        // --- DATA ---
+        // --- DATA SYNC ---
         onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => {
             categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() }));
             renderCategories(); renderCatList();
@@ -377,42 +440,130 @@
             itemsData = []; snap.forEach(d => itemsData.push({ id: d.id, ...d.data() }));
             renderStore();
         });
+        
+        // Proofs Sync
+        onSnapshot(query(collection(db, "proofs"), orderBy("timestamp", "desc")), (snap) => {
+            const grid = document.getElementById("proofGrid");
+            const adminList = document.getElementById("proofListAdmin");
+            grid.innerHTML = "";
+            if(adminList) adminList.innerHTML = "";
 
-        // --- TICKER ---
+            if(snap.empty) { 
+                grid.innerHTML = "<p style='color:#555; width:100%; text-align:center'>No recent proofs.</p>"; 
+            }
+
+            snap.forEach(d => {
+                const p = d.data();
+                const dateDisplay = p.dateString ? p.dateString : "";
+                
+                // Frontend Grid
+                grid.innerHTML += `
+                    <div class="proof-card" onclick="window.open('${p.image}')">
+                        <img src="${p.image}" class="proof-img">
+                        <div class="proof-details">
+                            <div class="proof-caption">${p.caption}</div>
+                            <div class="proof-date">${dateDisplay}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Admin List
+                if(adminList && isAdmin) {
+                    adminList.innerHTML += `<div class="list-item"><img src="${p.image}" height="30"> <span>${dateDisplay} - ${p.caption}</span> <button class="btn-del" onclick="deleteProof('${d.id}')">X</button></div>`;
+                }
+            });
+        });
+
+        // --- TICKER LOGIC (EDITABLE) ---
         onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
             let html = "", buyers = [];
             snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
+            window.buyersData = buyers; // Store for editing
             if(buyers.length === 0) html = `<div class="ticker-item">Welcome to StoreZ!</div>`;
             else {
                 buyers.forEach(b => html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`);
                 if(buyers.length < 5) html += html + html; 
             }
             document.getElementById("tickerContent").innerHTML = html;
+            if(isAdmin) renderBuyerList();
         });
 
-        window.addBuyer = async () => {
+        window.saveBuyer = async () => {
+            const id = document.getElementById("editTickerId").value;
             const name = document.getElementById("buyerName").value;
             const item = document.getElementById("buyerItem").value;
+            
             if(name && item) {
-                await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() });
+                if(id) {
+                    await updateDoc(doc(db, "buyers", id), { name, item });
+                    alert("Ticker Updated");
+                } else {
+                    await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() });
+                }
                 document.getElementById("buyerName").value = "";
                 document.getElementById("buyerItem").value = "";
+                document.getElementById("editTickerId").value = "";
+                document.getElementById("tickerBtn").innerText = "Add to Ticker";
+            }
+        };
+
+        window.editBuyer = (id) => {
+            const b = window.buyersData.find(x => x.id === id);
+            if(b) {
+                document.getElementById("buyerName").value = b.name;
+                document.getElementById("buyerItem").value = b.item;
+                document.getElementById("editTickerId").value = b.id;
+                document.getElementById("tickerBtn").innerText = "Update Ticker";
             }
         };
 
         window.deleteBuyer = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "buyers", id)); };
         function renderBuyerList() {
-            onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
-                const list = document.getElementById("buyerList");
-                list.innerHTML = "";
-                snap.forEach(d => {
-                    const b = d.data();
-                    list.innerHTML += `<div class="list-item" style="font-size:0.8rem;"><span>${b.name} - ${b.item}</span><button class="btn-del" onclick="deleteBuyer('${d.id}')">Del</button></div>`;
-                });
+            if(!window.buyersData) return;
+            const list = document.getElementById("buyerList");
+            list.innerHTML = "";
+            window.buyersData.forEach(b => {
+                list.innerHTML += `<div class="list-item" style="font-size:0.8rem;">
+                    <span>${b.name} - ${b.item}</span>
+                    <div>
+                        <button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button>
+                        <button class="btn-del" onclick="deleteBuyer('${b.id}')">Del</button>
+                    </div>
+                </div>`;
             });
         }
 
-        // --- CUSTOMER LOGIC ---
+        // --- PROOF LOGIC ---
+        window.uploadProof = async () => {
+            const caption = document.getElementById("proofCaption").value;
+            const dateInput = document.getElementById("proofDate").value;
+            const fileInput = document.getElementById("proofFileInput");
+            
+            if(!fileInput.files[0] || !caption) return alert("Image and Caption required");
+
+            const imgData = await compressImage(fileInput.files[0], 500); // 500px width
+            
+            // Format date, default to today if empty
+            let dateStr = dateInput;
+            if(!dateStr) {
+                const now = new Date();
+                dateStr = now.toISOString().split('T')[0];
+            }
+
+            await addDoc(collection(db, "proofs"), {
+                caption: caption,
+                dateString: dateStr,
+                image: imgData,
+                timestamp: Date.now()
+            });
+            document.getElementById("proofCaption").value = "";
+            document.getElementById("proofDate").value = "";
+            fileInput.value = "";
+        };
+
+        window.deleteProof = async(id) => { if(confirm("Delete proof?")) await deleteDoc(doc(db, "proofs", id)); }
+
+        // --- CUSTOMER ORDER LOGIC ---
         window.openBuyModal = (itemJson) => {
             if(activeCustomerChatId) {
                 if(confirm("Active chat open. Close it?")) localStorage.removeItem('storez_active_chat');
@@ -564,11 +715,51 @@ Thank you for buying at StoreZ!
             grid.innerHTML = "";
             let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
             if(filtered.length === 0) { grid.innerHTML = "<p style='color:#555; width:100%; text-align:center; margin-top:40px;'>No items.</p>"; return; }
+            
             filtered.forEach(item => {
+                const stockVal = item.stock !== undefined ? Number(item.stock) : 999;
+                const isSoldOut = stockVal <= 0;
+                
                 let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:10px;"><button class="btn btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" onclick="deleteItem('${item.id}')">Del</button></div>` : "";
-                let priceHtml = `<div class="current-price">₱${item.price}</div>`, badge = "";
-                if(item.salePrice && Number(item.salePrice) < Number(item.price)) { priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>`; badge = `<div class="sale-badge">SALE</div>`; }
-                grid.innerHTML += `<div class="card">${badge}<img src="${item.image || 'https://placehold.co/300x200/222/555?text=Item'}" class="card-img-top"><div class="card-body"><h3 class="card-title">${item.name}</h3><div class="price-container">${priceHtml}</div><button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>${adminHtml}</div></div>`;
+                
+                let priceHtml = `<div class="current-price">₱${item.price}</div>`;
+                let badgeHtml = "";
+                
+                if(item.salePrice && Number(item.salePrice) < Number(item.price)) { 
+                    priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>`; 
+                    badgeHtml += `<div class="sale-badge">SALE</div>`; 
+                }
+                
+                let btnHtml = `<button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>`;
+                let stockStatusHtml = `<div class="stock-status stock-high">✅ In Stock: ${stockVal}</div>`;
+                let overlayHtml = "";
+
+                if(stockVal <= 10 && stockVal > 0) {
+                     stockStatusHtml = `<div class="stock-status stock-low">🔥 Hurry! Only ${stockVal} left</div>`;
+                }
+
+                if(isSoldOut) {
+                    stockStatusHtml = `<div class="stock-status stock-out">Out of Stock</div>`;
+                    btnHtml = `<button disabled class="buy-btn">Sold Out</button>`;
+                    overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`;
+                    badgeHtml = ""; // Hide sale badge if sold out
+                }
+
+                grid.innerHTML += `
+                    <div class="card">
+                        ${badgeHtml}
+                        <div class="card-img-wrapper">
+                            <img src="${item.image || 'https://placehold.co/300x200/222/555?text=Item'}" class="card-img-top">
+                            ${overlayHtml}
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">${item.name}</h3>
+                            <div class="price-container">${priceHtml}</div>
+                            ${stockStatusHtml}
+                            ${btnHtml}
+                            ${adminHtml}
+                        </div>
+                    </div>`;
             });
         };
         window.addCategory = async () => { const n = document.getElementById("catName").value; if(n) await addDoc(collection(db, "categories"), { name: n, order: Date.now() }); document.getElementById("catName").value = ""; };
@@ -580,18 +771,36 @@ Thank you for buying at StoreZ!
         };
         window.setCat = (id) => { currentCat = id; renderStore(); };
         window.renderCatList = () => { document.getElementById("catList").innerHTML = categoriesData.map(x=>`<div class="list-item"><span>${x.name}</span><button class="btn-del" onclick="deleteCategory('${x.id}')">X</button></div>`).join(''); };
+        
         window.saveItem = async () => {
             const id = document.getElementById("editItemId").value;
-            const data = { name: document.getElementById("itemName").value, price: Number(document.getElementById("itemPrice").value), salePrice: document.getElementById("itemSale").value, catId: document.getElementById("itemCatSelect").value, image: document.getElementById("itemImg").value };
+            const data = { 
+                name: document.getElementById("itemName").value, 
+                price: Number(document.getElementById("itemPrice").value), 
+                salePrice: document.getElementById("itemSale").value, 
+                catId: document.getElementById("itemCatSelect").value, 
+                image: document.getElementById("itemImg").value,
+                stock: Number(document.getElementById("itemStock").value) 
+            };
             if(!data.name || !data.price || !data.catId) return alert("Info missing");
             if(!data.salePrice) delete data.salePrice; else data.salePrice = Number(data.salePrice);
+            if(isNaN(data.stock)) data.stock = 999;
+
             if(id) await updateDoc(doc(db, "items", id), data);
             else await addDoc(collection(db, "items"), { ...data, order: Date.now() });
             window.clearForm();
         };
         window.deleteItem = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "items", id)); };
         window.editItem = (id) => {
-            const i = itemsData.find(x => x.id === id); document.getElementById("editItemId").value = i.id; document.getElementById("itemName").value = i.name; document.getElementById("itemPrice").value = i.price; document.getElementById("itemSale").value = i.salePrice||""; document.getElementById("itemCatSelect").value = i.catId; document.getElementById("itemImg").value = i.image; document.getElementById("adminArea").scrollIntoView();
+            const i = itemsData.find(x => x.id === id); 
+            document.getElementById("editItemId").value = i.id; 
+            document.getElementById("itemName").value = i.name; 
+            document.getElementById("itemPrice").value = i.price; 
+            document.getElementById("itemSale").value = i.salePrice||""; 
+            document.getElementById("itemCatSelect").value = i.catId; 
+            document.getElementById("itemImg").value = i.image; 
+            document.getElementById("itemStock").value = i.stock !== undefined ? i.stock : "";
+            document.getElementById("adminArea").scrollIntoView();
         };
         window.clearForm = () => { document.querySelectorAll("#adminArea input").forEach(x=>x.value=""); document.getElementById("itemCatSelect").value=""; document.getElementById("editItemId").value=""; };
         window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "StoreZ_Backup.json"; a.click(); };
