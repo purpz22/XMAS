@@ -31,13 +31,16 @@
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
         /* --- NAVIGATION --- */
-        nav { display: flex; justify-content: center; align-items: center; padding: 20px; background: #1a1a1a; border-bottom: 1px solid #333; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #1a1a1a; border-bottom: 1px solid #333; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         .logo { font-size: 1.8rem; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: color 0.3s; }
         .logo:hover { color: #fff; text-shadow: 0 0 10px var(--primary); }
 
-        #secretLogin { position: absolute; top: 20px; right: 20px; display: none; z-index: 999; }
-        .admin-btn { background: var(--primary); border: none; color: #000; padding: 6px 16px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 0.8rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-btn { background: transparent; border: 1px solid #444; color: #ccc; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
 
+        #secretLogin { position: absolute; top: 20px; right: 20px; display: none; z-index: 999; } /* Hidden for normal users */
+        
         /* --- LAYOUT --- */
         .container { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
         
@@ -63,7 +66,6 @@
         .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
         .old-price { text-decoration: line-through; color: #666; font-size: 0.95rem; }
         
-        /* NEW STOCK STYLE */
         .stock-status { font-size: 0.8rem; margin-bottom: 15px; font-weight: 500; letter-spacing: 0.5px; }
         .stock-high { color: var(--success); }
         .stock-low { color: var(--warning); animation: pulseText 1.5s infinite; }
@@ -77,7 +79,7 @@
         .buy-btn:disabled { background: #333; color: #666; cursor: not-allowed; filter: none; border: 1px solid #444; }
 
         /* --- PROOF GALLERY --- */
-        .section-title { text-align: center; color: var(--primary); margin: 40px 0 20px 0; text-transform: uppercase; letter-spacing: 2px; }
+        .section-title { text-align: center; color: var(--primary); margin: 40px 0 20px 0; text-transform: uppercase; letter-spacing: 2px; scroll-margin-top: 100px; }
         .proof-grid { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: var(--primary) #222; }
         .proof-grid::-webkit-scrollbar { height: 8px; }
         .proof-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
@@ -148,6 +150,9 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
         .modal-box { background: #222; padding: 25px; border-radius: 12px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
+
+        .copy-btn { font-size: 0.7rem; background: #333; border: 1px solid #555; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
+        .copy-btn:hover { background: var(--primary); color: black; }
     </style>
 </head>
 <body>
@@ -157,6 +162,10 @@
 
     <nav>
         <div class="logo" onclick="clickLogo()">StoreZ</div>
+        <div class="nav-links">
+            <button class="nav-btn" onclick="document.getElementById('proofSection').scrollIntoView({behavior: 'smooth'})">📸 Proofs</button>
+            <button class="nav-btn" onclick="openTrackModal()" style="border-color: var(--primary); color: var(--primary);">🔍 Track Order</button>
+        </div>
         <div id="secretLogin">
             <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
         </div>
@@ -272,7 +281,7 @@
         </div>
 
         <!-- PROOF GALLERY SECTION -->
-        <h3 class="section-title">Recent Transactions / Proofs</h3>
+        <h3 class="section-title" id="proofSection">Recent Transactions / Proofs</h3>
         <div class="proof-grid" id="proofGrid">
             <p style="text-align:center; width:100%; color:#555;">No proofs uploaded yet.</p>
         </div>
@@ -295,13 +304,28 @@
         </div>
     </div>
 
+    <!-- TRACK ORDER MODAL -->
+    <div id="trackModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="color:var(--primary); margin-bottom:5px;">Track / Continue Order</h3>
+            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Did you start an order on another device? Enter your <b>Order ID</b> below to continue.</p>
+            <input type="text" id="trackInputId" placeholder="Paste Order ID here" style="text-align:center; font-size: 1rem; padding: 12px; margin-bottom:15px; background:#111; color:white; border:1px solid #444; width:100%;">
+            <button class="btn btn-save" onclick="recoverChat()">Find Order</button>
+            <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('trackModal')">Cancel</button>
+        </div>
+    </div>
+
     <!-- CUSTOMER CHAT MODAL -->
     <div id="customerChatModal" class="modal-overlay">
         <div class="modal-box" style="max-width: 500px; height: 80vh; display:flex; flex-direction:column;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
-                <div>
+                <div style="text-align:left;">
                     <h3 style="color:var(--primary); margin:0;">Support Chat</h3>
-                    <span style="font-size:0.8rem; color:#666;">ID: <span id="displayChatId"></span></span>
+                    <div style="font-size:0.8rem; color:#666;">
+                        Order ID: <span id="displayChatId" style="color:white; user-select:all;"></span>
+                        <button class="copy-btn" onclick="copyChatId()">Copy</button>
+                    </div>
+                    <div style="font-size:0.7rem; color:#444;">(Save this ID to track on other devices)</div>
                 </div>
                 <button class="btn-min" onclick="minimizeChat()" title="Minimize to browse">_</button>
             </div>
@@ -563,6 +587,42 @@
 
         window.deleteProof = async(id) => { if(confirm("Delete proof?")) await deleteDoc(doc(db, "proofs", id)); }
 
+        // --- TRACKING & DEVICE SWITCHING ---
+        window.openTrackModal = () => {
+             document.getElementById("trackModal").style.display = "flex";
+             document.getElementById("trackInputId").focus();
+        }
+
+        window.recoverChat = async () => {
+            const inputId = document.getElementById("trackInputId").value.trim();
+            if(!inputId) return alert("Please enter an Order ID");
+            
+            const btn = document.querySelector("#trackModal .btn-save");
+            btn.innerText = "Searching...";
+            
+            try {
+                const docSnap = await getDoc(doc(db, "chats", inputId));
+                if(docSnap.exists()) {
+                    localStorage.setItem('storez_active_chat', inputId);
+                    closeModal("trackModal");
+                    resumeCustomerChat(inputId);
+                } else {
+                    alert("Order not found! Please check the ID.");
+                }
+            } catch(e) {
+                alert("Error searching for order.");
+            } finally {
+                btn.innerText = "Find Order";
+            }
+        }
+
+        window.copyChatId = () => {
+            if(activeCustomerChatId) {
+                navigator.clipboard.writeText(activeCustomerChatId);
+                alert("Order ID copied! Use 'Track Order' on your other device to continue.");
+            }
+        }
+
         // --- CUSTOMER ORDER LOGIC ---
         window.openBuyModal = (itemJson) => {
             if(activeCustomerChatId) {
@@ -601,7 +661,8 @@
         function resumeCustomerChat(chatId) {
             activeCustomerChatId = chatId;
             maximizeChat(); 
-            document.getElementById("displayChatId").innerText = chatId.slice(0,5);
+            // Update display ID
+            document.getElementById("displayChatId").innerText = chatId;
 
             onSnapshot(doc(db, "chats", chatId), (docSnap) => {
                 if(docSnap.exists()) {
