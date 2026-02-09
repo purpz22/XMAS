@@ -39,7 +39,7 @@
         .nav-btn { background: transparent; border: 1px solid #444; color: #ccc; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
         .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
 
-        #secretLogin { position: absolute; top: 20px; right: 20px; display: none; z-index: 999; } /* Hidden for normal users */
+        #secretLogin { position: absolute; top: 20px; right: 20px; display: none; z-index: 999; }
         
         /* --- LAYOUT --- */
         .container { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
@@ -83,8 +83,9 @@
         .proof-grid { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: var(--primary) #222; }
         .proof-grid::-webkit-scrollbar { height: 8px; }
         .proof-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-        .proof-card { min-width: 200px; max-width: 200px; background: #1a1a1a; border-radius: 8px; border: 1px solid #333; overflow: hidden; flex-shrink: 0; display:flex; flex-direction: column; }
-        .proof-img { width: 100%; height: 250px; object-fit: cover; cursor: pointer; transition: transform 0.3s; }
+        .proof-card { min-width: 200px; max-width: 200px; background: #1a1a1a; border-radius: 8px; border: 1px solid #333; overflow: hidden; flex-shrink: 0; display:flex; flex-direction: column; transition: transform 0.2s; }
+        .proof-card:hover { transform: translateY(-5px); }
+        .proof-img { width: 100%; height: 250px; object-fit: cover; cursor: pointer; transition: opacity 0.3s; }
         .proof-img:hover { opacity: 0.8; }
         .proof-details { padding: 10px; background: #111; border-top: 1px solid #333; flex-grow: 1; display:flex; flex-direction:column; justify-content: space-between; }
         .proof-caption { font-size: 0.85rem; color: #fff; margin-bottom: 5px; }
@@ -119,7 +120,8 @@
         .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border-bottom-left-radius: 4px; border: 1px solid #444; }
         .msg-receipt { align-self: center; background: #1b1e26; border: 1px dashed var(--primary); color: var(--primary); text-align: center; width: 80%; }
         
-        .msg-image { max-width: 200px; border-radius: 10px; margin-top: 5px; cursor: pointer; border: 1px solid #444; }
+        .msg-image { max-width: 200px; border-radius: 10px; margin-top: 5px; cursor: pointer; border: 1px solid #444; transition: transform 0.2s; }
+        .msg-image:hover { transform: scale(1.02); }
 
         .chat-input-area { display: flex; gap: 10px; align-items: center; }
         .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 25px; border: 1px solid #444; background: #1a1a1a; color: white; }
@@ -154,14 +156,10 @@
         .copy-btn { font-size: 0.7rem; background: #333; border: 1px solid #555; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
         .copy-btn:hover { background: var(--primary); color: black; }
 
-        /* Add this to your existing CSS */
-#imageViewerModal img {
-    animation: zoomIn 0.3s;
-}
-@keyframes zoomIn {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
+        /* IMAGE VIEWER LIGHTBOX */
+        #imageViewerModal { z-index: 5000; }
+        #imageViewerModal img { animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -351,6 +349,12 @@
         </div>
     </div>
 
+    <!-- IMAGE VIEWER MODAL (LIGHTBOX) -->
+    <div id="imageViewerModal" class="modal-overlay" onclick="closeImageViewer()">
+        <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
+        <img class="modal-content" id="fullScreenImage" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow: 0 0 50px rgba(0,0,0,1);">
+    </div>
+
     <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -403,6 +407,18 @@
             document.getElementById('minimizedText').innerText = "Active Chat";
             const container = document.getElementById("customerMessages");
             container.scrollTop = container.scrollHeight;
+        };
+
+        // --- IMAGE VIEWER HELPERS ---
+        window.openImageViewer = (src) => {
+            const modal = document.getElementById("imageViewerModal");
+            const img = document.getElementById("fullScreenImage");
+            img.src = src;
+            modal.style.display = "flex";
+        };
+
+        window.closeImageViewer = () => {
+            document.getElementById("imageViewerModal").style.display = "none";
         };
 
         // --- IMAGE COMPRESSION HELPER ---
@@ -474,7 +490,7 @@
             renderStore();
         });
         
-        // Proofs Sync
+        // --- PROOFS SYNC (UPDATED) ---
         onSnapshot(query(collection(db, "proofs"), orderBy("timestamp", "desc")), (snap) => {
             const grid = document.getElementById("proofGrid");
             const adminList = document.getElementById("proofListAdmin");
@@ -489,7 +505,7 @@
                 const p = d.data();
                 const dateDisplay = p.dateString ? p.dateString : "";
                 
-                // Frontend Grid
+                // Frontend Grid - CLICK OPENS VIEWER
                 grid.innerHTML += `
                     <div class="proof-card" onclick="openImageViewer('${p.image}')">
                         <img src="${p.image}" class="proof-img">
@@ -507,7 +523,7 @@
             });
         });
 
-        // --- TICKER LOGIC (EDITABLE) ---
+        // --- TICKER LOGIC ---
         onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
             let html = "", buyers = [];
             snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
@@ -566,32 +582,47 @@
             });
         }
 
-        // --- PROOF LOGIC ---
+        // --- PROOF UPLOAD LOGIC (FIXED) ---
         window.uploadProof = async () => {
             const caption = document.getElementById("proofCaption").value;
             const dateInput = document.getElementById("proofDate").value;
             const fileInput = document.getElementById("proofFileInput");
+            const btn = document.querySelector("button[onclick='uploadProof()']");
             
             if(!fileInput.files[0] || !caption) return alert("Image and Caption required");
 
-            const imgData = await compressImage(fileInput.files[0], 500); // 500px width
-            
-            // Format date, default to today if empty
-            let dateStr = dateInput;
-            if(!dateStr) {
-                const now = new Date();
-                dateStr = now.toISOString().split('T')[0];
-            }
+            const oldText = btn.innerText;
+            btn.innerText = "Uploading...";
+            btn.disabled = true;
 
-            await addDoc(collection(db, "proofs"), {
-                caption: caption,
-                dateString: dateStr,
-                image: imgData,
-                timestamp: Date.now()
-            });
-            document.getElementById("proofCaption").value = "";
-            document.getElementById("proofDate").value = "";
-            fileInput.value = "";
+            try {
+                const imgData = await compressImage(fileInput.files[0], 500); 
+                
+                let dateStr = dateInput;
+                if(!dateStr) {
+                    const now = new Date();
+                    dateStr = now.toISOString().split('T')[0];
+                }
+
+                await addDoc(collection(db, "proofs"), {
+                    caption: caption,
+                    dateString: dateStr,
+                    image: imgData,
+                    timestamp: Date.now()
+                });
+
+                alert("Proof uploaded successfully!");
+                document.getElementById("proofCaption").value = "";
+                document.getElementById("proofDate").value = "";
+                fileInput.value = "";
+
+            } catch (error) {
+                console.error(error);
+                alert("Upload Failed: " + error.message);
+            } finally {
+                btn.innerText = oldText;
+                btn.disabled = false;
+            }
         };
 
         window.deleteProof = async(id) => { if(confirm("Delete proof?")) await deleteDoc(doc(db, "proofs", id)); }
@@ -663,7 +694,7 @@
                 localStorage.setItem('storez_active_chat', chatRef.id);
                 closeModal("orderModal");
                 resumeCustomerChat(chatRef.id);
-            } catch (error) { alert("Connection failed."); } 
+            } catch (error) { alert("Connection failed. Check internet."); console.error(error); } 
             finally { btn.innerText = "Proceed to Chat"; btn.disabled = false; }
         };
 
@@ -706,7 +737,8 @@
             container.innerHTML = "";
             msgs.forEach(m => {
                 let content = m.text.replace(/\n/g, '<br>');
-                if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="window.open(this.src)">`;
+                // UPDATED: Click image to open viewer
+                if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="openImageViewer(this.src)">`;
                 
                 let cls = "msg-system";
                 if(m.sender === 'user') cls = "msg-user";
@@ -812,7 +844,7 @@ Thank you for buying at StoreZ!
                     stockStatusHtml = `<div class="stock-status stock-out">Out of Stock</div>`;
                     btnHtml = `<button disabled class="buy-btn">Sold Out</button>`;
                     overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`;
-                    badgeHtml = ""; // Hide sale badge if sold out
+                    badgeHtml = ""; 
                 }
 
                 grid.innerHTML += `
@@ -876,24 +908,7 @@ Thank you for buying at StoreZ!
         window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "StoreZ_Backup.json"; a.click(); };
         window.importToFirebase = async (i) => {
             if(!i.files[0] || !confirm("Import?")) return;
-          const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]);
-
-        <!-- IMAGE VIEWER MODAL -->
-<div id="imageViewerModal" class="modal-overlay" onclick="closeImageViewer()">
-    <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
-    <img class="modal-content" id="fullScreenImage" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow: 0 0 50px rgba(0,0,0,1);">
-</div>
-
-        window.openImageViewer = (src) => {
-    const modal = document.getElementById("imageViewerModal");
-    const img = document.getElementById("fullScreenImage");
-    img.src = src;
-    modal.style.display = "flex";
-};
-
-window.closeImageViewer = () => {
-    document.getElementById("imageViewerModal").style.display = "none";
-};
+            const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]);
         };
     </script>
 </body>
