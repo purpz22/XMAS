@@ -153,6 +153,15 @@
 
         .copy-btn { font-size: 0.7rem; background: #333; border: 1px solid #555; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
         .copy-btn:hover { background: var(--primary); color: black; }
+
+        /* Add this to your existing CSS */
+#imageViewerModal img {
+    animation: zoomIn 0.3s;
+}
+@keyframes zoomIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
     </style>
 </head>
 <body>
@@ -482,7 +491,7 @@
                 
                 // Frontend Grid
                 grid.innerHTML += `
-                    <div class="proof-card" onclick="window.open('${p.image}')">
+                    <div class="proof-card" onclick="openImageViewer('${p.image}')">
                         <img src="${p.image}" class="proof-img">
                         <div class="proof-details">
                             <div class="proof-caption">${p.caption}</div>
@@ -867,7 +876,24 @@ Thank you for buying at StoreZ!
         window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "StoreZ_Backup.json"; a.click(); };
         window.importToFirebase = async (i) => {
             if(!i.files[0] || !confirm("Import?")) return;
-            const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]);
+          const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]);
+
+        <!-- IMAGE VIEWER MODAL -->
+<div id="imageViewerModal" class="modal-overlay" onclick="closeImageViewer()">
+    <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
+    <img class="modal-content" id="fullScreenImage" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow: 0 0 50px rgba(0,0,0,1);">
+</div>
+
+        window.openImageViewer = (src) => {
+    const modal = document.getElementById("imageViewerModal");
+    const img = document.getElementById("fullScreenImage");
+    img.src = src;
+    modal.style.display = "flex";
+};
+
+window.closeImageViewer = () => {
+    document.getElementById("imageViewerModal").style.display = "none";
+};
         };
     </script>
 </body>
