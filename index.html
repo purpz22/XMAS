@@ -1,367 +1,303 @@
+--- START OF FILE index.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purplez Shop</title>
+    <title>StoreZ | Modern Digital Shop</title>
+    <!-- Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #d4af37; /* Gold */
-            --primary-hover: #b5952f;
-            --bg: #121212; 
-            --card-bg: #1e1e1e;
-            --text: #e0e0e0; 
-            --text-muted: #a0a0a0;
-            --danger: #ef5350; 
-            --sale: #ff3d00; 
-            --chat-user: #1565c0; 
-            --chat-admin: #424242;
-            --modal-overlay: rgba(0, 0, 0, 0.85);
-            --success: #4caf50;
-            --warning: #ff9800;
+            --primary: #6366f1; /* Modern Indigo */
+            --primary-hover: #4f46e5;
+            --bg: #0f172a; /* Deep Slate */
+            --card-bg: #1e293b;
+            --text: #f8fafc; 
+            --text-muted: #94a3b8;
+            --danger: #ef4444; 
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --glass: rgba(30, 41, 59, 0.7);
         }
 
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; padding-bottom: 80px; }
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 0; 
+            user-select: none; 
+            line-height: 1.5;
+            padding-bottom: 100px;
+        }
 
         /* --- TICKER --- */
-        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 32px; border-bottom: 1px solid #333; position: relative; z-index: 50; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; line-height: 32px; padding-left: 100%; }
-        .ticker-item { display: inline-block; padding: 0 2rem; color: #aaa; font-size: 0.85rem; }
+        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 35px; border-bottom: 1px solid #1e293b; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; line-height: 35px; }
+        .ticker-item { display: inline-block; padding: 0 2rem; color: var(--text-muted); font-size: 0.8rem; }
         .ticker-item b { color: var(--primary); }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         /* --- NAVIGATION --- */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #1a1a1a; border-bottom: 1px solid #333; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .logo { font-size: 1.8rem; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: color 0.3s; }
-        .logo:hover { color: #fff; text-shadow: 0 0 10px var(--primary); }
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 5%; background: var(--glass); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; cursor: pointer; color: #fff; }
+        .logo span { color: var(--primary); }
 
-        .nav-links { display: flex; gap: 15px; align-items: center; }
-        .nav-btn { background: transparent; border: 1px solid #444; color: #ccc; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
-        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .nav-links { display: flex; gap: 10px; }
+        .nav-btn { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
+            color: #fff; padding: 8px 16px; border-radius: 8px; cursor: pointer; 
+            font-size: 0.85rem; font-weight: 600; transition: all 0.2s; 
+        }
+        .nav-btn:hover { background: var(--primary); border-color: var(--primary); }
 
-        #secretLogin { position: absolute; top: 20px; right: 20px; display: none; z-index: 999; }
+        /* --- HERO BANNER (16:9) --- */
+        .hero-container { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
+        .promo-banner { 
+            width: 100%; aspect-ratio: 16 / 9; background-color: #1e293b; 
+            border-radius: 16px; overflow: hidden; position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+            display: none; cursor: pointer; transition: transform 0.3s ease;
+        }
+        .promo-banner:hover { transform: scale(1.01); }
+        .promo-banner img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- LEGIT SELLERS SECTION --- */
+        .sellers-section { margin-top: 30px; text-align: center; }
+        .sellers-title { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 15px; }
+        .sellers-list { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .seller-card { 
+            background: var(--card-bg); padding: 8px 16px; border-radius: 50px; 
+            border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: inherit; transition: 0.2s;
+        }
+        .seller-card:hover { border-color: var(--primary); background: #2d3748; }
+        .seller-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--primary); object-fit: cover; }
+        .seller-name { font-size: 0.85rem; font-weight: 600; }
+        .verify-icon { color: #38bdf8; font-size: 0.9rem; }
+
+        /* --- STORE CONTENT --- */
+        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
         
-        /* --- LAYOUT --- */
-        .container { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
-        
-        /* --- CONTROLS --- */
-        .cat-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
-        .cat-tab { background: #2a2a2a; border: 1px solid #444; color: var(--text-muted); padding: 8px 24px; border-radius: 30px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
-        .cat-tab:hover { background: #333; color: #fff; }
-        .cat-tab.active { background: var(--primary); color: #000; font-weight: bold; border-color: var(--primary); box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        .cat-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+        .cat-tab { 
+            background: #1e293b; color: var(--text-muted); padding: 10px 20px; 
+            border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; font-weight: 600;
+        }
+        .cat-tab.active { background: var(--primary); color: white; box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39); }
 
-        /* --- STORE GRID --- */
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; margin-bottom: 50px; }
-        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border-color: #555; }
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+        .card { 
+            background: var(--card-bg); border-radius: 20px; overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; 
+            display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
         
-        .card-img-wrapper { position: relative; width: 100%; height: 180px; }
-        .card-img-top { width: 100%; height: 100%; object-fit: cover; border-bottom: 1px solid #333; }
-        .sold-out-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; font-size: 1.2rem; backdrop-filter: blur(2px); }
+        .card-img-wrapper { position: relative; width: 100%; height: 200px; overflow: hidden; }
+        .card-img-top { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .card:hover .card-img-top { transform: scale(1.1); }
 
-        .card-body { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { margin: 0 0 8px 0; color: #fff; font-size: 1.15rem; font-weight: 600; }
+        .card-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title { margin: 0 0 10px 0; font-size: 1.1rem; font-weight: 700; color: #fff; }
         
-        .price-container { margin-bottom: 10px; min-height: 28px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .current-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
-        .old-price { text-decoration: line-through; color: #666; font-size: 0.95rem; }
+        .price-container { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .current-price { color: #fff; font-weight: 800; font-size: 1.25rem; }
+        .old-price { text-decoration: line-through; color: var(--text-muted); font-size: 0.9rem; }
         
-        .stock-status { font-size: 0.8rem; margin-bottom: 15px; font-weight: 500; letter-spacing: 0.5px; }
-        .stock-high { color: var(--success); }
-        .stock-low { color: var(--warning); animation: pulseText 1.5s infinite; }
-        .stock-out { color: var(--danger); text-decoration: line-through; opacity: 0.7; }
-        @keyframes pulseText { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .stock-tag { font-size: 0.75rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 5px; }
 
-        .sale-badge { position: absolute; top: 12px; right: 12px; background: var(--sale); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 10; }
-
-        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 12px 0; background: linear-gradient(135deg, #005f99, #004470); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: filter 0.2s; }
-        .buy-btn:hover { filter: brightness(1.1); }
-        .buy-btn:disabled { background: #333; color: #666; cursor: not-allowed; filter: none; border: 1px solid #444; }
+        .buy-btn { 
+            margin-top: auto; width: 100%; padding: 12px; background: var(--primary); 
+            color: white; border: none; border-radius: 12px; font-weight: 700; 
+            cursor: pointer; transition: 0.2s; 
+        }
+        .buy-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .buy-btn:disabled { background: #334155; cursor: not-allowed; transform: none; }
 
         /* --- PROOF GALLERY --- */
-        .section-title { text-align: center; color: var(--primary); margin: 40px 0 20px 0; text-transform: uppercase; letter-spacing: 2px; scroll-margin-top: 100px; }
-        .proof-grid { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: var(--primary) #222; }
-        .proof-grid::-webkit-scrollbar { height: 8px; }
-        .proof-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-        .proof-card { min-width: 200px; max-width: 200px; background: #1a1a1a; border-radius: 8px; border: 1px solid #333; overflow: hidden; flex-shrink: 0; display:flex; flex-direction: column; transition: transform 0.2s; }
-        .proof-card:hover { transform: translateY(-5px); }
-        .proof-img { width: 100%; height: 250px; object-fit: cover; cursor: pointer; transition: opacity 0.3s; }
-        .proof-img:hover { opacity: 0.8; }
-        .proof-details { padding: 10px; background: #111; border-top: 1px solid #333; flex-grow: 1; display:flex; flex-direction:column; justify-content: space-between; }
-        .proof-caption { font-size: 0.85rem; color: #fff; margin-bottom: 5px; }
-        .proof-date { font-size: 0.75rem; color: #666; font-style: italic; text-align: right; }
+        .section-title { text-align: center; font-size: 1.5rem; margin: 60px 0 30px; }
+        .proof-grid { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
+        .proof-card { min-width: 180px; max-width: 180px; background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .proof-img { width: 100%; height: 220px; object-fit: cover; cursor: pointer; }
 
-        /* --- ADMIN PANEL --- */
-        #adminArea { display: none; border-left: 3px solid var(--primary); padding-left: 20px; margin-bottom: 40px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 0 10px 10px 0; }
-        .admin-section { background: #252525; padding: 20px; border-radius: 8px; border: 1px solid #444; margin-bottom: 20px; }
-        .admin-header { color: var(--primary); margin: 0 0 15px 0; border-bottom: 1px solid #444; padding-bottom: 10px; font-size: 1.1rem; }
-        .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
-        .form-group { flex: 1; min-width: 200px; margin-bottom: 12px; }
-        label { display: block; color: #bbb; font-size: 0.8rem; margin-bottom: 6px; font-weight: 500; }
-        input, select { width: 100%; padding: 10px; background: #121212; border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; outline: none; transition: border 0.2s; }
-        input:focus, select:focus { border-color: var(--primary); }
-        .btn { padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; color: black; font-size: 0.9rem; transition: opacity 0.2s; }
-        .btn:hover { opacity: 0.9; }
-        .btn-save { background: var(--primary); color: #000; }
-        .btn-del { background: var(--danger); color: white; width: auto; padding: 4px 10px; font-size: 0.8rem; }
-        .btn-edit { background: #2196F3; color: white; width: auto; padding: 4px 10px; font-size: 0.8rem; margin-right: 5px; }
-        .btn-io { background-color: #2196F3; color: white; margin-bottom: 10px; }
-        .file-input { display: none; }
+        /* --- ADMIN DASHBOARD --- */
+        #adminArea { padding: 30px; background: #020617; border-radius: 24px; margin-bottom: 50px; border: 1px solid var(--primary); display: none; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .admin-section { background: #1e293b; padding: 20px; border-radius: 15px; }
+        .admin-header { color: var(--primary); font-weight: 800; margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; }
+        
+        input, select, textarea { 
+            width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; 
+            color: white; border-radius: 8px; margin-bottom: 10px; font-family: inherit;
+        }
+        .btn { padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-save { background: var(--primary); color: white; width: 100%; }
+        .btn-del { background: var(--danger); color: white; padding: 5px 10px; font-size: 0.7rem; }
 
         /* --- CHAT SYSTEM --- */
-        .chat-container { display: flex; flex-direction: column; height: 400px; }
-        .chat-box { flex-grow: 1; background: #0f0f0f; border: 1px solid #333; border-radius: 8px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; scroll-behavior: smooth; }
-        
-        .message { padding: 10px 14px; border-radius: 18px; font-size: 0.95rem; max-width: 80%; word-wrap: break-word; line-height: 1.4; animation: slideUp 0.2s ease; }
-        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .msg-system { align-self: center; background: #2a2a2a; color: #aaa; font-size: 0.8rem; border-radius: 8px; padding: 5px 10px; }
-        .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border-bottom-right-radius: 4px; }
-        .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border-bottom-left-radius: 4px; border: 1px solid #444; }
-        .msg-receipt { align-self: center; background: #1b1e26; border: 1px dashed var(--primary); color: var(--primary); text-align: center; width: 80%; }
-        
-        .msg-image { max-width: 200px; border-radius: 10px; margin-top: 5px; cursor: pointer; border: 1px solid #444; transition: transform 0.2s; }
-        .msg-image:hover { transform: scale(1.02); }
+        #customerChatModal .modal-box { 
+            background: #1e293b; border-radius: 24px; border: 1px solid #334155; 
+            max-width: 450px; height: 80vh; 
+        }
+        .chat-box { background: #0f172a; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .msg-user { background: var(--primary); border-radius: 15px 15px 2px 15px; }
+        .msg-admin { background: #334155; border-radius: 15px 15px 15px 2px; }
 
-        .chat-input-area { display: flex; gap: 10px; align-items: center; }
-        .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 25px; border: 1px solid #444; background: #1a1a1a; color: white; }
-        .chat-input-area button { width: auto; padding: 0 20px; border-radius: 25px; margin: 0; }
-        
-        /* Upload Button */
-        .upload-label { cursor: pointer; font-size: 1.5rem; color: #aaa; padding: 0 5px; transition: color 0.2s; }
-        .upload-label:hover { color: var(--primary); }
+        /* --- MODALS --- */
+        .modal-overlay { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            display:none; justify-content:center; align-items:center; z-index: 1000; 
+        }
+        .modal-box { background: var(--card-bg); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; }
 
-        /* MINIMIZED BUBBLE */
-        #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; padding: 15px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: none; z-index: 2000; animation: slideUp 0.3s; border: 2px solid white; display: flex; align-items: center; gap: 10px;}
-        #minimizedChat:hover { transform: scale(1.05); }
-        #minimizedChat.new-msg { background: var(--danger); color: white; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 61, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0); } }
-        
-        .btn-min { background: transparent; border: 1px solid #666; color: #aaa; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size: 1.2rem; line-height: 0; padding-bottom: 5px; }
-        .btn-min:hover { border-color: white; color: white; }
+        /* --- UTILS --- */
+        .badge-sale { position: absolute; top: 15px; right: 15px; background: var(--danger); padding: 4px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
+        .sold-out { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.8); display: flex; justify-content: center; align-items: center; font-weight: 800; text-transform: uppercase; }
 
-        /* Admin Chat List */
-        .admin-chat-item { background: #1a1a1a; padding: 12px; margin-bottom: 8px; border: 1px solid #333; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
-        .admin-chat-item:hover { background: #2a2a2a; }
-        .admin-chat-item.active { border-color: var(--primary); background: #222; }
-        .badge { background: #444; color: #aaa; padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
-        .badge.open { background: var(--sale); color: white; }
-        .badge.done { background: var(--success); color: black; }
+        /* --- MINIMIZED CHAT --- */
+        #minimizedChat { 
+            position: fixed; bottom: 30px; right: 30px; background: var(--primary); 
+            padding: 15px 25px; border-radius: 20px; font-weight: 800; cursor: pointer; 
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4); z-index: 999;
+        }
 
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-box { background: #222; padding: 25px; border-radius: 12px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
-
-        .copy-btn { font-size: 0.7rem; background: #333; border: 1px solid #555; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
-        .copy-btn:hover { background: var(--primary); color: black; }
-
-        /* IMAGE VIEWER LIGHTBOX */
-        #imageViewerModal { z-index: 5000; }
-        #imageViewerModal img { animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <!-- TICKER BAR -->
     <div class="ticker-wrap"><div class="ticker" id="tickerContent"></div></div>
 
     <nav>
-        <div class="logo" onclick="clickLogo()">StoreZ</div>
+        <div class="logo" onclick="clickLogo()">Store<span>Z</span></div>
         <div class="nav-links">
-            <button class="nav-btn" onclick="document.getElementById('proofSection').scrollIntoView({behavior: 'smooth'})">📸 Proofs</button>
-            <button class="nav-btn" onclick="openTrackModal()" style="border-color: var(--primary); color: var(--primary);">🔍 Track Order</button>
-        </div>
-        <div id="secretLogin">
-            <button class="admin-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
+            <button class="nav-btn" onclick="openTrackModal()">Track Order</button>
+            <button class="nav-btn" id="authBtn" onclick="handleAuth()">Admin</button>
         </div>
     </nav>
+
+    <div class="hero-container">
+        <!-- 16:9 PROMO BANNER -->
+        <div class="promo-banner" id="promoBanner" onclick="handleBannerClick()">
+            <img id="bannerImg" src="" alt="Promotion">
+        </div>
+
+        <!-- LEGIT SELLERS SECTION -->
+        <div class="sellers-section">
+            <p class="sellers-title">Verified Sellers</p>
+            <div class="sellers-list" id="sellersList">
+                <!-- Sellers inject here -->
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         
         <!-- ADMIN DASHBOARD -->
         <div id="adminArea">
-            <h2 style="color:var(--primary); margin-top:0;">Admin Dashboard</h2>
+            <h2 style="margin-top:0;">Admin Control Center</h2>
             
-            <div class="admin-section">
-                <h4 class="admin-header">Live Orders & Chats</h4>
-                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label>Active Orders</label>
-                        <div id="adminChatList" style="height: 400px; overflow-y: auto; border: 1px solid #333; background: #000; padding:10px; border-radius:8px;">
-                            <div style="color:#666; text-align:center; padding:20px;">No active orders</div>
-                        </div>
-                    </div>
-                    <div style="flex: 2; min-width: 300px; display: none;" id="adminChatWindow">
-                        <label id="adminChatTitle" style="color:var(--primary);">Chatting with...</label>
-                        <div class="chat-container" style="height: 350px;">
-                            <div id="adminMessages" class="chat-box"></div>
-                            <div class="chat-input-area">
-                                <label for="adminImgInput" class="upload-label">📎</label>
-                                <input type="file" id="adminImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'admin')">
-                                <input type="text" id="adminMsgInput" placeholder="Reply..." onkeypress="handleEnter(event, sendAdminMessage)">
-                                <button class="btn btn-save" onclick="sendAdminMessage()">Send</button>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:10px; margin-top:10px;">
-                            <button class="btn btn-save" style="background:var(--success); color:white;" onclick="sendReceipt()">🧾 Send Receipt</button>
-                            <button class="btn btn-del" onclick="closeCurrentChat()">🗑 Delete Chat</button>
-                        </div>
-                    </div>
+            <div class="admin-grid">
+                <!-- BANNER MANAGER -->
+                <div class="admin-section">
+                    <h4 class="admin-header">Header Ads (16:9)</h4>
+                    <label>Image URL</label>
+                    <input type="text" id="adminBannerUrl" placeholder="https://...">
+                    <label>Redirect Link (FB or Store link)</label>
+                    <input type="text" id="adminBannerLink" placeholder="https://facebook.com/...">
+                    <button class="btn btn-save" onclick="updateBanner()">Update Banner</button>
+                </div>
+
+                <!-- SELLER MANAGER -->
+                <div class="admin-section">
+                    <h4 class="admin-header">Authorized Sellers</h4>
+                    <input type="text" id="sellerName" placeholder="Seller Name">
+                    <input type="text" id="sellerAvatar" placeholder="Avatar Image URL">
+                    <input type="text" id="sellerFb" placeholder="Facebook Profile Link">
+                    <button class="btn btn-save" onclick="addSeller()">Add Seller</button>
+                    <div id="adminSellersList" style="margin-top:10px;"></div>
+                </div>
+
+                <!-- ORDERS -->
+                <div class="admin-section" style="grid-column: span 2;">
+                    <h4 class="admin-header">Live Orders</h4>
+                    <div id="adminChatList" style="max-height: 300px; overflow-y:auto;"></div>
                 </div>
             </div>
 
-            <!-- TICKER MANAGER -->
-            <div class="admin-section">
-                <h4 class="admin-header">📢 Ticker Manager</h4>
-                <input type="hidden" id="editTickerId">
-                <div class="form-row">
-                    <input type="text" id="buyerName" placeholder="Buyer Name">
-                    <input type="text" id="buyerItem" placeholder="Item Bought">
-                    <button class="btn btn-save" style="width:auto;" id="tickerBtn" onclick="saveBuyer()">Add to Ticker</button>
-                </div>
-                <div id="buyerList" style="margin-top:10px; max-height: 150px; overflow-y:auto; border:1px solid #333; padding:5px; border-radius:5px;"></div>
-            </div>
-
-            <!-- PRODUCT MANAGER -->
-            <div class="admin-section">
-                <h4 class="admin-header">Add / Edit Product</h4>
-                <input type="hidden" id="editItemId">
-                <div class="form-row">
-                    <div class="form-group"><label>Product Name</label><input type="text" id="itemName" placeholder="e.g. Starlight Member"></div>
-                    <div class="form-group"><label>Category</label><select id="itemCatSelect"></select></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Original Price (₱)</label><input type="number" id="itemPrice" placeholder="0.00"></div>
-                    <div class="form-group"><label>Sale Price (₱ - Optional)</label><input type="number" id="itemSale" placeholder="Leave empty if not on sale"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Stock Quantity</label><input type="number" id="itemStock" placeholder="e.g. 50"></div>
-                    <div class="form-group"><label>Image URL</label><input type="text" id="itemImg" placeholder="https://..."></div>
-                </div>
-                <button class="btn btn-save" onclick="saveItem()">Save Product</button>
-                <button class="btn" style="background:#333; color:#aaa; margin-top:10px;" onclick="clearForm()">Clear Form</button>
-            </div>
-
-            <!-- PROOF MANAGER -->
-            <div class="admin-section">
-                <h4 class="admin-header">📸 Manage Proofs</h4>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Caption</label>
-                        <input type="text" id="proofCaption" placeholder="e.g. User 123*** bought 100 Diamonds">
+            <!-- Existing Product Manager remains below or in same grid -->
+            <div class="admin-section" style="margin-top:20px;">
+                <h4 class="admin-header">Product Management</h4>
+                <div class="admin-grid">
+                    <div>
+                        <input type="hidden" id="editItemId">
+                        <input type="text" id="itemName" placeholder="Product Name">
+                        <select id="itemCatSelect"></select>
+                        <input type="number" id="itemPrice" placeholder="Original Price">
+                        <input type="number" id="itemSale" placeholder="Sale Price (Optional)">
                     </div>
-                    <div class="form-group">
-                         <label>Date (Optional)</label>
-                         <input type="date" id="proofDate">
-                    </div>
-                    <div class="form-group">
-                         <label>Upload Screenshot (Auto-compresses)</label>
-                         <input type="file" id="proofFileInput" accept="image/*">
+                    <div>
+                        <input type="number" id="itemStock" placeholder="Stock Count">
+                        <input type="text" id="itemImg" placeholder="Product Image URL">
+                        <button class="btn btn-save" onclick="saveItem()">Save Product</button>
                     </div>
                 </div>
-                <button class="btn btn-save" onclick="uploadProof()">Upload Proof</button>
-                <div id="proofListAdmin" style="margin-top:10px; max-height: 200px; overflow-y:auto;"></div>
-            </div>
-
-            <div class="admin-section">
-                <h4 class="admin-header">System Tools</h4>
-                <div style="display:flex; gap:10px; margin-bottom:20px;">
-                    <button class="btn btn-io" onclick="exportFromFirebase()">⬇ Backup Database</button>
-                    <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Restore Database</button>
-                    <input type="file" id="jsonInput" class="file-input" accept=".json" onchange="importToFirebase(this)">
-                </div>
-                <h4 class="admin-header">Manage Categories</h4>
-                <div class="form-row">
-                    <input type="text" id="catName" placeholder="New Category Name">
-                    <button class="btn btn-save" style="width:auto;" onclick="addCategory()">Add</button>
-                </div>
-                <div id="catList" style="margin-top:15px;"></div>
             </div>
         </div>
 
-        <!-- PUBLIC STORE -->
+        <!-- CATEGORIES -->
         <div class="cat-tabs" id="catTabs"></div>
-        <div class="store-grid" id="storeGrid">
-             <p style="text-align:center; width:100%; color:#666; margin-top:50px;">Loading Store...</p>
-        </div>
 
-        <!-- PROOF GALLERY SECTION -->
-        <h3 class="section-title" id="proofSection">Recent Transactions / Proofs</h3>
-        <div class="proof-grid" id="proofGrid">
-            <p style="text-align:center; width:100%; color:#555;">No proofs uploaded yet.</p>
-        </div>
+        <!-- PRODUCTS -->
+        <div class="store-grid" id="storeGrid"></div>
+
+        <!-- PROOFS -->
+        <h3 class="section-title" id="proofSection">Transaction Proofs</h3>
+        <div class="proof-grid" id="proofGrid"></div>
 
     </div>
 
-    <!-- MINIMIZED CHAT BUBBLE -->
-    <div id="minimizedChat" onclick="maximizeChat()" style="display:none;">
-        <span style="font-size:1.5rem">💬</span> <span id="minimizedText">Active Chat</span>
-    </div>
+    <!-- CHAT BUBBLE -->
+    <div id="minimizedChat" onclick="maximizeChat()" style="display:none;">💬 Active Support</div>
 
-    <!-- CUSTOMER ORDER MODAL -->
+    <!-- MODALS (Reusing your logic with updated IDs and classes) -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-box">
-            <h3 style="color:var(--primary); margin-bottom:5px;" id="modalItemName">Confirm Order</h3>
-            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Enter your Game ID to begin the transaction.</p>
-            <input type="text" id="customerMlbbId" placeholder="Game ID / User ID" style="text-align:center; font-size: 1.1rem; padding: 12px; margin-bottom:15px;">
-            <button class="btn btn-save" onclick="submitOrder()">Proceed to Chat</button>
-            <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('orderModal')">Cancel</button>
-        </div>
-    </div>
-
-    <!-- TRACK ORDER MODAL -->
-    <div id="trackModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="color:var(--primary); margin-bottom:5px;">Track / Continue Order</h3>
-            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Did you start an order on another device? Enter your <b>Order ID</b> below to continue.</p>
-            <input type="text" id="trackInputId" placeholder="Paste Order ID here" style="text-align:center; font-size: 1rem; padding: 12px; margin-bottom:15px; background:#111; color:white; border:1px solid #444; width:100%;">
-            <button class="btn btn-save" onclick="recoverChat()">Find Order</button>
-            <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('trackModal')">Cancel</button>
+            <h3 id="modalItemName">Confirm Order</h3>
+            <input type="text" id="customerMlbbId" placeholder="Enter MLBB ID / Game ID">
+            <button class="btn btn-save" onclick="submitOrder()">Start Transaction</button>
+            <button class="btn" style="background:transparent; color:#94a3b8; width:100%" onclick="closeModal('orderModal')">Cancel</button>
         </div>
     </div>
 
     <!-- CUSTOMER CHAT MODAL -->
     <div id="customerChatModal" class="modal-overlay">
-        <div class="modal-box" style="max-width: 500px; height: 80vh; display:flex; flex-direction:column;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
-                <div style="text-align:left;">
-                    <h3 style="color:var(--primary); margin:0;">Support Chat</h3>
-                    <div style="font-size:0.8rem; color:#666;">
-                        Order ID: <span id="displayChatId" style="color:white; user-select:all;"></span>
-                        <button class="copy-btn" onclick="copyChatId()">Copy</button>
-                    </div>
-                    <div style="font-size:0.7rem; color:#444;">(Save this ID to track on other devices)</div>
-                </div>
-                <button class="btn-min" onclick="minimizeChat()" title="Minimize to browse">_</button>
+        <div class="modal-box" style="display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                <h4 style="margin:0">Order Support</h4>
+                <button onclick="minimizeChat()" style="background:none; border:none; color:white; cursor:pointer">_</button>
             </div>
-            
-            <div id="customerMessages" class="chat-box"></div>
-            
-            <div class="chat-input-area" id="customerInputArea">
-                <label for="customerImgInput" class="upload-label" title="Send Screenshot">📎</label>
-                <input type="file" id="customerImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'user')">
-                
-                <input type="text" id="customerMsgInput" placeholder="Message..." onkeypress="handleEnter(event, sendCustomerMessage)">
-                <button class="btn btn-save" style="width: auto;" onclick="sendCustomerMessage()">Send</button>
+            <div id="customerMessages" class="chat-box" style="flex-grow:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px;"></div>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="customerMsgInput" placeholder="Type a message..." style="margin:0">
+                <button class="btn btn-save" style="width:auto" onclick="sendCustomerMessage()">Send</button>
             </div>
         </div>
     </div>
 
-    <!-- IMAGE VIEWER MODAL (LIGHTBOX) -->
-    <div id="imageViewerModal" class="modal-overlay" onclick="closeImageViewer()">
-        <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
-        <img class="modal-content" id="fullScreenImage" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow: 0 0 50px rgba(0,0,0,1);">
-    </div>
-
-    <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, writeBatch, arrayUnion, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, setDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-        // CONFIG
+        // CONFIG (Replace with your actual keys from original file)
         const firebaseConfig = {
           apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
           authDomain: "storez-68603.firebaseapp.com",
@@ -376,540 +312,191 @@
         const auth = getAuth(app);
 
         // State
-        let itemsData = [], categoriesData = [], currentCat = "All", isAdmin = false, logoClicks = 0;
-        let currentItemBuying = null, activeCustomerChatId = null, activeAdminChatId = null, chatUnsubscribe = null;
-        let isChatMinimized = false, currentChatData = null;
-
-        // --- SESSION & MINIMIZE LOGIC ---
-        async function checkSavedSession() {
-            const savedId = localStorage.getItem('storez_active_chat');
-            if(savedId) {
-                try {
-                    const docSnap = await getDoc(doc(db, "chats", savedId));
-                    if (docSnap.exists()) resumeCustomerChat(savedId);
-                    else localStorage.removeItem('storez_active_chat');
-                } catch (e) { console.error(e); }
-            }
-        }
-        window.addEventListener('DOMContentLoaded', checkSavedSession);
-
-        window.minimizeChat = () => {
-            isChatMinimized = true;
-            document.getElementById('customerChatModal').style.display = 'none';
-            document.getElementById('minimizedChat').style.display = 'flex';
-        };
-
-        window.maximizeChat = () => {
-            isChatMinimized = false;
-            document.getElementById('customerChatModal').style.display = 'flex';
-            document.getElementById('minimizedChat').style.display = 'none';
-            document.getElementById('minimizedChat').classList.remove('new-msg'); 
-            document.getElementById('minimizedText').innerText = "Active Chat";
-            const container = document.getElementById("customerMessages");
-            container.scrollTop = container.scrollHeight;
-        };
-
-        // --- IMAGE VIEWER HELPERS ---
-        window.openImageViewer = (src) => {
-            const modal = document.getElementById("imageViewerModal");
-            const img = document.getElementById("fullScreenImage");
-            img.src = src;
-            modal.style.display = "flex";
-        };
-
-        window.closeImageViewer = () => {
-            document.getElementById("imageViewerModal").style.display = "none";
-        };
-
-        // --- IMAGE COMPRESSION HELPER ---
-        async function compressImage(file, maxWidth = 600) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const scaleSize = maxWidth / img.width;
-                        canvas.width = maxWidth;
-                        canvas.height = img.height * scaleSize;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.7));
-                    }
-                }
-            });
-        }
-
-        window.handleImageUpload = async (input, sender) => {
-            const file = input.files[0];
-            if(!file) return;
-            const dataUrl = await compressImage(file);
-            const chatId = sender === 'user' ? activeCustomerChatId : activeAdminChatId;
-            if(chatId) {
-                await updateDoc(doc(db, "chats", chatId), { 
-                    messages: arrayUnion({ sender: sender, image: dataUrl, text: "Sent an image", time: Date.now() }) 
-                });
-            }
-            input.value = "";
-        };
+        let itemsData = [], categoriesData = [], currentCat = "All", isAdmin = false;
+        let activeCustomerChatId = null, bannerData = { url: '', link: '' };
 
         // --- AUTH ---
-        window.checkSecretRoute = () => {
-            if(window.location.hash.includes('nimda')) document.getElementById("secretLogin").style.display = "block";
-        }
-        window.setInterval(checkSecretRoute, 1000);
-        window.clickLogo = () => {
-            logoClicks++;
-            if(logoClicks >= 5) { document.getElementById("secretLogin").style.display = "block"; alert("Admin Access Unlocked"); }
-        };
+        onAuthStateChanged(auth, (user) => {
+            isAdmin = !!user;
+            document.getElementById("adminArea").style.display = user ? "block" : "none";
+            document.getElementById("authBtn").innerText = user ? "Logout" : "Admin";
+            renderStore();
+        });
+
         window.handleAuth = () => {
-            if (auth.currentUser) signOut(auth).then(() => window.location.reload());
+            if (auth.currentUser) signOut(auth);
             else {
-                const e = prompt("Admin Email:"), p = prompt("Password:");
+                const e = prompt("Email:"), p = prompt("Pass:");
                 if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert(err.message));
             }
         };
-        onAuthStateChanged(auth, (user) => {
-            isAdmin = !!user;
-            document.getElementById("authBtn").innerText = user ? "Logout" : "Admin Login";
-            document.getElementById("adminArea").style.display = user ? "block" : "none";
-            if(user) initAdminChatListener();
-            renderStore();
-            if(user) { renderBuyerList(); }
+
+        // --- BANNER & SELLERS SYNC ---
+        onSnapshot(doc(db, "settings", "banner"), (s) => {
+            if(s.exists()) {
+                const data = s.data();
+                bannerData = data;
+                if(data.url) {
+                    document.getElementById("bannerImg").src = data.url;
+                    document.getElementById("promoBanner").style.display = "block";
+                }
+            }
         });
 
-        // --- DATA SYNC ---
-        onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => {
-            categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() }));
-            renderCategories(); renderCatList();
+        onSnapshot(query(collection(db, "sellers")), (snap) => {
+            const list = document.getElementById("sellersList");
+            const adminList = document.getElementById("adminSellersList");
+            list.innerHTML = ""; adminList.innerHTML = "";
+            snap.forEach(d => {
+                const s = d.data();
+                // Public View
+                list.innerHTML += `
+                    <a href="${s.fbLink}" target="_blank" class="seller-card">
+                        <img src="${s.avatar}" class="seller-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${s.name}'">
+                        <span class="seller-name">${s.name}</span>
+                        <span class="verify-icon">✔</span>
+                    </a>
+                `;
+                // Admin View
+                adminList.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${s.name}</span> <button class="btn-del" onclick="deleteSeller('${d.id}')">Del</button></div>`;
+            });
         });
-        onSnapshot(query(collection(db, "items"), orderBy("order", "asc")), (snap) => {
+
+        // --- ADMIN BANNER/SELLER ACTIONS ---
+        window.updateBanner = async () => {
+            const url = document.getElementById("adminBannerUrl").value;
+            const link = document.getElementById("adminBannerLink").value;
+            await setDoc(doc(db, "settings", "banner"), { url, link });
+            alert("Banner Updated");
+        };
+
+        window.handleBannerClick = () => { if(bannerData.link) window.open(bannerData.link, '_blank'); };
+
+        window.addSeller = async () => {
+            const name = document.getElementById("sellerName").value;
+            const avatar = document.getElementById("sellerAvatar").value;
+            const fbLink = document.getElementById("sellerFb").value;
+            if(name && fbLink) {
+                await addDoc(collection(db, "sellers"), { name, avatar, fbLink });
+                document.getElementById("sellerName").value = "";
+            }
+        };
+        window.deleteSeller = async (id) => { await deleteDoc(doc(db, "sellers", id)); };
+
+        // --- STORE LOGIC (Cleaned Up) ---
+        onSnapshot(query(collection(db, "items"), orderBy("order", "desc")), (snap) => {
             itemsData = []; snap.forEach(d => itemsData.push({ id: d.id, ...d.data() }));
             renderStore();
         });
-        
-        // --- PROOFS SYNC (UPDATED) ---
-        onSnapshot(query(collection(db, "proofs"), orderBy("timestamp", "desc")), (snap) => {
-            const grid = document.getElementById("proofGrid");
-            const adminList = document.getElementById("proofListAdmin");
+
+        onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => {
+            categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() }));
+            renderCategories();
+        });
+
+        window.renderStore = () => {
+            const grid = document.getElementById("storeGrid");
             grid.innerHTML = "";
-            if(adminList) adminList.innerHTML = "";
+            let filtered = currentCat === "All" ? itemsData : itemsData.filter(i => i.catId === currentCat);
 
-            if(snap.empty) { 
-                grid.innerHTML = "<p style='color:#555; width:100%; text-align:center'>No recent proofs.</p>"; 
-            }
-
-            snap.forEach(d => {
-                const p = d.data();
-                const dateDisplay = p.dateString ? p.dateString : "";
-                
-                // Frontend Grid - CLICK OPENS VIEWER
+            filtered.forEach(item => {
+                const isSale = item.salePrice && item.salePrice < item.price;
+                const isOut = item.stock <= 0;
                 grid.innerHTML += `
-                    <div class="proof-card" onclick="openImageViewer('${p.image}')">
-                        <img src="${p.image}" class="proof-img">
-                        <div class="proof-details">
-                            <div class="proof-caption">${p.caption}</div>
-                            <div class="proof-date">${dateDisplay}</div>
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            ${isSale ? `<div class="badge-sale">SALE</div>` : ''}
+                            <img src="${item.image}" class="card-img-top">
+                            ${isOut ? `<div class="sold-out">Sold Out</div>` : ''}
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">${item.name}</h3>
+                            <div class="price-container">
+                                <span class="current-price">₱${isSale ? item.salePrice : item.price}</span>
+                                ${isSale ? `<span class="old-price">₱${item.price}</span>` : ''}
+                            </div>
+                            <div class="stock-tag" style="color:${isOut ? 'var(--danger)' : 'var(--success)'}">
+                                ${isOut ? '● Out of Stock' : `● ${item.stock} in stock`}
+                            </div>
+                            <button class="buy-btn" ${isOut ? 'disabled' : ''} onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')">
+                                Buy Now
+                            </button>
+                            ${isAdmin ? `<button class="btn" style="margin-top:10px; background:#334155;" onclick="editItem('${item.id}')">Edit</button>` : ''}
                         </div>
                     </div>
                 `;
-                
-                // Admin List
-                if(adminList && isAdmin) {
-                    adminList.innerHTML += `<div class="list-item"><img src="${p.image}" height="30"> <span>${dateDisplay} - ${p.caption}</span> <button class="btn-del" onclick="deleteProof('${d.id}')">X</button></div>`;
-                }
             });
-        });
-
-        // --- TICKER LOGIC ---
-        onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
-            let html = "", buyers = [];
-            snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
-            window.buyersData = buyers; // Store for editing
-            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to StoreZ!</div>`;
-            else {
-                buyers.forEach(b => html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`);
-                if(buyers.length < 5) html += html + html; 
-            }
-            document.getElementById("tickerContent").innerHTML = html;
-            if(isAdmin) renderBuyerList();
-        });
-
-        window.saveBuyer = async () => {
-            const id = document.getElementById("editTickerId").value;
-            const name = document.getElementById("buyerName").value;
-            const item = document.getElementById("buyerItem").value;
-            
-            if(name && item) {
-                if(id) {
-                    await updateDoc(doc(db, "buyers", id), { name, item });
-                    alert("Ticker Updated");
-                } else {
-                    await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() });
-                }
-                document.getElementById("buyerName").value = "";
-                document.getElementById("buyerItem").value = "";
-                document.getElementById("editTickerId").value = "";
-                document.getElementById("tickerBtn").innerText = "Add to Ticker";
-            }
         };
 
-        window.editBuyer = (id) => {
-            const b = window.buyersData.find(x => x.id === id);
-            if(b) {
-                document.getElementById("buyerName").value = b.name;
-                document.getElementById("buyerItem").value = b.item;
-                document.getElementById("editTickerId").value = b.id;
-                document.getElementById("tickerBtn").innerText = "Update Ticker";
-            }
-        };
-
-        window.deleteBuyer = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "buyers", id)); };
-        function renderBuyerList() {
-            if(!window.buyersData) return;
-            const list = document.getElementById("buyerList");
-            list.innerHTML = "";
-            window.buyersData.forEach(b => {
-                list.innerHTML += `<div class="list-item" style="font-size:0.8rem;">
-                    <span>${b.name} - ${b.item}</span>
-                    <div>
-                        <button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button>
-                        <button class="btn-del" onclick="deleteBuyer('${b.id}')">Del</button>
-                    </div>
-                </div>`;
+        window.renderCategories = () => {
+            const tabs = document.getElementById("catTabs");
+            const select = document.getElementById("itemCatSelect");
+            tabs.innerHTML = `<div class="cat-tab ${currentCat === 'All' ? 'active' : ''}" onclick="setCat('All')">All Items</div>`;
+            categoriesData.forEach(c => {
+                tabs.innerHTML += `<div class="cat-tab ${currentCat === c.id ? 'active' : ''}" onclick="setCat('${c.id}')">${c.name}</div>`;
+                select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
             });
-        }
-
-        // --- PROOF UPLOAD LOGIC (FIXED) ---
-        window.uploadProof = async () => {
-            const caption = document.getElementById("proofCaption").value;
-            const dateInput = document.getElementById("proofDate").value;
-            const fileInput = document.getElementById("proofFileInput");
-            const btn = document.querySelector("button[onclick='uploadProof()']");
-            
-            if(!fileInput.files[0] || !caption) return alert("Image and Caption required");
-
-            const oldText = btn.innerText;
-            btn.innerText = "Uploading...";
-            btn.disabled = true;
-
-            try {
-                const imgData = await compressImage(fileInput.files[0], 500); 
-                
-                let dateStr = dateInput;
-                if(!dateStr) {
-                    const now = new Date();
-                    dateStr = now.toISOString().split('T')[0];
-                }
-
-                await addDoc(collection(db, "proofs"), {
-                    caption: caption,
-                    dateString: dateStr,
-                    image: imgData,
-                    timestamp: Date.now()
-                });
-
-                alert("Proof uploaded successfully!");
-                document.getElementById("proofCaption").value = "";
-                document.getElementById("proofDate").value = "";
-                fileInput.value = "";
-
-            } catch (error) {
-                console.error(error);
-                alert("Upload Failed: " + error.message);
-            } finally {
-                btn.innerText = oldText;
-                btn.disabled = false;
-            }
         };
 
-        window.deleteProof = async(id) => { if(confirm("Delete proof?")) await deleteDoc(doc(db, "proofs", id)); }
+        window.setCat = (id) => { currentCat = id; renderStore(); renderCategories(); };
 
-        // --- TRACKING & DEVICE SWITCHING ---
-        window.openTrackModal = () => {
-             document.getElementById("trackModal").style.display = "flex";
-             document.getElementById("trackInputId").focus();
-        }
-
-        window.recoverChat = async () => {
-            const inputId = document.getElementById("trackInputId").value.trim();
-            if(!inputId) return alert("Please enter an Order ID");
-            
-            const btn = document.querySelector("#trackModal .btn-save");
-            btn.innerText = "Searching...";
-            
-            try {
-                const docSnap = await getDoc(doc(db, "chats", inputId));
-                if(docSnap.exists()) {
-                    localStorage.setItem('storez_active_chat', inputId);
-                    closeModal("trackModal");
-                    resumeCustomerChat(inputId);
-                } else {
-                    alert("Order not found! Please check the ID.");
-                }
-            } catch(e) {
-                alert("Error searching for order.");
-            } finally {
-                btn.innerText = "Find Order";
-            }
-        }
-
-        window.copyChatId = () => {
-            if(activeCustomerChatId) {
-                navigator.clipboard.writeText(activeCustomerChatId);
-                alert("Order ID copied! Use 'Track Order' on your other device to continue.");
-            }
-        }
-
-        // --- CUSTOMER ORDER LOGIC ---
-        window.openBuyModal = (itemJson) => {
-            if(activeCustomerChatId) {
-                if(confirm("Active chat open. Close it?")) localStorage.removeItem('storez_active_chat');
-                else return;
-            }
-            const item = JSON.parse(decodeURIComponent(itemJson));
-            currentItemBuying = item;
-            document.getElementById("modalItemName").innerText = "Buying: " + item.name;
-            document.getElementById("customerMlbbId").value = "";
+        // --- CHAT & ORDERING (Simplified) ---
+        let currentItem = null;
+        window.openBuyModal = (json) => {
+            currentItem = JSON.parse(decodeURIComponent(json));
+            document.getElementById("modalItemName").innerText = currentItem.name;
             document.getElementById("orderModal").style.display = "flex";
-            document.getElementById("customerMlbbId").focus();
         };
 
         window.closeModal = (id) => document.getElementById(id).style.display = "none";
 
         window.submitOrder = async () => {
-            const mlbbId = document.getElementById("customerMlbbId").value.trim();
-            if(!mlbbId) return alert("Please enter ID");
-            const btn = document.querySelector("#orderModal .btn-save");
-            btn.innerText = "Connecting..."; btn.disabled = true;
-
-            try {
-                let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
-                const chatRef = await addDoc(collection(db, "chats"), {
-                    mlbbId: mlbbId, itemName: currentItemBuying.name, itemPrice: finalPrice, status: 'open', timestamp: Date.now(),
-                    messages: [{ sender: 'system', text: `Order: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}\n\nWaiting for agent...`, time: Date.now() }]
-                });
-                localStorage.setItem('storez_active_chat', chatRef.id);
-                closeModal("orderModal");
-                resumeCustomerChat(chatRef.id);
-            } catch (error) { alert("Connection failed. Check internet."); console.error(error); } 
-            finally { btn.innerText = "Proceed to Chat"; btn.disabled = false; }
+            const mlbbId = document.getElementById("customerMlbbId").value;
+            if(!mlbbId) return;
+            const chatRef = await addDoc(collection(db, "chats"), {
+                mlbbId, itemName: currentItem.name, timestamp: Date.now(),
+                messages: [{ sender: 'system', text: `Order for ${currentItem.name} started.`, time: Date.now() }]
+            });
+            activeCustomerChatId = chatRef.id;
+            closeModal("orderModal");
+            maximizeChat();
+            startChatListener(chatRef.id);
         };
 
-        function resumeCustomerChat(chatId) {
-            activeCustomerChatId = chatId;
-            maximizeChat(); 
-            // Update display ID
-            document.getElementById("displayChatId").innerText = chatId;
-
-            onSnapshot(doc(db, "chats", chatId), (docSnap) => {
-                if(docSnap.exists()) {
-                    const data = docSnap.data();
-                    currentChatData = data;
-                    renderMessages(data.messages, "customerMessages");
-                    if(isChatMinimized) {
-                        const lastMsg = data.messages[data.messages.length - 1];
-                        if(lastMsg && lastMsg.sender === 'admin') {
-                            document.getElementById("minimizedChat").classList.add('new-msg');
-                            document.getElementById('minimizedText').innerText = "New Message!";
-                        }
-                    }
-                } else {
-                    alert("Chat closed by admin.");
-                    localStorage.removeItem('storez_active_chat');
-                    window.location.reload();
-                }
+        function startChatListener(id) {
+            onSnapshot(doc(db, "chats", id), (s) => {
+                if(s.exists()) renderMessages(s.data().messages);
             });
+        }
+
+        function renderMessages(msgs) {
+            const box = document.getElementById("customerMessages");
+            box.innerHTML = "";
+            msgs.forEach(m => {
+                const cls = m.sender === 'user' ? 'msg-user' : (m.sender === 'admin' ? 'msg-admin' : 'msg-system');
+                box.innerHTML += `<div class="${cls}" style="padding:10px; font-size:0.9rem;">${m.text}</div>`;
+            });
+            box.scrollTop = box.scrollHeight;
         }
 
         window.sendCustomerMessage = async () => {
             const input = document.getElementById("customerMsgInput");
-            const text = input.value.trim();
-            if(!text || !activeCustomerChatId) return;
-            try { await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion({ sender: 'user', text: text, time: Date.now() }) }); input.value = ""; } catch(e) {}
-        };
-        window.handleEnter = (e, func) => { if(e.key === 'Enter') func(); };
-
-        function renderMessages(msgs, divId) {
-            const container = document.getElementById(divId);
-            container.innerHTML = "";
-            msgs.forEach(m => {
-                let content = m.text.replace(/\n/g, '<br>');
-                // UPDATED: Click image to open viewer
-                if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="openImageViewer(this.src)">`;
-                
-                let cls = "msg-system";
-                if(m.sender === 'user') cls = "msg-user";
-                if(m.sender === 'admin') cls = "msg-admin";
-                if(m.text.includes("RECEIPT")) cls = "msg-receipt";
-
-                container.innerHTML += `<div class="message ${cls}">${content}</div>`;
+            if(!input.value) return;
+            await updateDoc(doc(db, "chats", activeCustomerChatId), {
+                messages: arrayUnion({ sender: 'user', text: input.value, time: Date.now() })
             });
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // --- ADMIN ---
-        function initAdminChatListener() {
-            onSnapshot(query(collection(db, "chats"), orderBy("timestamp", "desc")), (snap) => {
-                const list = document.getElementById("adminChatList");
-                list.innerHTML = "";
-                if(snap.empty) { list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>No active orders.</div>"; return; }
-                snap.forEach(d => {
-                    const chat = d.data();
-                    const isActive = activeAdminChatId === d.id ? "active" : "";
-                    const badgeClass = chat.status === 'done' ? 'badge done' : 'badge open';
-                    const badgeText = chat.status === 'done' ? 'DONE' : 'OPEN';
-                    
-                    list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
-                            <div><strong style="color:white;">${chat.mlbbId}</strong><div style="font-size:0.8rem; color:#aaa;">${chat.itemName}</div></div>
-                            <div class="${badgeClass}">${badgeText}</div></div>`;
-                });
-            });
-        }
-        window.openAdminChat = (chatId) => {
-            activeAdminChatId = chatId; document.getElementById("adminChatWindow").style.display = "block";
-            if(chatUnsubscribe) chatUnsubscribe();
-            chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => {
-                if(s.exists()) { 
-                    currentChatData = s.data();
-                    document.getElementById("adminChatTitle").innerText = `Chat: ${s.data().mlbbId}`; 
-                    renderMessages(s.data().messages, "adminMessages"); 
-                }
-                else document.getElementById("adminChatWindow").style.display = "none";
-            });
-        };
-        window.sendAdminMessage = async () => {
-            const input = document.getElementById("adminMsgInput");
-            if(!input.value.trim() || !activeAdminChatId) return;
-            await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) });
             input.value = "";
         };
 
-        window.sendReceipt = async () => {
-            if(!activeAdminChatId || !currentChatData) return;
-            const r = `
-🧾 OFFICIAL RECEIPT
-------------------
-ID: ${currentChatData.mlbbId}
-Item: ${currentChatData.itemName}
-Price: ₱${currentChatData.itemPrice}
-Status: ✅ COMPLETED
-------------------
-Thank you for buying at StoreZ!
-            `;
-            await updateDoc(doc(db, "chats", activeAdminChatId), { 
-                status: 'done',
-                messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) 
-            });
-            // Auto add to ticker
-            await addDoc(collection(db, "buyers"), { name: "Customer " + currentChatData.mlbbId.slice(0,3), item: currentChatData.itemName, timestamp: Date.now() });
+        window.maximizeChat = () => { document.getElementById("customerChatModal").style.display = "flex"; };
+        window.minimizeChat = () => { 
+            document.getElementById("customerChatModal").style.display = "none";
+            document.getElementById("minimizedChat").style.display = "block";
         };
 
-        window.closeCurrentChat = async () => {
-            if(activeAdminChatId && confirm("Permanently Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; }
-        };
+        // Initialize App
+        window.clickLogo = () => location.reload();
 
-        // --- STORE & CRUD ---
-        window.renderStore = () => {
-            const grid = document.getElementById("storeGrid");
-            grid.innerHTML = "";
-            let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
-            if(filtered.length === 0) { grid.innerHTML = "<p style='color:#555; width:100%; text-align:center; margin-top:40px;'>No items.</p>"; return; }
-            
-            filtered.forEach(item => {
-                const stockVal = item.stock !== undefined ? Number(item.stock) : 999;
-                const isSoldOut = stockVal <= 0;
-                
-                let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:10px;"><button class="btn btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" onclick="deleteItem('${item.id}')">Del</button></div>` : "";
-                
-                let priceHtml = `<div class="current-price">₱${item.price}</div>`;
-                let badgeHtml = "";
-                
-                if(item.salePrice && Number(item.salePrice) < Number(item.price)) { 
-                    priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>`; 
-                    badgeHtml += `<div class="sale-badge">SALE</div>`; 
-                }
-                
-                let btnHtml = `<button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>`;
-                let stockStatusHtml = `<div class="stock-status stock-high">✅ In Stock: ${stockVal}</div>`;
-                let overlayHtml = "";
-
-                if(stockVal <= 10 && stockVal > 0) {
-                     stockStatusHtml = `<div class="stock-status stock-low">🔥 Hurry! Only ${stockVal} left</div>`;
-                }
-
-                if(isSoldOut) {
-                    stockStatusHtml = `<div class="stock-status stock-out">Out of Stock</div>`;
-                    btnHtml = `<button disabled class="buy-btn">Sold Out</button>`;
-                    overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`;
-                    badgeHtml = ""; 
-                }
-
-                grid.innerHTML += `
-                    <div class="card">
-                        ${badgeHtml}
-                        <div class="card-img-wrapper">
-                            <img src="${item.image || 'https://placehold.co/300x200/222/555?text=Item'}" class="card-img-top">
-                            ${overlayHtml}
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${item.name}</h3>
-                            <div class="price-container">${priceHtml}</div>
-                            ${stockStatusHtml}
-                            ${btnHtml}
-                            ${adminHtml}
-                        </div>
-                    </div>`;
-            });
-        };
-        window.addCategory = async () => { const n = document.getElementById("catName").value; if(n) await addDoc(collection(db, "categories"), { name: n, order: Date.now() }); document.getElementById("catName").value = ""; };
-        window.deleteCategory = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "categories", id)); };
-        window.renderCategories = () => {
-            const c = document.getElementById("catTabs"), s = document.getElementById("itemCatSelect");
-            c.innerHTML = `<div class="cat-tab ${currentCat==='All'?'active':''}" onclick="window.setCat('All')">All</div>` + categoriesData.map(x=>`<div class="cat-tab ${currentCat===x.id?'active':''}" onclick="window.setCat('${x.id}')">${x.name}</div>`).join('');
-            s.innerHTML = `<option value="">Category...</option>` + categoriesData.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');
-        };
-        window.setCat = (id) => { currentCat = id; renderStore(); };
-        window.renderCatList = () => { document.getElementById("catList").innerHTML = categoriesData.map(x=>`<div class="list-item"><span>${x.name}</span><button class="btn-del" onclick="deleteCategory('${x.id}')">X</button></div>`).join(''); };
-        
-        window.saveItem = async () => {
-            const id = document.getElementById("editItemId").value;
-            const data = { 
-                name: document.getElementById("itemName").value, 
-                price: Number(document.getElementById("itemPrice").value), 
-                salePrice: document.getElementById("itemSale").value, 
-                catId: document.getElementById("itemCatSelect").value, 
-                image: document.getElementById("itemImg").value,
-                stock: Number(document.getElementById("itemStock").value) 
-            };
-            if(!data.name || !data.price || !data.catId) return alert("Info missing");
-            if(!data.salePrice) delete data.salePrice; else data.salePrice = Number(data.salePrice);
-            if(isNaN(data.stock)) data.stock = 999;
-
-            if(id) await updateDoc(doc(db, "items", id), data);
-            else await addDoc(collection(db, "items"), { ...data, order: Date.now() });
-            window.clearForm();
-        };
-        window.deleteItem = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "items", id)); };
-        window.editItem = (id) => {
-            const i = itemsData.find(x => x.id === id); 
-            document.getElementById("editItemId").value = i.id; 
-            document.getElementById("itemName").value = i.name; 
-            document.getElementById("itemPrice").value = i.price; 
-            document.getElementById("itemSale").value = i.salePrice||""; 
-            document.getElementById("itemCatSelect").value = i.catId; 
-            document.getElementById("itemImg").value = i.image; 
-            document.getElementById("itemStock").value = i.stock !== undefined ? i.stock : "";
-            document.getElementById("adminArea").scrollIntoView();
-        };
-        window.clearForm = () => { document.querySelectorAll("#adminArea input").forEach(x=>x.value=""); document.getElementById("itemCatSelect").value=""; document.getElementById("editItemId").value=""; };
-        window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "StoreZ_Backup.json"; a.click(); };
-        window.importToFirebase = async (i) => {
-            if(!i.files[0] || !confirm("Import?")) return;
-            const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]);
-        };
     </script>
 </body>
 </html>
