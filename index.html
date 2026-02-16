@@ -21,17 +21,10 @@
         * { box-sizing: border-box; }
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
+            background-color: var(--bg); color: var(--text); 
             margin: 0; padding: 0; user-select: none;
             padding-bottom: 100px;
         }
-
-        /* --- TICKER --- */
-        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 35px; border-bottom: 1px solid #1e293b; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; line-height: 35px; }
-        .ticker-item { display: inline-block; padding: 0 2rem; color: var(--text-muted); font-size: 0.8rem; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         /* --- NAVIGATION --- */
         nav { 
@@ -41,87 +34,70 @@
         }
         .logo { font-size: 1.5rem; font-weight: 800; cursor: pointer; color: #fff; }
         .logo span { color: var(--primary); }
+        #authBtn { display: none; background: var(--primary); border: none; color: #fff; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 
-        #authBtn { display: none; } /* Hidden by default */
-        .nav-btn { 
-            background: var(--primary); border: none; color: #fff; padding: 8px 16px; 
-            border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; 
-        }
-
-        /* --- SLIDESHOW HERO --- */
+        /* --- SLIDESHOW --- */
         .hero-container { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
         .promo-slider { 
             width: 100%; aspect-ratio: 16 / 9; background-color: #1e293b; 
             border-radius: 16px; overflow: hidden; position: relative;
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
         }
-        .slide { 
-            position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; 
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; cursor: pointer; }
         .slide.active { opacity: 1; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
         /* --- SELLERS --- */
-        .sellers-section { margin-top: 30px; text-align: center; }
-        .sellers-list { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .sellers-section { margin-top: 20px; text-align: center; }
+        .sellers-list { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .seller-card { 
             background: var(--card-bg); padding: 6px 14px; border-radius: 50px; 
             border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 8px;
-            text-decoration: none; color: inherit; font-size: 0.8rem; font-weight: 600;
+            text-decoration: none; color: inherit; font-size: 0.8rem;
         }
-        .seller-avatar { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+        .seller-avatar { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; background: #334155; }
 
-        /* --- GRID --- */
-        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        /* --- PRODUCT GRID --- */
+        .container { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
         .card { 
-            background: var(--card-bg); border-radius: 15px; overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; 
+            background: var(--card-bg); border-radius: 18px; overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+            display: flex; flex-direction: column;
         }
         .card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .card-img { width: 100%; height: 180px; object-fit: cover; }
-        .card-body { padding: 15px; }
+        .card-img { width: 100%; height: 200px; object-fit: cover; background: #0f172a; }
+        .card-body { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .price-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+        .price-now { font-size: 1.3rem; font-weight: 800; color: #fff; }
+        .price-old { font-size: 0.9rem; text-decoration: line-through; color: var(--text-muted); }
+        
+        .buy-btn { 
+            width: 100%; padding: 12px; background: var(--primary); border: none; 
+            color: white; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: auto;
+        }
+        .admin-del-btn { background: var(--danger); color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.7rem; }
 
         /* --- ADMIN --- */
-        #adminArea { 
-            padding: 30px; background: #020617; border-radius: 20px; 
-            margin-bottom: 40px; border: 1px solid var(--primary); display: none; 
-        }
-        .admin-box { background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+        #adminArea { padding: 20px; background: #020617; border-radius: 15px; margin-bottom: 30px; border: 1px solid var(--primary); display: none; }
+        .admin-box { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
         input { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; margin-bottom: 10px; }
-        .btn-sm { padding: 5px 10px; font-size: 0.7rem; cursor: pointer; }
-
-        /* --- MODAL --- */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; }
-
-        #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: var(--primary); padding: 15px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="ticker-wrap"><div class="ticker" id="tickerContent"></div></div>
-
     <nav>
         <div class="logo" onclick="logoTap()">Store<span>Z</span></div>
-        <div class="nav-links">
-            <button class="nav-btn" id="authBtn" onclick="handleAuth()">Admin Login</button>
-        </div>
+        <button id="authBtn" onclick="handleAuth()">Admin Login</button>
     </nav>
 
     <div class="hero-container">
-        <!-- 16:9 SLIDESHOW -->
         <div class="promo-slider" id="mainSlider">
-            <!-- Slides dynamically added here -->
-             <div class="slide active">
-                <div style="color: #444; text-align:center; width: 100%;">No Banner Uploaded</div>
-             </div>
+            <div class="slide active"><div style="color:#444; text-align:center; padding-top:20%;">Loading Banners...</div></div>
         </div>
-
-        <!-- LEGIT SELLERS -->
         <div class="sellers-section">
-            <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Legit Sellers</p>
+            <p style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Legit Sellers</p>
             <div class="sellers-list" id="sellersList"></div>
         </div>
     </div>
@@ -129,35 +105,26 @@
     <div class="container">
         <!-- ADMIN DASHBOARD -->
         <div id="adminArea">
-            <h2 style="margin-top:0">Admin Panel</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                
-                <!-- BANNER ADMIN -->
-                <div class="admin-box">
-                    <h4>Manage Banners (16:9)</h4>
-                    <input type="text" id="banUrl" placeholder="Image URL">
-                    <input type="text" id="banLink" placeholder="Redirect URL">
-                    <button class="nav-btn" style="width:100%" onclick="addBanner()">Add Slide</button>
-                    <div id="adminBanList" style="margin-top:10px; font-size: 0.8rem;"></div>
-                </div>
-
-                <!-- SELLER ADMIN -->
-                <div class="admin-box">
-                    <h4>Manage Sellers</h4>
-                    <input type="text" id="selName" placeholder="Seller Name">
-                    <input type="text" id="selFb" placeholder="FB Link">
-                    <input type="text" id="selImg" placeholder="Avatar URL">
-                    <button class="nav-btn" style="width:100%" onclick="addSeller()">Add Seller</button>
-                    <div id="adminSelList" style="margin-top:10px; font-size: 0.8rem;"></div>
-                </div>
-
-                <!-- PRODUCT ADMIN -->
+            <h3 style="margin-top:0">Admin Control</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                 <div class="admin-box">
                     <h4>Add Product</h4>
                     <input type="text" id="pName" placeholder="Product Name">
-                    <input type="number" id="pPrice" placeholder="Price">
+                    <input type="number" id="pPrice" placeholder="Original Price">
+                    <input type="number" id="pSale" placeholder="Sale Price (Optional)">
                     <input type="text" id="pImg" placeholder="Image URL">
-                    <button class="nav-btn" style="width:100%" onclick="addProduct()">Save Product</button>
+                    <button class="buy-btn" onclick="addProduct()">Save Product</button>
+                </div>
+                <div class="admin-box">
+                    <h4>Add Banner (16:9)</h4>
+                    <input type="text" id="banUrl" placeholder="Image URL">
+                    <button class="buy-btn" onclick="addBanner()">Add Slide</button>
+                </div>
+                <div class="admin-box">
+                    <h4>Add Seller</h4>
+                    <input type="text" id="selName" placeholder="Name">
+                    <input type="text" id="selFb" placeholder="FB Link">
+                    <button class="buy-btn" onclick="addSeller()">Add Seller</button>
                 </div>
             </div>
         </div>
@@ -165,7 +132,6 @@
         <div class="store-grid" id="storeGrid"></div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -184,14 +150,11 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // --- HIDDEN ADMIN LOGIC ---
+        // --- SECRET LOGO TAP ---
         let taps = 0;
         window.logoTap = () => {
             taps++;
-            if(taps >= 5) {
-                document.getElementById('authBtn').style.display = 'block';
-                alert("Admin access visible.");
-            }
+            if(taps === 5) { document.getElementById('authBtn').style.display = 'block'; }
         };
 
         window.handleAuth = () => {
@@ -205,121 +168,104 @@
         onAuthStateChanged(auth, (u) => {
             document.getElementById('adminArea').style.display = u ? 'block' : 'none';
             document.getElementById('authBtn').innerText = u ? 'Logout' : 'Admin Login';
+            renderProducts(); // Refresh to show delete buttons
         });
 
-        // --- BANNER SLIDESHOW LOGIC ---
-        let banners = [];
+        // --- BANNER SLIDESHOW (2s) ---
         let currentSlide = 0;
-
         onSnapshot(collection(db, "banners"), (snap) => {
-            banners = [];
-            snap.forEach(d => banners.push({id: d.id, ...d.data()}));
-            renderSlideshow();
-            renderAdminBanners();
-        });
-
-        function renderSlideshow() {
             const slider = document.getElementById('mainSlider');
-            if(banners.length === 0) return;
-            slider.innerHTML = banners.map((b, i) => `
-                <div class="slide ${i === 0 ? 'active' : ''}" onclick="window.open('${b.link}','_blank')">
-                    <img src="${b.url}">
-                </div>
-            `).join('');
-            
-            // Auto-rotate every 2s
-            clearInterval(window.slideInt);
-            if(banners.length > 1) {
+            const banners = [];
+            snap.forEach(d => banners.push(d.data()));
+            if(banners.length > 0) {
+                slider.innerHTML = banners.map((b, i) => `
+                    <div class="slide ${i === 0 ? 'active' : ''}"><img src="${b.url}"></div>
+                `).join('');
+                
+                clearInterval(window.slideInt);
                 window.slideInt = setInterval(() => {
                     const slides = document.querySelectorAll('.slide');
+                    if(slides.length < 2) return;
                     slides[currentSlide].classList.remove('active');
                     currentSlide = (currentSlide + 1) % slides.length;
                     slides[currentSlide].classList.add('active');
                 }, 2000);
             }
-        }
+        });
 
         window.addBanner = async () => {
             const url = document.getElementById('banUrl').value;
-            const link = document.getElementById('banLink').value;
-            if(url) {
-                await addDoc(collection(db, "banners"), { url, link, timestamp: Date.now() });
-                document.getElementById('banUrl').value = '';
-            }
+            if(url) await addDoc(collection(db, "banners"), { url });
+            document.getElementById('banUrl').value = '';
         };
 
-        function renderAdminBanners() {
-            const list = document.getElementById('adminBanList');
-            list.innerHTML = banners.map(b => `
-                <div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #333">
-                    <span style="overflow:hidden; max-width:150px">${b.url}</span>
-                    <button class="btn-sm" style="background:red; color:white" onclick="deleteBanner('${b.id}')">Del</button>
-                </div>
-            `).join('');
-        }
-        window.deleteBanner = async (id) => { await deleteDoc(doc(db, "banners", id)); };
-
-        // --- SELLER LOGIC ---
+        // --- SELLERS ---
         onSnapshot(collection(db, "sellers"), (snap) => {
             const list = document.getElementById('sellersList');
-            const adminList = document.getElementById('adminSelList');
-            let html = '', adminHtml = '';
+            list.innerHTML = '';
             snap.forEach(d => {
                 const s = d.data();
-                html += `
+                list.innerHTML += `
                     <a href="${s.fb}" target="_blank" class="seller-card">
-                        <img src="${s.img}" class="seller-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${s.name}'">
-                        <span>${s.name}</span>
-                        <span style="color:#38bdf8">✔</span>
-                    </a>
-                `;
-                adminHtml += `<div style="padding:5px">${s.name} <button class="btn-sm" onclick="deleteSeller('${d.id}')">X</button></div>`;
+                        <img src="https://ui-avatars.com/api/?name=${s.name}" class="seller-avatar">
+                        <span>${s.name}</span> <span style="color:#38bdf8">✔</span>
+                    </a>`;
             });
-            list.innerHTML = html;
-            adminList.innerHTML = adminHtml;
         });
 
         window.addSeller = async () => {
             const name = document.getElementById('selName').value;
             const fb = document.getElementById('selFb').value;
-            const img = document.getElementById('selImg').value;
-            if(name && fb) {
-                await addDoc(collection(db, "sellers"), { name, fb, img });
-                document.getElementById('selName').value = '';
-            }
+            if(name) await addDoc(collection(db, "sellers"), { name, fb });
+            document.getElementById('selName').value = '';
         };
-        window.deleteSeller = async (id) => { await deleteDoc(doc(db, "sellers", id)); };
 
-        // --- PRODUCT LOGIC ---
-        onSnapshot(query(collection(db, "items"), orderBy("price", "asc")), (snap) => {
-            const grid = document.getElementById('storeGrid');
-            grid.innerHTML = '';
-            snap.forEach(d => {
-                const p = d.data();
-                grid.innerHTML += `
-                    <div class="card">
-                        <img src="${p.img}" class="card-img">
-                        <div class="card-body">
-                            <h4 style="margin:0">${p.pName}</h4>
-                            <p style="color:var(--primary); font-weight:800">₱${p.price}</p>
-                            <button class="nav-btn" style="width:100%" onclick="alert('Chat support to buy')">Buy Now</button>
-                            ${auth.currentUser ? `<button class="btn-sm" style="margin-top:5px; width:100%" onclick="deleteProduct('${d.id}')">Delete</button>` : ''}
-                        </div>
-                    </div>
-                `;
+        // --- PRODUCTS FIX (Images & Sale Price) ---
+        function renderProducts() {
+            onSnapshot(query(collection(db, "items"), orderBy("order", "desc")), (snap) => {
+                const grid = document.getElementById('storeGrid');
+                grid.innerHTML = '';
+                snap.forEach(d => {
+                    const p = d.data();
+                    const hasSale = p.salePrice && p.salePrice < p.price;
+                    
+                    grid.innerHTML += `
+                        <div class="card">
+                            <img src="${p.image || p.img}" class="card-img" onerror="this.src='https://placehold.co/400x300/1e293b/475569?text=No+Image'">
+                            <div class="card-body">
+                                <h4 style="margin:0">${p.name || p.pName}</h4>
+                                <div class="price-row">
+                                    <span class="price-now">₱${hasSale ? p.salePrice : p.price}</span>
+                                    ${hasSale ? `<span class="price-old">₱${p.price}</span>` : ''}
+                                </div>
+                                <button class="buy-btn">Buy Now</button>
+                                ${auth.currentUser ? `<button class="admin-del-btn" onclick="deleteItem('${d.id}')">Delete Product</button>` : ''}
+                            </div>
+                        </div>`;
+                });
             });
-        });
+        }
+        renderProducts();
 
         window.addProduct = async () => {
-            const pName = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            const img = document.getElementById('pImg').value;
-            if(pName && price) {
-                await addDoc(collection(db, "items"), { pName, price: Number(price), img });
-                document.getElementById('pName').value = '';
+            const name = document.getElementById('pName').value;
+            const price = Number(document.getElementById('pPrice').value);
+            const salePrice = Number(document.getElementById('pSale').value);
+            const image = document.getElementById('pImg').value;
+
+            if(name && price) {
+                await addDoc(collection(db, "items"), {
+                    name, price, salePrice: salePrice || null, image, 
+                    order: Date.now()
+                });
+                alert("Product Added!");
+                document.querySelectorAll('#adminArea input').forEach(i => i.value = '');
             }
         };
-        window.deleteProduct = async (id) => { await deleteDoc(doc(db, "items", id)); };
+
+        window.deleteItem = async (id) => {
+            if(confirm("Delete this product?")) await deleteDoc(doc(db, "items", id));
+        };
 
     </script>
 </body>
