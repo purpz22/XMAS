@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PurpleZ Store</title>
+    <title>STOREZ</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -227,7 +227,7 @@
 
     <nav>
         <!-- Click Logo 5 times to reveal admin -->
-        <div class="logo" onclick="clickLogo()">PurpleZ</div>
+        <div class="logo" onclick="clickLogo()">STOREZ</div>
         <div class="nav-links">
             <button class="nav-btn" onclick="document.getElementById('proofSection').scrollIntoView({behavior: 'smooth'})">Proofs</button>
             <button class="nav-btn" onclick="openTrackModal()" style="border-color: var(--primary); color: var(--primary);">Track Order</button>
@@ -464,7 +464,7 @@
         function initCarousel(banners) {
             const container = document.getElementById('heroCarousel');
             if(banners.length === 0) {
-                container.innerHTML = `<img src="https://via.placeholder.com/1200x400/111/444?text=Welcome+to+PurpleZ" class="hero-img active">`;
+                container.innerHTML = `<img src="https://via.placeholder.com/1200x400/111/444?text=Welcome+to+STOREZ" class="hero-img active">`;
                 return;
             }
             container.innerHTML = banners.map((b, i) => `<img src="${b.image}" class="hero-img ${i===0?'active':''}">`).join('');
@@ -679,7 +679,7 @@
             snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
             window.buyersData = buyers; // Store for editing
             
-            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to PurpleZ Store! Best deals online.</div>`;
+            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to STOREZ Store! Best deals online.</div>`;
             else {
                 buyers.forEach(b => html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`);
                 // Duplicate for smooth loop if few items
