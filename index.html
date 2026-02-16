@@ -7,37 +7,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Minimalist Dark & White Theme */
             --bg: #000000;
             --surface: #111111;
             --surface-hover: #1a1a1a;
             --border: #333333;
-            
             --primary: #ffffff; 
             --primary-inv: #000000; 
-            
             --text: #ffffff; 
             --text-muted: #888888;
-            
             --danger: #ff3b30; 
             --success: #34c759;
             --warning: #ffcc00;
             --fb-blue: #1877F2;
-
             --chat-user: #222222; 
             --chat-admin: #000000;
             --modal-overlay: rgba(0, 0, 0, 0.9);
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            margin: 0; padding: 0; 
-            user-select: none; 
-            -webkit-font-smoothing: antialiased; 
-            padding-bottom: 80px; 
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; padding-bottom: 80px; }
 
         /* --- TICKER --- */
         .ticker-wrap { width: 100%; background: #000; border-bottom: 1px solid var(--border); overflow: hidden; height: 30px; position: relative; z-index: 50; }
@@ -47,153 +34,64 @@
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
         /* --- HERO CAROUSEL --- */
-        .hero-container {
-            width: 100%;
-            height: 200px;
-            position: relative;
-            overflow: hidden;
-            background: #0a0a0a;
-            border-bottom: 1px solid var(--border);
-        }
-        .hero-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0; left: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            filter: brightness(0.9);
-        }
+        .hero-container { width: 100%; height: 200px; position: relative; overflow: hidden; background: #0a0a0a; border-bottom: 1px solid var(--border); }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1s ease-in-out; filter: brightness(0.9); }
         .hero-img.active { opacity: 1; }
 
         /* --- NAVIGATION --- */
-        nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 25px; 
-            background: rgba(0, 0, 0, 0.85); 
-            border-bottom: 1px solid var(--border); 
-            position: sticky; top: 0; z-index: 100; 
-            backdrop-filter: blur(12px); 
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(0, 0, 0, 0.85); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
         .logo { font-size: 1.6rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; cursor: pointer; text-transform: uppercase; }
-        
         .nav-links { display: flex; gap: 10px; align-items: center; }
-        .nav-btn { 
-            background: transparent; 
-            border: 1px solid var(--border); 
-            color: #ccc; 
-            padding: 8px 16px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-size: 0.8rem; 
-            transition: all 0.2s; 
-            font-weight: 500; 
-            text-transform: uppercase;
-        }
+        .nav-btn { background: transparent; border: 1px solid var(--border); color: #ccc; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; font-weight: 500; text-transform: uppercase; }
         .nav-btn:hover { background: var(--primary); color: var(--primary-inv); border-color: var(--primary); }
-
         #secretLogin { position: absolute; top: 75px; right: 25px; display: none; z-index: 999; }
 
         /* --- LAYOUT --- */
         .container { padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
         
         /* --- SELLER PROFILE --- */
-        .seller-profile {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: var(--surface);
-            padding: 20px;
-            border: 1px solid var(--border);
-            margin-bottom: 40px;
-            border-radius: 0;
-        }
-        .seller-img {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-        }
+        .seller-profile { display: flex; align-items: center; gap: 20px; background: var(--surface); padding: 20px; border: 1px solid var(--border); margin-bottom: 40px; border-radius: 0; }
+        .seller-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
         .seller-info h2 { margin: 0 0 5px 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
         .seller-info p { margin: 0 0 10px 0; color: #888; font-size: 0.8rem; }
-        .fb-btn {
-            background: var(--fb-blue);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            text-decoration: none;
-            display: inline-block;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
+        .fb-btn { background: var(--fb-blue); color: white; border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; text-decoration: none; display: inline-block; cursor: pointer; transition: opacity 0.2s; }
         .fb-btn:hover { opacity: 0.8; }
 
-        /* --- TABS --- */
+        /* --- TABS & STORE --- */
         .cat-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
-        .cat-tab { 
-            background: var(--surface); 
-            border: 1px solid var(--border); 
-            color: var(--text-muted); 
-            padding: 10px 20px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            transition: all 0.2s; 
-            font-size: 0.85rem; 
-            text-transform: uppercase;
-            font-weight: 600;
-        }
+        .cat-tab { background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); padding: 10px 20px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; }
         .cat-tab:hover { border-color: #666; color: #fff; }
         .cat-tab.active { background: var(--primary); color: var(--primary-inv); border-color: var(--primary); }
 
-        /* --- STORE GRID --- */
         .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 60px; }
-        .card { 
-            background: var(--surface); 
-            border-radius: 0; 
-            overflow: hidden; 
-            border: 1px solid var(--border); 
-            display: flex; flex-direction: column; 
-            transition: transform 0.2s, border-color 0.2s; 
-            position: relative; 
-        }
+        .card { background: var(--surface); border-radius: 0; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; position: relative; }
         .card:hover { transform: translateY(-3px); border-color: #555; }
-        
         .card-img-wrapper { position: relative; width: 100%; height: 200px; background: #0a0a0a; }
         .card-img-top { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
         .sold-out-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; text-transform: uppercase; font-size: 1rem; letter-spacing: 2px;}
-
         .card-body { padding: 15px; text-align: left; flex-grow: 1; display: flex; flex-direction: column; }
         .card-title { margin: 0 0 5px 0; color: #fff; font-size: 1rem; font-weight: 600; }
-        
         .price-container { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
         .current-price { color: var(--primary); font-weight: 700; font-size: 1.1rem; }
         .old-price { text-decoration: line-through; color: #555; font-size: 0.9rem; }
-        
         .stock-status { font-size: 0.75rem; margin-bottom: 15px; font-weight: 400; color: #666; }
         .stock-out { color: var(--danger); }
-
         .sale-badge { position: absolute; top: 10px; left: 10px; background: var(--primary); color: black; padding: 2px 8px; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; z-index: 10; }
-
         .buy-btn { margin-top: auto; display: block; width: 100%; padding: 12px 0; background: var(--primary); color: black; border: none; font-weight: 700; cursor: pointer; transition: opacity 0.2s; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;}
         .buy-btn:hover { opacity: 0.8; }
         .buy-btn:disabled { background: #222; color: #555; cursor: not-allowed; }
 
-        /* --- PROOF GALLERY --- */
+        /* --- PROOFS --- */
         .section-title { text-align: center; color: var(--primary); margin: 60px 0 30px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 1.2rem; font-weight: 300; border-top: 1px solid #222; padding-top: 40px; }
         .proof-grid { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: none; }
         .proof-grid::-webkit-scrollbar { display: none; }
-        
         .proof-card { min-width: 160px; max-width: 160px; background: var(--surface); border: 1px solid var(--border); flex-shrink: 0; cursor: pointer; transition: opacity 0.2s;}
         .proof-card:hover { opacity: 0.8; }
         .proof-img { width: 100%; height: 200px; object-fit: cover; }
         .proof-details { padding: 8px; border-top: 1px solid #222; }
         .proof-caption { font-size: 0.7rem; color: #ccc; margin-bottom: 2px; }
 
-        /* --- ADMIN PANEL --- */
+        /* --- ADMIN --- */
         #adminArea { display: none; margin-top: 20px; border: 1px solid #333; padding: 0; background: #080808; }
         .admin-section { padding: 20px; border-bottom: 1px solid #222; }
         .admin-header { color: #fff; margin: 0 0 15px 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -208,52 +106,38 @@
         .btn-edit { background: #444; color: white; width: auto; padding: 4px 8px; font-size: 0.7rem; margin-right: 5px; }
         .btn-io { background-color: #222; color: #ccc; border: 1px solid #333; }
         
-        /* --- CHAT SYSTEM --- */
+        /* --- CHAT --- */
         .chat-container { display: flex; flex-direction: column; height: 400px; }
         .chat-box { flex-grow: 1; background: #0a0a0a; border: 1px solid var(--border); overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        
         .message { padding: 10px 14px; border-radius: 4px; font-size: 0.9rem; max-width: 85%; word-wrap: break-word; line-height: 1.5; }
-        
         .msg-system { align-self: center; color: #666; font-size: 0.75rem; text-transform: uppercase; margin: 10px 0; }
         .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border: 1px solid #333; }
         .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border: 1px solid #333; }
         .msg-receipt { align-self: center; background: #000; border: 1px dashed #444; color: #fff; text-align: center; width: 90%; font-family: monospace; font-size: 0.8rem; }
-        .msg-cancelled { align-self: center; color: var(--danger); border: 1px solid var(--danger); padding: 5px 20px; font-size: 0.8rem; text-transform: uppercase; }
-        
         .msg-image { max-width: 200px; border: 1px solid #333; margin-top: 5px; cursor: pointer; }
-
         .chat-input-area { display: flex; gap: 10px; align-items: center; border-top: 1px solid #222; padding-top: 15px; }
         .chat-input-area input { flex-grow: 1; padding: 10px; border: 1px solid #333; background: #111; color: white; }
         .chat-input-area button { width: auto; margin: 0; }
-        
         .upload-label { cursor: pointer; font-size: 1.2rem; color: #666; padding: 0 5px; }
         .upload-label:hover { color: #fff; }
 
-        /* MINIMIZED BUBBLE */
         #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: #fff; color: #000; padding: 15px 25px; font-weight: bold; cursor: pointer; display: none; z-index: 2000; border: 1px solid #000; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;}
         #minimizedChat.new-msg { background: var(--danger); color: white; }
 
-        /* Admin Chat List */
         .admin-chat-item { background: #111; padding: 10px; margin-bottom: 5px; border: 1px solid #222; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .admin-chat-item:hover { background: #1a1a1a; }
         .admin-chat-item.active { border-color: #fff; background: #000; }
         .badge { padding: 2px 6px; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; border: 1px solid #333; }
         .badge.open { color: #fff; border-color: #fff; }
         .badge.done { color: var(--success); border-color: var(--success); }
-        .badge.cancelled { color: var(--danger); border-color: var(--danger); }
 
-        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
         .modal-box { background: #000; padding: 30px; border: 1px solid #333; width: 90%; max-width: 450px; text-align: center; }
         .list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; font-size: 0.8rem; align-items: center;}
-
         .copy-btn { font-size: 0.6rem; background: #222; border: 1px solid #333; color: white; padding: 2px 6px; cursor: pointer; margin-left: 5px; text-transform: uppercase; }
-        .copy-btn:hover { background: #fff; color: #000; }
-
-        /* IMAGE VIEWER */
+        
         #imageViewerModal { z-index: 5000; background: rgba(0,0,0,0.95); }
 
-        /* Responsive */
         @media (max-width: 600px) {
             .hero-container { height: 160px; }
             .nav-links button span { display: none; }
@@ -272,12 +156,9 @@
     <div class="ticker-wrap"><div class="ticker" id="tickerContent"></div></div>
 
     <!-- HEADER CAROUSEL -->
-    <div class="hero-container" id="heroCarousel">
-        <!-- Images injected via JS -->
-    </div>
+    <div class="hero-container" id="heroCarousel"></div>
 
     <nav>
-        <!-- Click Logo 5 times to reveal admin -->
         <div class="logo" onclick="clickLogo()">STOREZ</div>
         <div class="nav-links">
             <button class="nav-btn" onclick="document.getElementById('proofSection').scrollIntoView({behavior: 'smooth'})">Proofs</button>
@@ -290,7 +171,7 @@
 
     <div class="container">
         
-        <!-- SELLER PROFILE (NEW) -->
+        <!-- SELLER PROFILE -->
         <div id="sellerProfileSection" class="seller-profile" style="display:none;">
             <img id="publicSellerImg" src="https://via.placeholder.com/100" class="seller-img">
             <div class="seller-info">
@@ -306,7 +187,7 @@
                 <h2 style="color:#fff; margin:0; font-size:1.2rem; text-transform:uppercase;">Admin Control</h2>
             </div>
             
-            <!-- SELLER PROFILE MANAGER (NEW) -->
+            <!-- SELLER PROFILE MANAGER -->
             <div class="admin-section">
                 <h4 class="admin-header">Seller Profile (FB & Pic)</h4>
                 <div class="form-row">
@@ -353,27 +234,26 @@
                         </div>
                         <div style="display:flex; gap:10px; margin-top:10px;">
                             <button class="btn btn-save" style="background:#fff; color:black;" onclick="sendReceipt()">Send Receipt</button>
-                            <button class="btn btn-del" onclick="closeCurrentChat()">Delete Chat</button>
+                            <button class="btn btn-del" onclick="closeCurrentChat()">🚫 Cancel & Delete Order</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TICKER MANAGER -->
+            <!-- TICKER & PRODUCT MANAGERS -->
             <div class="admin-section">
                 <h4 class="admin-header">Recent Buyers</h4>
                 <input type="hidden" id="editTickerId">
                 <div class="form-row">
                     <input type="text" id="buyerName" placeholder="Buyer Name">
                     <input type="text" id="buyerItem" placeholder="Item Bought">
-                    <button class="btn btn-save" style="width:auto;" id="tickerBtn" onclick="saveBuyer()">Add to Ticker</button>
+                    <button class="btn btn-save" style="width:auto;" id="tickerBtn" onclick="saveBuyer()">Add</button>
                 </div>
                 <div id="buyerList" style="margin-top:10px; max-height: 150px; overflow-y:auto; border:1px solid #333; padding:5px;"></div>
             </div>
 
-            <!-- PRODUCT MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">Product Manager</h4>
+                <h4 class="admin-header">Products</h4>
                 <input type="hidden" id="editItemId">
                 <div class="form-row">
                     <div class="form-group"><label>Name</label><input type="text" id="itemName"></div>
@@ -381,39 +261,31 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Price</label><input type="number" id="itemPrice"></div>
-                    <div class="form-group"><label>Sale Price (Optional)</label><input type="number" id="itemSale"></div>
-                </div>
-                <div class="form-row">
+                    <div class="form-group"><label>Sale</label><input type="number" id="itemSale"></div>
                     <div class="form-group"><label>Stock</label><input type="number" id="itemStock"></div>
-                    <div class="form-group"><label>Image URL</label><input type="text" id="itemImg"></div>
                 </div>
+                <div class="form-row"><div class="form-group"><label>Image</label><input type="text" id="itemImg"></div></div>
                 <button class="btn btn-save" onclick="saveItem()">Save Product</button>
                 <button class="btn" style="background:#222; color:#888;" onclick="clearForm()">Clear</button>
             </div>
 
-            <!-- PROOF MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">Proof Uploads</h4>
+                <h4 class="admin-header">Proofs</h4>
                 <div class="form-row">
                     <div class="form-group"><label>Caption</label><input type="text" id="proofCaption"></div>
-                    <div class="form-group"><label>Date</label><input type="date" id="proofDate"></div>
                     <div class="form-group"><label>Image</label><input type="file" id="proofFileInput" accept="image/*"></div>
                 </div>
                 <button class="btn btn-save" onclick="uploadProof()">Upload</button>
             </div>
 
-            <!-- SYSTEM TOOLS -->
             <div class="admin-section" style="border-bottom:none;">
                 <h4 class="admin-header">Settings</h4>
                 <div style="display:flex; gap:10px; margin-bottom:20px;">
-                    <button class="btn btn-io" onclick="exportFromFirebase()">Backup Data</button>
-                    <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">Restore Data</button>
+                    <button class="btn btn-io" onclick="exportFromFirebase()">Backup</button>
+                    <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">Restore</button>
                     <input type="file" id="jsonInput" style="display:none;" accept=".json" onchange="importToFirebase(this)">
                 </div>
-                <div class="form-row">
-                    <input type="text" id="catName" placeholder="New Category">
-                    <button class="btn btn-save" style="width:auto;" onclick="addCategory()">Add</button>
-                </div>
+                <div class="form-row"><input type="text" id="catName" placeholder="New Category"><button class="btn btn-save" style="width:auto;" onclick="addCategory()">Add</button></div>
                 <div id="catList" style="margin-top:15px;"></div>
             </div>
         </div>
@@ -424,20 +296,14 @@
              <p style="text-align:center; width:100%; color:#444; margin-top:50px; font-size:0.8rem; text-transform:uppercase;">Loading Inventory...</p>
         </div>
 
-        <!-- PROOF GALLERY SECTION -->
         <h3 class="section-title" id="proofSection">Verified Transactions</h3>
-        <div class="proof-grid" id="proofGrid">
-            <p style="text-align:center; width:100%; color:#444; font-size:0.8rem;">No proofs yet.</p>
-        </div>
+        <div class="proof-grid" id="proofGrid"><p style="text-align:center; width:100%; color:#444; font-size:0.8rem;">No proofs yet.</p></div>
 
     </div>
 
-    <!-- MINIMIZED CHAT BUBBLE -->
-    <div id="minimizedChat" onclick="maximizeChat()" style="display:none;">
-        <span style="font-size:1.2rem; margin-right:5px;">💬</span> <span id="minimizedText">Chat</span>
-    </div>
+    <!-- CHAT MODALS -->
+    <div id="minimizedChat" onclick="maximizeChat()" style="display:none;"><span style="font-size:1.2rem; margin-right:5px;">💬</span> <span id="minimizedText">Chat</span></div>
 
-    <!-- CUSTOMER ORDER MODAL -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-box">
             <h3 style="color:#fff; margin-bottom:5px; text-transform:uppercase;" id="modalItemName">Confirm Order</h3>
@@ -448,7 +314,6 @@
         </div>
     </div>
 
-    <!-- TRACK ORDER MODAL -->
     <div id="trackModal" class="modal-overlay">
         <div class="modal-box">
             <h3 style="color:#fff; margin-bottom:5px; text-transform:uppercase;">Track Order</h3>
@@ -459,7 +324,6 @@
         </div>
     </div>
 
-    <!-- CUSTOMER CHAT MODAL -->
     <div id="customerChatModal" class="modal-overlay">
         <div class="modal-box" style="max-width: 500px; height: 85vh; display:flex; flex-direction:column; padding:0; overflow:hidden;">
             <div style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:#111; border-bottom:1px solid #333;">
@@ -475,17 +339,14 @@
                     <button class="btn" onclick="closeModal('customerChatModal')" style="background:transparent; color:#fff; font-size:1.2rem; padding:0 10px;">&times;</button>
                 </div>
             </div>
-            
             <div id="customerMessages" class="chat-box" style="border:none; border-radius:0;"></div>
-            
             <div style="background:#0a0a0a; padding:10px; border-top:1px solid #222;">
                  <div style="text-align:right; margin-bottom:5px;">
-                    <button onclick="cancelOrder()" style="background:transparent; border:none; color:var(--danger); font-size:0.7rem; cursor:pointer; text-transform:uppercase; letter-spacing:1px;">Cancel Order</button>
+                    <button onclick="cancelOrder()" style="background:transparent; border:none; color:var(--danger); font-size:0.7rem; cursor:pointer; text-transform:uppercase; letter-spacing:1px;">❌ Cancel & Delete Order</button>
                  </div>
                  <div class="chat-input-area" style="padding-top:0; border:none;">
                     <label for="customerImgInput" class="upload-label">📷</label>
                     <input type="file" id="customerImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'user')">
-                    
                     <input type="text" id="customerMsgInput" placeholder="Type message..." onkeypress="handleEnter(event, sendCustomerMessage)">
                     <button class="btn btn-save" style="width: auto; padding: 8px 15px;" onclick="sendCustomerMessage()">Send</button>
                 </div>
@@ -493,13 +354,11 @@
         </div>
     </div>
 
-    <!-- IMAGE VIEWER MODAL (LIGHTBOX) -->
     <div id="imageViewerModal" class="modal-overlay" onclick="closeImageViewer()">
         <span style="position:absolute; top:20px; right:30px; font-size:30px; color:white; cursor:pointer;">&times;</span>
         <img class="modal-content" id="fullScreenImage" style="max-width:95%; max-height:90%; border:1px solid #333;">
     </div>
 
-    <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, writeBatch, arrayUnion, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -528,10 +387,7 @@
         let currentBannerIndex = 0;
         function initCarousel(banners) {
             const container = document.getElementById('heroCarousel');
-            if(banners.length === 0) {
-                container.innerHTML = `<img src="https://via.placeholder.com/1200x300/111/444?text=STOREZ" class="hero-img active">`;
-                return;
-            }
+            if(banners.length === 0) { container.innerHTML = `<img src="https://via.placeholder.com/1200x300/111/444?text=STOREZ" class="hero-img active">`; return; }
             container.innerHTML = banners.map((b, i) => `<img src="${b.image}" class="hero-img ${i===0?'active':''}">`).join('');
             if(window.carouselInterval) clearInterval(window.carouselInterval);
             if(banners.length > 1) {
@@ -545,18 +401,16 @@
             }
         }
         onSnapshot(query(collection(db, "banners"), orderBy("timestamp", "desc")), (snap) => {
-            const banners = [];
-            const adminList = document.getElementById("bannerListAdmin");
+            const banners = []; const adminList = document.getElementById("bannerListAdmin");
             if(adminList) adminList.innerHTML = "";
             snap.forEach(d => {
-                const b = d.data();
-                banners.push(b);
+                const b = d.data(); banners.push(b);
                 if(isAdmin && adminList) adminList.innerHTML += `<div class="list-item"><img src="${b.image}" height="30"> <button class="btn-del" onclick="deleteBanner('${d.id}')">Del</button></div>`;
             });
             initCarousel(banners);
         });
 
-        // --- SELLER PROFILE LOGIC ---
+        // --- SELLER PROFILE ---
         onSnapshot(doc(db, "settings", "seller"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
@@ -564,73 +418,43 @@
                 if(data.name) document.getElementById("publicSellerName").innerText = data.name;
                 if(data.fbLink) document.getElementById("publicSellerFb").href = data.fbLink;
                 if(data.image) document.getElementById("publicSellerImg").src = data.image;
-
-                // Pre-fill Admin
-                if(isAdmin) {
-                    document.getElementById("adminSellerName").value = data.name || "";
-                    document.getElementById("adminSellerFb").value = data.fbLink || "";
-                }
+                if(isAdmin) { document.getElementById("adminSellerName").value = data.name || ""; document.getElementById("adminSellerFb").value = data.fbLink || ""; }
             }
         });
-
         window.saveProfile = async () => {
             const name = document.getElementById("adminSellerName").value;
             const fb = document.getElementById("adminSellerFb").value;
             const file = document.getElementById("adminSellerImg").files[0];
-            
             let data = { name: name, fbLink: fb };
-            if(file) {
-                const imgData = await compressImage(file, 400); // 400px is enough for profile
-                data.image = imgData;
-            } else {
-                // If no new image, merge with old data via setDoc(..., {merge:true})
-            }
-            
-            await setDoc(doc(db, "settings", "seller"), data, { merge: true });
-            alert("Profile Saved!");
+            if(file) { const imgData = await compressImage(file, 400); data.image = imgData; }
+            await setDoc(doc(db, "settings", "seller"), data, { merge: true }); alert("Profile Saved!");
         };
 
-        // --- HIGH QUALITY COMPRESSION ---
-        async function compressImage(file, maxWidth = 1280) { // Changed to 1280 (HD)
+        // --- COMPRESSION ---
+        async function compressImage(file, maxWidth = 1280) {
             return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
+                const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
+                    const img = new Image(); img.src = event.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        if (width > maxWidth) {
-                            height *= maxWidth / width;
-                            width = maxWidth;
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
+                        let width = img.width; let height = img.height;
+                        if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+                        canvas.width = width; canvas.height = height;
                         const ctx = canvas.getContext('2d');
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.imageSmoothingQuality = 'high';
+                        ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.90)); // 90% Quality
+                        resolve(canvas.toDataURL('image/jpeg', 0.90));
                     }
                 }
             });
         }
-
         window.uploadBanner = async () => {
-            const file = document.getElementById("bannerInput").files[0];
-            if(!file) return alert("Select an image first");
+            const file = document.getElementById("bannerInput").files[0]; if(!file) return alert("Select Image");
             const btn = document.querySelector("button[onclick='uploadBanner()']"); btn.innerText = "...";
-            try {
-                const imgData = await compressImage(file, 1500); // Higher res for banners
-                await addDoc(collection(db, "banners"), { image: imgData, timestamp: Date.now() });
-                document.getElementById("bannerInput").value = ""; alert("Done");
-            } catch(e) { alert("Failed"); }
-            btn.innerText = "Upload Banner";
+            try { const imgData = await compressImage(file, 1500); await addDoc(collection(db, "banners"), { image: imgData, timestamp: Date.now() }); document.getElementById("bannerInput").value = ""; alert("Done"); } catch(e) { alert("Failed"); } btn.innerText = "Upload Banner";
         }
-        window.deleteBanner = async (id) => { if(confirm("Remove banner?")) await deleteDoc(doc(db, "banners", id)); }
-
+        window.deleteBanner = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "banners", id)); }
 
         // --- SESSION ---
         async function checkSavedSession() {
@@ -638,67 +462,27 @@
             if(savedId) {
                 try {
                     const docSnap = await getDoc(doc(db, "chats", savedId));
-                    if (docSnap.exists() && docSnap.data().status !== 'done' && docSnap.data().status !== 'cancelled') {
-                        resumeCustomerChat(savedId);
-                    } else {
-                        localStorage.removeItem('storez_active_chat');
-                    }
-                } catch (e) { console.error(e); }
+                    if (docSnap.exists() && docSnap.data().status !== 'done') resumeCustomerChat(savedId);
+                    else localStorage.removeItem('storez_active_chat');
+                } catch (e) { }
             }
         }
         window.addEventListener('DOMContentLoaded', checkSavedSession);
-
-        window.minimizeChat = () => {
-            isChatMinimized = true;
-            document.getElementById('customerChatModal').style.display = 'none';
-            document.getElementById('minimizedChat').style.display = 'flex';
-        };
-
-        window.maximizeChat = () => {
-            isChatMinimized = false;
-            document.getElementById('customerChatModal').style.display = 'flex';
-            document.getElementById('minimizedChat').style.display = 'none';
-            document.getElementById('minimizedChat').classList.remove('new-msg'); 
-            const container = document.getElementById("customerMessages");
-            container.scrollTop = container.scrollHeight;
-        };
-
-        // --- HELPERS ---
-        window.openImageViewer = (src) => {
-            const modal = document.getElementById("imageViewerModal");
-            const img = document.getElementById("fullScreenImage");
-            img.src = src;
-            modal.style.display = "flex";
-        };
+        window.minimizeChat = () => { isChatMinimized = true; document.getElementById('customerChatModal').style.display = 'none'; document.getElementById('minimizedChat').style.display = 'flex'; };
+        window.maximizeChat = () => { isChatMinimized = false; document.getElementById('customerChatModal').style.display = 'flex'; document.getElementById('minimizedChat').style.display = 'none'; document.getElementById('minimizedChat').classList.remove('new-msg'); const c = document.getElementById("customerMessages"); c.scrollTop = c.scrollHeight; };
+        window.openImageViewer = (src) => { document.getElementById("fullScreenImage").src = src; document.getElementById("imageViewerModal").style.display = "flex"; };
         window.closeImageViewer = () => document.getElementById("imageViewerModal").style.display = "none";
-
         window.handleImageUpload = async (input, sender) => {
-            const file = input.files[0];
-            if(!file) return;
-            const dataUrl = await compressImage(file, 1200); // 1200px for chat images
+            const file = input.files[0]; if(!file) return;
+            const dataUrl = await compressImage(file, 1200);
             const chatId = sender === 'user' ? activeCustomerChatId : activeAdminChatId;
-            if(chatId) {
-                await updateDoc(doc(db, "chats", chatId), { 
-                    messages: arrayUnion({ sender: sender, image: dataUrl, text: "Sent an image", time: Date.now() }) 
-                });
-            }
+            if(chatId) await updateDoc(doc(db, "chats", chatId), { messages: arrayUnion({ sender: sender, image: dataUrl, text: "Sent an image", time: Date.now() }) });
             input.value = "";
         };
 
         // --- AUTH ---
-        window.clickLogo = () => {
-            logoClicks++;
-            clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => { logoClicks = 0; }, 2000); 
-            if(logoClicks >= 5) { document.getElementById("secretLogin").style.display = "block"; logoClicks = 0; }
-        };
-        window.handleAuth = () => {
-            if (auth.currentUser) signOut(auth).then(() => window.location.reload());
-            else {
-                const e = prompt("Email:"); if(!e) return;
-                const p = prompt("Password:"); if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert("Error: " + err.message));
-            }
-        };
+        window.clickLogo = () => { logoClicks++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { logoClicks = 0; }, 2000); if(logoClicks >= 5) { document.getElementById("secretLogin").style.display = "block"; logoClicks = 0; } };
+        window.handleAuth = () => { if (auth.currentUser) signOut(auth).then(() => window.location.reload()); else { const e = prompt("Email:"); if(!e) return; const p = prompt("Password:"); if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert("Error: " + err.message)); } };
         onAuthStateChanged(auth, (user) => {
             isAdmin = !!user;
             document.getElementById("authBtn").innerText = user ? "Exit" : "Admin";
@@ -708,141 +492,77 @@
         });
 
         // --- DATA ---
-        onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => {
-            categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() })); renderCategories(); renderCatList();
-        });
-        onSnapshot(query(collection(db, "items"), orderBy("order", "asc")), (snap) => {
-            itemsData = []; snap.forEach(d => itemsData.push({ id: d.id, ...d.data() })); renderStore();
-        });
-        
-        // --- PROOFS (Updated with Higher Quality Display) ---
+        onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => { categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() })); renderCategories(); renderCatList(); });
+        onSnapshot(query(collection(db, "items"), orderBy("order", "asc")), (snap) => { itemsData = []; snap.forEach(d => itemsData.push({ id: d.id, ...d.data() })); renderStore(); });
         onSnapshot(query(collection(db, "proofs"), orderBy("timestamp", "desc")), (snap) => {
-            const grid = document.getElementById("proofGrid");
-            grid.innerHTML = "";
+            const grid = document.getElementById("proofGrid"); grid.innerHTML = "";
             if(snap.empty) { grid.innerHTML = "<p style='color:#444; width:100%; text-align:center; font-size:0.8rem;'>No proofs.</p>"; }
-            snap.forEach(d => {
-                const p = d.data();
-                grid.innerHTML += `<div class="proof-card" onclick="openImageViewer('${p.image}')"><img src="${p.image}" class="proof-img"><div class="proof-details"><div class="proof-caption">${p.caption}</div></div></div>`;
-            });
+            snap.forEach(d => { const p = d.data(); grid.innerHTML += `<div class="proof-card" onclick="openImageViewer('${p.image}')"><img src="${p.image}" class="proof-img"><div class="proof-details"><div class="proof-caption">${p.caption}</div></div></div>`; });
+        });
+        onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
+            let html = "", buyers = []; snap.forEach(d => buyers.push({id: d.id, ...d.data()})); window.buyersData = buyers;
+            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to STOREZ</div>`;
+            else { buyers.forEach(b => html += `<div class="ticker-item">⚡ <b>${b.name}</b> bought <b>${b.item}</b></div>`); if(buyers.length < 5) html += html; }
+            document.getElementById("tickerContent").innerHTML = html; if(isAdmin) renderBuyerList();
         });
 
-        // --- TICKER ---
-        onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
-            let html = "", buyers = [];
-            snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
-            window.buyersData = buyers;
-            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to STOREZ</div>`;
-            else {
-                buyers.forEach(b => html += `<div class="ticker-item">⚡ <b>${b.name}</b> bought <b>${b.item}</b></div>`);
-                if(buyers.length < 5) html += html; 
-            }
-            document.getElementById("tickerContent").innerHTML = html;
-            if(isAdmin) renderBuyerList();
-        });
-        window.saveBuyer = async () => {
-            const id = document.getElementById("editTickerId").value;
-            const name = document.getElementById("buyerName").value;
-            const item = document.getElementById("buyerItem").value;
-            if(name && item) {
-                if(id) await updateDoc(doc(db, "buyers", id), { name, item });
-                else await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() });
-                document.getElementById("buyerName").value = ""; document.getElementById("buyerItem").value = ""; document.getElementById("editTickerId").value = "";
-            }
-        };
-        window.editBuyer = (id) => {
-            const b = window.buyersData.find(x => x.id === id);
-            if(b) { document.getElementById("buyerName").value = b.name; document.getElementById("buyerItem").value = b.item; document.getElementById("editTickerId").value = b.id; }
-        };
+        window.saveBuyer = async () => { const id = document.getElementById("editTickerId").value; const name = document.getElementById("buyerName").value; const item = document.getElementById("buyerItem").value; if(name && item) { if(id) await updateDoc(doc(db, "buyers", id), { name, item }); else await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() }); document.getElementById("buyerName").value = ""; document.getElementById("buyerItem").value = ""; document.getElementById("editTickerId").value = ""; } };
+        window.editBuyer = (id) => { const b = window.buyersData.find(x => x.id === id); if(b) { document.getElementById("buyerName").value = b.name; document.getElementById("buyerItem").value = b.item; document.getElementById("editTickerId").value = b.id; } };
         window.deleteBuyer = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "buyers", id)); };
-        function renderBuyerList() {
-            if(!window.buyersData) return;
-            document.getElementById("buyerList").innerHTML = window.buyersData.map(b => 
-                `<div class="list-item" style="font-size:0.75rem;"><span>${b.name} - ${b.item}</span><div><button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button><button class="btn-del" onclick="deleteBuyer('${b.id}')">X</button></div></div>`
-            ).join('');
-        }
+        function renderBuyerList() { if(!window.buyersData) return; document.getElementById("buyerList").innerHTML = window.buyersData.map(b => `<div class="list-item" style="font-size:0.75rem;"><span>${b.name} - ${b.item}</span><div><button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button><button class="btn-del" onclick="deleteBuyer('${b.id}')">X</button></div></div>`).join(''); }
 
         window.uploadProof = async () => {
-            const caption = document.getElementById("proofCaption").value;
-            const fileInput = document.getElementById("proofFileInput");
+            const caption = document.getElementById("proofCaption").value; const fileInput = document.getElementById("proofFileInput");
             if(!fileInput.files[0] || !caption) return alert("Image & Caption needed");
             const btn = document.querySelector("button[onclick='uploadProof()']"); btn.innerText = "...";
-            try {
-                const imgData = await compressImage(fileInput.files[0], 1200); // 1200px High Quality Proofs
-                await addDoc(collection(db, "proofs"), { caption, image: imgData, timestamp: Date.now() });
-                alert("Done"); fileInput.value = "";
-            } catch (e) { alert(e.message); } 
-            finally { btn.innerText = "Upload"; }
+            try { const imgData = await compressImage(fileInput.files[0], 1200); await addDoc(collection(db, "proofs"), { caption, image: imgData, timestamp: Date.now() }); alert("Done"); fileInput.value = ""; } catch (e) { alert(e.message); } finally { btn.innerText = "Upload"; }
         };
 
-        // --- TRACKING ---
+        // --- TRACKING & CANCEL ---
         window.openTrackModal = () => { document.getElementById("trackModal").style.display = "flex"; document.getElementById("trackInputId").focus(); }
         window.recoverChat = async () => {
-            const inputId = document.getElementById("trackInputId").value.trim();
-            if(!inputId) return;
+            const inputId = document.getElementById("trackInputId").value.trim(); if(!inputId) return;
             const docSnap = await getDoc(doc(db, "chats", inputId));
-            if(docSnap.exists()) {
-                localStorage.setItem('storez_active_chat', inputId);
-                closeModal("trackModal"); resumeCustomerChat(inputId);
-            } else alert("Invalid ID");
+            if(docSnap.exists()) { localStorage.setItem('storez_active_chat', inputId); closeModal("trackModal"); resumeCustomerChat(inputId); } else alert("Invalid ID");
         }
         window.copyChatId = () => { if(activeCustomerChatId) { navigator.clipboard.writeText(activeCustomerChatId); alert("Copied ID"); } }
+        
         window.cancelOrder = async () => {
             if(!activeCustomerChatId) return;
-            if(confirm("Cancel order?")) {
-                await updateDoc(doc(db, "chats", activeCustomerChatId), { status: 'cancelled', messages: arrayUnion({ sender: 'system', text: '⚠️ CANCELLED', time: Date.now() }) });
+            if(confirm("Permanently Cancel & Delete this order?")) {
+                await deleteDoc(doc(db, "chats", activeCustomerChatId));
+                localStorage.removeItem('storez_active_chat');
+                window.location.reload();
             }
         };
 
-        // --- BUY LOGIC ---
         window.openBuyModal = (itemJson) => {
             if(activeCustomerChatId && confirm("Close active chat?")) localStorage.removeItem('storez_active_chat');
             else if(activeCustomerChatId) return;
-            const item = JSON.parse(decodeURIComponent(itemJson));
-            currentItemBuying = item;
-            document.getElementById("modalItemName").innerText = item.name;
-            document.getElementById("customerMlbbId").value = "";
-            document.getElementById("orderModal").style.display = "flex";
-            document.getElementById("customerMlbbId").focus();
+            const item = JSON.parse(decodeURIComponent(itemJson)); currentItemBuying = item;
+            document.getElementById("modalItemName").innerText = item.name; document.getElementById("customerMlbbId").value = ""; document.getElementById("orderModal").style.display = "flex"; document.getElementById("customerMlbbId").focus();
         };
         window.closeModal = (id) => document.getElementById(id).style.display = "none";
         window.submitOrder = async () => {
-            const mlbbId = document.getElementById("customerMlbbId").value.trim();
-            if(!mlbbId) return;
+            const mlbbId = document.getElementById("customerMlbbId").value.trim(); if(!mlbbId) return;
             const btn = document.querySelector("#orderModal .btn-save"); btn.innerText = "..."; btn.disabled = true;
             try {
                 let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
-                const chatRef = await addDoc(collection(db, "chats"), {
-                    mlbbId: mlbbId, itemName: currentItemBuying.name, itemPrice: finalPrice, status: 'open', timestamp: Date.now(),
-                    messages: [{ sender: 'system', text: `New: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}`, time: Date.now() }]
-                });
-                localStorage.setItem('storez_active_chat', chatRef.id);
-                closeModal("orderModal"); resumeCustomerChat(chatRef.id);
-            } catch (error) { alert("Error"); } 
-            finally { btn.innerText = "Start Chat"; btn.disabled = false; }
+                const chatRef = await addDoc(collection(db, "chats"), { mlbbId: mlbbId, itemName: currentItemBuying.name, itemPrice: finalPrice, status: 'open', timestamp: Date.now(), messages: [{ sender: 'system', text: `New: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}`, time: Date.now() }] });
+                localStorage.setItem('storez_active_chat', chatRef.id); closeModal("orderModal"); resumeCustomerChat(chatRef.id);
+            } catch (error) { alert("Error"); } finally { btn.innerText = "Start Chat"; btn.disabled = false; }
         };
         function resumeCustomerChat(chatId) {
             activeCustomerChatId = chatId; maximizeChat(); document.getElementById("displayChatId").innerText = chatId;
             onSnapshot(doc(db, "chats", chatId), (docSnap) => {
                 if(docSnap.exists()) {
-                    const data = docSnap.data();
-                    currentChatData = data;
-                    renderMessages(data.messages, "customerMessages");
-                    if(isChatMinimized) {
-                        const lastMsg = data.messages[data.messages.length - 1];
-                        if(lastMsg && lastMsg.sender === 'admin') document.getElementById("minimizedChat").classList.add('new-msg');
-                    }
-                    const inputArea = document.getElementById("customerInputArea");
-                    if(data.status === 'cancelled' || data.status === 'done') { inputArea.style.opacity = '0.3'; inputArea.style.pointerEvents = 'none'; } 
-                    else { inputArea.style.opacity = '1'; inputArea.style.pointerEvents = 'all'; }
-                } else {
-                    localStorage.removeItem('storez_active_chat'); window.location.reload();
-                }
+                    const data = docSnap.data(); currentChatData = data; renderMessages(data.messages, "customerMessages");
+                    if(isChatMinimized) { const lastMsg = data.messages[data.messages.length - 1]; if(lastMsg && lastMsg.sender === 'admin') document.getElementById("minimizedChat").classList.add('new-msg'); }
+                } else { localStorage.removeItem('storez_active_chat'); window.location.reload(); }
             });
         }
         window.sendCustomerMessage = async () => {
-            const input = document.getElementById("customerMsgInput");
-            const text = input.value.trim();
-            if(!text || !activeCustomerChatId) return;
+            const input = document.getElementById("customerMsgInput"); const text = input.value.trim(); if(!text || !activeCustomerChatId) return;
             try { await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion({ sender: 'user', text: text, time: Date.now() }) }); input.value = ""; } catch(e) {}
         };
         window.handleEnter = (e, func) => { if(e.key === 'Enter') func(); };
@@ -851,27 +571,19 @@
             msgs.forEach(m => {
                 let content = m.text.replace(/\n/g, '<br>');
                 if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="openImageViewer(this.src)">`;
-                let cls = "msg-system";
-                if(m.sender === 'user') cls = "msg-user";
-                if(m.sender === 'admin') cls = "msg-admin";
-                if(m.text.includes("RECEIPT")) cls = "msg-receipt";
-                if(m.text.includes("CANCELLED")) cls = "msg-cancelled";
+                let cls = "msg-system"; if(m.sender === 'user') cls = "msg-user"; if(m.sender === 'admin') cls = "msg-admin"; if(m.text.includes("RECEIPT")) cls = "msg-receipt";
                 container.innerHTML += `<div class="message ${cls}">${content}</div>`;
             });
             container.scrollTop = container.scrollHeight;
         }
 
-        // --- ADMIN CHAT ---
         function initAdminChatListener() {
             onSnapshot(query(collection(db, "chats"), orderBy("timestamp", "desc")), (snap) => {
                 const list = document.getElementById("adminChatList"); list.innerHTML = "";
                 if(snap.empty) { list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>Empty</div>"; return; }
                 snap.forEach(d => {
-                    const chat = d.data();
-                    const isActive = activeAdminChatId === d.id ? "active" : "";
-                    let badgeClass = 'badge open';
-                    if(chat.status === 'done') badgeClass = 'badge done';
-                    if(chat.status === 'cancelled') badgeClass = 'badge cancelled';
+                    const chat = d.data(); const isActive = activeAdminChatId === d.id ? "active" : "";
+                    let badgeClass = 'badge open'; if(chat.status === 'done') badgeClass = 'badge done';
                     list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')"><div><strong style="color:white;">${chat.mlbbId}</strong><div style="font-size:0.7rem; color:#888;">${chat.itemName}</div></div><div class="${badgeClass}">${chat.status.toUpperCase()}</div></div>`;
                 });
             });
@@ -880,19 +592,13 @@
             activeAdminChatId = chatId; document.getElementById("adminChatWindow").style.display = "block";
             if(chatUnsubscribe) chatUnsubscribe();
             chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => {
-                if(s.exists()) { 
-                    currentChatData = s.data();
-                    document.getElementById("adminChatTitle").innerText = `${s.data().mlbbId}`; 
-                    renderMessages(s.data().messages, "adminMessages"); 
-                }
+                if(s.exists()) { currentChatData = s.data(); document.getElementById("adminChatTitle").innerText = `${s.data().mlbbId}`; renderMessages(s.data().messages, "adminMessages"); }
                 else document.getElementById("adminChatWindow").style.display = "none";
             });
         };
         window.sendAdminMessage = async () => {
-            const input = document.getElementById("adminMsgInput");
-            if(!input.value.trim() || !activeAdminChatId) return;
-            await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) });
-            input.value = "";
+            const input = document.getElementById("adminMsgInput"); if(!input.value.trim() || !activeAdminChatId) return;
+            await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) }); input.value = "";
         };
         window.sendReceipt = async () => {
             if(!activeAdminChatId || !currentChatData) return;
@@ -900,30 +606,19 @@
             await updateDoc(doc(db, "chats", activeAdminChatId), { status: 'done', messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) });
             await addDoc(collection(db, "buyers"), { name: "Client", item: currentChatData.itemName, timestamp: Date.now() });
         };
-        window.closeCurrentChat = async () => { if(activeAdminChatId && confirm("Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; } };
+        window.closeCurrentChat = async () => { if(activeAdminChatId && confirm("Permanently Cancel & Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; } };
 
-        // --- STORE CRUD ---
         window.renderStore = () => {
             const grid = document.getElementById("storeGrid"); grid.innerHTML = "";
             let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
             if(filtered.length === 0) { grid.innerHTML = "<p style='color:#444; width:100%; text-align:center;'>Empty.</p>"; return; }
             filtered.forEach(item => {
                 const stockVal = item.stock !== undefined ? Number(item.stock) : 999;
-                let priceHtml = `<div class="current-price">₱${item.price}</div>`;
-                let badgeHtml = "";
-                if(item.salePrice && Number(item.salePrice) < Number(item.price)) { 
-                    priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price">₱${item.salePrice}</span>`; 
-                    badgeHtml = `<div class="sale-badge">SALE</div>`; 
-                }
+                let priceHtml = `<div class="current-price">₱${item.price}</div>`; let badgeHtml = "";
+                if(item.salePrice && Number(item.salePrice) < Number(item.price)) { priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price">₱${item.salePrice}</span>`; badgeHtml = `<div class="sale-badge">SALE</div>`; }
                 let btnHtml = `<button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>`;
-                let stockStatusHtml = `<div class="stock-status">In Stock: ${stockVal}</div>`;
-                let overlayHtml = "";
-                if(stockVal <= 0) {
-                    stockStatusHtml = `<div class="stock-status stock-out">Sold Out</div>`;
-                    btnHtml = `<button disabled class="buy-btn">Sold Out</button>`;
-                    overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`;
-                    badgeHtml = ""; 
-                }
+                let stockStatusHtml = `<div class="stock-status">In Stock: ${stockVal}</div>`; let overlayHtml = "";
+                if(stockVal <= 0) { stockStatusHtml = `<div class="stock-status stock-out">Sold Out</div>`; btnHtml = `<button disabled class="buy-btn">Sold Out</button>`; overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`; badgeHtml = ""; }
                 let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:5px;"><button class="btn btn-io" style="margin:0; font-size:0.7rem; width:100%;" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" style="margin:0; width:auto;" onclick="deleteItem('${item.id}')">X</button></div>` : "";
                 grid.innerHTML += `<div class="card">${badgeHtml}<div class="card-img-wrapper"><img src="${item.image || 'https://via.placeholder.com/300'}" class="card-img-top">${overlayHtml}</div><div class="card-body"><h3 class="card-title">${item.name}</h3><div class="price-container">${priceHtml}</div>${stockStatusHtml}${btnHtml}${adminHtml}</div></div>`;
             });
