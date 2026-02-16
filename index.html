@@ -421,13 +421,22 @@
                 if(isAdmin) { document.getElementById("adminSellerName").value = data.name || ""; document.getElementById("adminSellerFb").value = data.fbLink || ""; }
             }
         });
+
+        // --- FIX IS HERE: AUTO ADD HTTPS ---
         window.saveProfile = async () => {
             const name = document.getElementById("adminSellerName").value;
-            const fb = document.getElementById("adminSellerFb").value;
+            let fb = document.getElementById("adminSellerFb").value.trim();
             const file = document.getElementById("adminSellerImg").files[0];
+            
+            // Auto-fix URL if it doesn't start with http
+            if(fb && !fb.startsWith("http")) {
+                fb = "https://" + fb;
+            }
+
             let data = { name: name, fbLink: fb };
             if(file) { const imgData = await compressImage(file, 400); data.image = imgData; }
-            await setDoc(doc(db, "settings", "seller"), data, { merge: true }); alert("Profile Saved!");
+            await setDoc(doc(db, "settings", "seller"), data, { merge: true }); 
+            alert("Profile Saved! Link fixed to: " + fb);
         };
 
         // --- COMPRESSION ---
