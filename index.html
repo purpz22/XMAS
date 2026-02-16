@@ -3,28 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StoreZ | Digital Marketplace</title>
+    <title>StoreZ | Modern Digital Shop</title>
+    <!-- Modern Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
+            --primary: #6366f1; /* Modern Indigo */
             --primary-hover: #4f46e5;
-            --bg: #0f172a; 
+            --bg: #0f172a; /* Deep Slate */
             --card-bg: #1e293b;
             --text: #f8fafc; 
             --text-muted: #94a3b8;
             --danger: #ef4444; 
             --success: #22c55e;
+            --warning: #f59e0b;
             --glass: rgba(30, 41, 59, 0.7);
         }
 
         * { box-sizing: border-box; }
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); color: var(--text); 
-            margin: 0; padding: 0; user-select: none;
-            padding-bottom: 100px;
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; padding: 0; user-select: none; 
+            line-height: 1.5; padding-bottom: 100px;
         }
+
+        /* --- TICKER --- */
+        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 35px; border-bottom: 1px solid #1e293b; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; line-height: 35px; }
+        .ticker-item { display: inline-block; padding: 0 2rem; color: var(--text-muted); font-size: 0.8rem; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         /* --- NAVIGATION --- */
         nav { 
@@ -32,72 +41,118 @@
             padding: 15px 5%; background: var(--glass); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .logo { font-size: 1.5rem; font-weight: 800; cursor: pointer; color: #fff; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; cursor: pointer; color: #fff; }
         .logo span { color: var(--primary); }
-        #authBtn { display: none; background: var(--primary); border: none; color: #fff; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 
-        /* --- SLIDESHOW --- */
+        .nav-links { display: flex; gap: 10px; align-items: center; }
+        .nav-btn { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
+            color: #fff; padding: 8px 16px; border-radius: 8px; cursor: pointer; 
+            font-size: 0.85rem; font-weight: 600; transition: all 0.2s; 
+        }
+        .nav-btn:hover { background: var(--primary); border-color: var(--primary); }
+        
+        /* HIDDEN ADMIN BUTTON */
+        #authBtn { display: none; background: var(--primary); border-color: var(--primary); }
+
+        /* --- HERO SLIDESHOW (16:9) --- */
         .hero-container { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
         .promo-slider { 
             width: 100%; aspect-ratio: 16 / 9; background-color: #1e293b; 
             border-radius: 16px; overflow: hidden; position: relative;
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
         }
-        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; cursor: pointer; }
-        .slide.active { opacity: 1; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- SELLERS --- */
-        .sellers-section { margin-top: 20px; text-align: center; }
-        .sellers-list { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .seller-card { 
-            background: var(--card-bg); padding: 6px 14px; border-radius: 50px; 
-            border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 8px;
-            text-decoration: none; color: inherit; font-size: 0.8rem;
+        .slide { 
+            position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; 
+            display: flex; justify-content: center; align-items: center;
         }
-        .seller-avatar { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; background: #334155; }
+        .slide.active { opacity: 1; z-index: 10; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-content { position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 5px; color: white; font-size: 0.8rem;}
 
-        /* --- PRODUCT GRID --- */
-        .container { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
+        /* --- LEGIT SELLERS SECTION --- */
+        .sellers-section { margin-top: 30px; text-align: center; }
+        .sellers-title { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 15px; }
+        .sellers-list { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .seller-card { 
+            background: var(--card-bg); padding: 8px 16px; border-radius: 50px; 
+            border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: inherit; transition: 0.2s;
+        }
+        .seller-card:hover { border-color: var(--primary); background: #2d3748; }
+        .seller-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--primary); object-fit: cover; }
+        .seller-name { font-size: 0.85rem; font-weight: 600; }
+        .verify-icon { color: #38bdf8; font-size: 0.9rem; }
+
+        /* --- STORE CONTENT --- */
+        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
+        .cat-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+        .cat-tab { background: #1e293b; color: var(--text-muted); padding: 10px 20px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; font-weight: 600; }
+        .cat-tab.active { background: var(--primary); color: white; }
+
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
         .card { 
-            background: var(--card-bg); border-radius: 18px; overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+            background: var(--card-bg); border-radius: 20px; overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; 
             display: flex; flex-direction: column;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .card-img { width: 100%; height: 200px; object-fit: cover; background: #0f172a; }
-        .card-body { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-8px); border-color: var(--primary); }
+        .card-img-wrapper { position: relative; width: 100%; height: 200px; }
+        .card-img-top { width: 100%; height: 100%; object-fit: cover; }
+        .card-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
         
-        .price-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
-        .price-now { font-size: 1.3rem; font-weight: 800; color: #fff; }
-        .price-old { font-size: 0.9rem; text-decoration: line-through; color: var(--text-muted); }
+        .price-container { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .current-price { color: #fff; font-weight: 800; font-size: 1.25rem; }
+        .old-price { text-decoration: line-through; color: var(--text-muted); font-size: 0.9rem; }
         
-        .buy-btn { 
-            width: 100%; padding: 12px; background: var(--primary); border: none; 
-            color: white; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: auto;
-        }
-        .admin-del-btn { background: var(--danger); color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.7rem; }
+        .buy-btn { margin-top: auto; width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .buy-btn:hover { background: var(--primary-hover); }
 
-        /* --- ADMIN --- */
-        #adminArea { padding: 20px; background: #020617; border-radius: 15px; margin-bottom: 30px; border: 1px solid var(--primary); display: none; }
-        .admin-box { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
-        input { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; margin-bottom: 10px; }
+        /* --- ADMIN DASHBOARD --- */
+        #adminArea { padding: 30px; background: #020617; border-radius: 24px; margin-bottom: 50px; border: 1px solid var(--primary); display: none; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .admin-section { background: #1e293b; padding: 20px; border-radius: 15px; }
+        .admin-header { color: var(--primary); font-weight: 800; margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; }
+        
+        input, select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; margin-bottom: 10px; }
+        .btn-save { background: var(--primary); color: white; width: 100%; padding: 10px; border:none; border-radius:8px; cursor:pointer; font-weight:bold;}
+        .btn-del { background: var(--danger); color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; }
+
+        /* --- MODALS & CHAT --- */
+        .modal-overlay { position: fixed; inset:0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display:none; justify-content:center; align-items:center; z-index: 1000; }
+        .modal-box { background: var(--card-bg); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; border:1px solid #333; }
+        
+        #minimizedChat { position: fixed; bottom: 30px; right: 30px; background: var(--primary); padding: 15px 25px; border-radius: 20px; font-weight: 800; cursor: pointer; display: none; }
+        .chat-box { background: #0f172a; border-radius: 15px; padding: 15px; height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .msg-user { background: var(--primary); align-self: flex-end; padding: 8px 12px; border-radius: 12px 12px 2px 12px; font-size: 0.9rem; }
+        .msg-admin { background: #334155; align-self: flex-start; padding: 8px 12px; border-radius: 12px 12px 12px 2px; font-size: 0.9rem; }
+        
+        .badge-sale { position: absolute; top: 10px; right: 10px; background: var(--danger); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; }
+        .sold-out { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
+    <div class="ticker-wrap"><div class="ticker" id="tickerContent"></div></div>
+
     <nav>
-        <div class="logo" onclick="logoTap()">Store<span>Z</span></div>
-        <button id="authBtn" onclick="handleAuth()">Admin Login</button>
+        <!-- TAP LOGO 5 TIMES TO SHOW ADMIN BUTTON -->
+        <div class="logo" onclick="tapLogo()">Store<span>Z</span></div>
+        <div class="nav-links">
+            <button class="nav-btn" onclick="openTrackModal()">Track Order</button>
+            <button class="nav-btn" id="authBtn" onclick="handleAuth()">Admin</button>
+        </div>
     </nav>
 
     <div class="hero-container">
+        <!-- 16:9 SLIDESHOW -->
         <div class="promo-slider" id="mainSlider">
-            <div class="slide active"><div style="color:#444; text-align:center; padding-top:20%;">Loading Banners...</div></div>
+            <div class="slide active"><div style="color:#aaa;">Loading Slides...</div></div>
         </div>
+
+        <!-- LEGIT SELLERS SECTION -->
         <div class="sellers-section">
-            <p style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Legit Sellers</p>
+            <p class="sellers-title">Verified Sellers</p>
             <div class="sellers-list" id="sellersList"></div>
         </div>
     </div>
@@ -105,167 +160,339 @@
     <div class="container">
         <!-- ADMIN DASHBOARD -->
         <div id="adminArea">
-            <h3 style="margin-top:0">Admin Control</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                <div class="admin-box">
-                    <h4>Add Product</h4>
+            <h2 style="margin-top:0;">Admin Panel</h2>
+            <div class="admin-grid">
+                
+                <!-- BANNER MANAGER -->
+                <div class="admin-section">
+                    <h4 class="admin-header">Add Slide (16:9)</h4>
+                    <input type="text" id="banUrl" placeholder="Image URL">
+                    <button class="btn-save" onclick="addBanner()">Add Slide</button>
+                    <div id="adminBanList" style="margin-top:10px;"></div>
+                </div>
+
+                <!-- SELLER MANAGER -->
+                <div class="admin-section">
+                    <h4 class="admin-header">Add Seller</h4>
+                    <input type="text" id="selName" placeholder="Name">
+                    <input type="text" id="selFb" placeholder="Facebook Link">
+                    <input type="text" id="selImg" placeholder="Avatar URL">
+                    <button class="btn-save" onclick="addSeller()">Add Seller</button>
+                    <div id="adminSelList" style="margin-top:10px;"></div>
+                </div>
+
+                <!-- PRODUCT MANAGER -->
+                <div class="admin-section">
+                    <h4 class="admin-header">Add Product</h4>
                     <input type="text" id="pName" placeholder="Product Name">
-                    <input type="number" id="pPrice" placeholder="Original Price">
+                    <select id="pCat"><option value="All">Select Category...</option></select>
+                    <input type="number" id="pPrice" placeholder="Price">
                     <input type="number" id="pSale" placeholder="Sale Price (Optional)">
                     <input type="text" id="pImg" placeholder="Image URL">
-                    <button class="buy-btn" onclick="addProduct()">Save Product</button>
+                    <input type="number" id="pStock" placeholder="Stock">
+                    <button class="btn-save" onclick="addProduct()">Save Product</button>
                 </div>
-                <div class="admin-box">
-                    <h4>Add Banner (16:9)</h4>
-                    <input type="text" id="banUrl" placeholder="Image URL">
-                    <button class="buy-btn" onclick="addBanner()">Add Slide</button>
+            </div>
+            
+            <div class="admin-section" style="margin-top:20px;">
+                <h4 class="admin-header">Categories</h4>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="catName" placeholder="New Category">
+                    <button class="btn-save" style="width:auto;" onclick="addCategory()">Add</button>
                 </div>
-                <div class="admin-box">
-                    <h4>Add Seller</h4>
-                    <input type="text" id="selName" placeholder="Name">
-                    <input type="text" id="selFb" placeholder="FB Link">
-                    <button class="buy-btn" onclick="addSeller()">Add Seller</button>
-                </div>
+                <div id="adminCatList" style="margin-top:10px;"></div>
             </div>
         </div>
 
+        <!-- CATEGORIES -->
+        <div class="cat-tabs" id="catTabs"></div>
+
+        <!-- PRODUCTS -->
         <div class="store-grid" id="storeGrid"></div>
+    </div>
+
+    <!-- CHAT BUBBLE -->
+    <div id="minimizedChat" onclick="maximizeChat()">💬 Support</div>
+
+    <!-- MODALS -->
+    <div id="orderModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Confirm Order</h3>
+            <p style="color:#aaa; font-size:0.9rem; margin-bottom:15px;" id="modalItemName"></p>
+            <input type="text" id="customerMlbbId" placeholder="Enter MLBB ID / Game ID">
+            <button class="btn-save" onclick="submitOrder()">Start Chat</button>
+            <button class="nav-btn" style="background:transparent; color:#888; width:100%; margin-top:5px;" onclick="closeModal('orderModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div id="customerChatModal" class="modal-overlay">
+        <div class="modal-box" style="display:flex; flex-direction:column; height: 80vh;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <h4>Support Chat</h4>
+                <button onclick="minimizeChat()" style="background:none; border:none; color:white;">_</button>
+            </div>
+            <div id="customerMessages" class="chat-box" style="flex-grow:1;"></div>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="customerMsgInput" placeholder="Message..." style="margin:0">
+                <button class="btn-save" style="width:auto" onclick="sendCustomerMessage()">Send</button>
+            </div>
+        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, arrayUnion } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
+        // CONFIG
         const firebaseConfig = {
-            apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
-            authDomain: "storez-68603.firebaseapp.com",
-            projectId: "storez-68603",
-            storageBucket: "storez-68603.firebasestorage.app",
-            messagingSenderId: "555550726462",
-            appId: "1:555550726462:web:98cfd4a27cfdb04209346f"
+          apiKey: "AIzaSyDY5pFsMKK3o-_GzDdrhoqvKJiMGYQFdzo",
+          authDomain: "storez-68603.firebaseapp.com",
+          projectId: "storez-68603",
+          storageBucket: "storez-68603.firebasestorage.app",
+          messagingSenderId: "555550726462",
+          appId: "1:555550726462:web:98cfd4a27cfdb04209346f"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // --- SECRET LOGO TAP ---
-        let taps = 0;
-        window.logoTap = () => {
-            taps++;
-            if(taps === 5) { document.getElementById('authBtn').style.display = 'block'; }
-        };
+        let items = [], cats = [], currentCat = "All", activeChatId = null;
+        let logoTaps = 0;
 
-        window.handleAuth = () => {
-            if(auth.currentUser) signOut(auth);
-            else {
-                const e = prompt("Email:"), p = prompt("Pass:");
-                if(e && p) signInWithEmailAndPassword(auth, e, p);
+        // --- HIDDEN ADMIN LOGIC ---
+        window.tapLogo = () => {
+            logoTaps++;
+            if(logoTaps === 5) {
+                document.getElementById('authBtn').style.display = 'block';
+                alert("Admin Button Revealed");
             }
         };
 
-        onAuthStateChanged(auth, (u) => {
-            document.getElementById('adminArea').style.display = u ? 'block' : 'none';
-            document.getElementById('authBtn').innerText = u ? 'Logout' : 'Admin Login';
-            renderProducts(); // Refresh to show delete buttons
+        window.handleAuth = () => {
+            if (auth.currentUser) signOut(auth);
+            else {
+                const e = prompt("Email:"), p = prompt("Pass:");
+                if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert(err.message));
+            }
+        };
+
+        onAuthStateChanged(auth, u => {
+            document.getElementById("adminArea").style.display = u ? "block" : "none";
+            document.getElementById("authBtn").innerText = u ? "Logout" : "Admin";
+            if(u) document.getElementById('authBtn').style.display = 'block'; // Keep visible if logged in
         });
 
-        // --- BANNER SLIDESHOW (2s) ---
+        // --- SLIDESHOW LOGIC (Multiple Headers) ---
         let currentSlide = 0;
-        onSnapshot(collection(db, "banners"), (snap) => {
-            const slider = document.getElementById('mainSlider');
-            const banners = [];
-            snap.forEach(d => banners.push(d.data()));
-            if(banners.length > 0) {
-                slider.innerHTML = banners.map((b, i) => `
-                    <div class="slide ${i === 0 ? 'active' : ''}"><img src="${b.url}"></div>
+        onSnapshot(collection(db, "banners"), snap => {
+            const list = document.getElementById("adminBanList");
+            const slider = document.getElementById("mainSlider");
+            const slidesData = [];
+            list.innerHTML = "";
+
+            snap.forEach(d => {
+                const b = d.data();
+                slidesData.push(b);
+                // Admin List
+                list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.8rem;">
+                    <span style="overflow:hidden; max-width:150px;">${b.url}</span>
+                    <button class="btn-del" onclick="delDoc('banners','${d.id}')">Del</button>
+                </div>`;
+            });
+
+            // Render Slides
+            if(slidesData.length > 0) {
+                slider.innerHTML = slidesData.map((b, i) => `
+                    <div class="slide ${i===0?'active':''}">
+                        <img src="${b.url}">
+                    </div>
                 `).join('');
                 
+                // Auto Rotate Every 2s
                 clearInterval(window.slideInt);
                 window.slideInt = setInterval(() => {
-                    const slides = document.querySelectorAll('.slide');
-                    if(slides.length < 2) return;
-                    slides[currentSlide].classList.remove('active');
-                    currentSlide = (currentSlide + 1) % slides.length;
-                    slides[currentSlide].classList.add('active');
+                    const els = document.querySelectorAll('.slide');
+                    if(els.length < 2) return;
+                    els[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % els.length;
+                    els[currentSlide].classList.add('active');
                 }, 2000);
+            } else {
+                slider.innerHTML = `<div class="slide active"><div style="color:#aaa;">No Banners</div></div>`;
             }
         });
 
         window.addBanner = async () => {
-            const url = document.getElementById('banUrl').value;
-            if(url) await addDoc(collection(db, "banners"), { url });
-            document.getElementById('banUrl').value = '';
-        };
+            const url = document.getElementById("banUrl").value;
+            if(url) await addDoc(collection(db, "banners"), { url, timestamp: Date.now() });
+            document.getElementById("banUrl").value = "";
+        }
 
-        // --- SELLERS ---
-        onSnapshot(collection(db, "sellers"), (snap) => {
-            const list = document.getElementById('sellersList');
-            list.innerHTML = '';
+        // --- SELLERS LOGIC ---
+        onSnapshot(collection(db, "sellers"), snap => {
+            const list = document.getElementById("sellersList");
+            const adminList = document.getElementById("adminSelList");
+            list.innerHTML = ""; adminList.innerHTML = "";
+            
             snap.forEach(d => {
                 const s = d.data();
                 list.innerHTML += `
                     <a href="${s.fb}" target="_blank" class="seller-card">
-                        <img src="https://ui-avatars.com/api/?name=${s.name}" class="seller-avatar">
-                        <span>${s.name}</span> <span style="color:#38bdf8">✔</span>
+                        <img src="${s.img}" class="seller-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${s.name}'">
+                        <span class="seller-name">${s.name}</span>
+                        <span class="verify-icon">✔</span>
                     </a>`;
+                
+                adminList.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.8rem;">
+                    <span>${s.name}</span> <button class="btn-del" onclick="delDoc('sellers','${d.id}')">Del</button>
+                </div>`;
             });
         });
 
         window.addSeller = async () => {
-            const name = document.getElementById('selName').value;
-            const fb = document.getElementById('selFb').value;
-            if(name) await addDoc(collection(db, "sellers"), { name, fb });
-            document.getElementById('selName').value = '';
-        };
-
-        // --- PRODUCTS FIX (Images & Sale Price) ---
-        function renderProducts() {
-            onSnapshot(query(collection(db, "items"), orderBy("order", "desc")), (snap) => {
-                const grid = document.getElementById('storeGrid');
-                grid.innerHTML = '';
-                snap.forEach(d => {
-                    const p = d.data();
-                    const hasSale = p.salePrice && p.salePrice < p.price;
-                    
-                    grid.innerHTML += `
-                        <div class="card">
-                            <img src="${p.image || p.img}" class="card-img" onerror="this.src='https://placehold.co/400x300/1e293b/475569?text=No+Image'">
-                            <div class="card-body">
-                                <h4 style="margin:0">${p.name || p.pName}</h4>
-                                <div class="price-row">
-                                    <span class="price-now">₱${hasSale ? p.salePrice : p.price}</span>
-                                    ${hasSale ? `<span class="price-old">₱${p.price}</span>` : ''}
-                                </div>
-                                <button class="buy-btn">Buy Now</button>
-                                ${auth.currentUser ? `<button class="admin-del-btn" onclick="deleteItem('${d.id}')">Delete Product</button>` : ''}
-                            </div>
-                        </div>`;
-                });
-            });
-        }
-        renderProducts();
-
-        window.addProduct = async () => {
-            const name = document.getElementById('pName').value;
-            const price = Number(document.getElementById('pPrice').value);
-            const salePrice = Number(document.getElementById('pSale').value);
-            const image = document.getElementById('pImg').value;
-
-            if(name && price) {
-                await addDoc(collection(db, "items"), {
-                    name, price, salePrice: salePrice || null, image, 
-                    order: Date.now()
-                });
-                alert("Product Added!");
-                document.querySelectorAll('#adminArea input').forEach(i => i.value = '');
+            const name = document.getElementById("selName").value;
+            const fb = document.getElementById("selFb").value;
+            const img = document.getElementById("selImg").value;
+            if(name && fb) {
+                await addDoc(collection(db, "sellers"), { name, fb, img });
+                document.getElementById("selName").value = "";
+                document.getElementById("selFb").value = "";
+                document.getElementById("selImg").value = "";
             }
         };
 
-        window.deleteItem = async (id) => {
-            if(confirm("Delete this product?")) await deleteDoc(doc(db, "items", id));
+        // --- CATEGORIES ---
+        onSnapshot(query(collection(db, "categories"), orderBy("order")), snap => {
+            cats = [];
+            snap.forEach(d => cats.push({id: d.id, ...d.data()}));
+            renderCats();
+        });
+        
+        window.addCategory = async () => {
+            const n = document.getElementById("catName").value;
+            if(n) await addDoc(collection(db, "categories"), { name: n, order: Date.now() });
+            document.getElementById("catName").value = "";
         };
+
+        function renderCats() {
+            const tabs = document.getElementById("catTabs");
+            const select = document.getElementById("pCat");
+            const adminList = document.getElementById("adminCatList");
+            
+            tabs.innerHTML = `<div class="cat-tab ${currentCat==='All'?'active':''}" onclick="setCat('All')">All</div>`;
+            select.innerHTML = `<option value="All">Category...</option>`;
+            adminList.innerHTML = "";
+
+            cats.forEach(c => {
+                tabs.innerHTML += `<div class="cat-tab ${currentCat===c.id?'active':''}" onclick="setCat('${c.id}')">${c.name}</div>`;
+                select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                adminList.innerHTML += `<div style="font-size:0.8rem; margin-bottom:5px;">${c.name} <button class="btn-del" onclick="delDoc('categories','${c.id}')">x</button></div>`;
+            });
+        }
+        window.setCat = (id) => { currentCat = id; renderStore(); renderCats(); };
+
+        // --- PRODUCTS ---
+        onSnapshot(query(collection(db, "items"), orderBy("order", "desc")), snap => {
+            items = [];
+            snap.forEach(d => items.push({id: d.id, ...d.data()}));
+            renderStore();
+        });
+
+        window.addProduct = async () => {
+            const name = document.getElementById("pName").value;
+            const price = Number(document.getElementById("pPrice").value);
+            const sale = Number(document.getElementById("pSale").value);
+            const img = document.getElementById("pImg").value;
+            const stock = Number(document.getElementById("pStock").value);
+            const cat = document.getElementById("pCat").value;
+
+            if(name && price) {
+                await addDoc(collection(db, "items"), { 
+                    name, price, salePrice: sale || null, image: img, stock: stock || 99, catId: cat, order: Date.now() 
+                });
+                alert("Product Saved");
+            }
+        };
+
+        function renderStore() {
+            const grid = document.getElementById("storeGrid");
+            grid.innerHTML = "";
+            let filtered = currentCat === "All" ? items : items.filter(i => i.catId === currentCat);
+
+            filtered.forEach(p => {
+                const isSale = p.salePrice && p.salePrice < p.price;
+                const isOut = p.stock <= 0;
+                
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            ${isSale ? `<div class="badge-sale">SALE</div>` : ''}
+                            <img src="${p.image}" class="card-img-top" onerror="this.src='https://placehold.co/400?text=No+Image'">
+                            ${isOut ? `<div class="sold-out">Sold Out</div>` : ''}
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">${p.name}</h3>
+                            <div class="price-container">
+                                <span class="current-price">₱${isSale ? p.salePrice : p.price}</span>
+                                ${isSale ? `<span class="old-price">₱${p.price}</span>` : ''}
+                            </div>
+                            <button class="buy-btn" onclick="openBuyModal('${encodeURIComponent(JSON.stringify(p))}')" ${isOut?'disabled':''}>
+                                ${isOut ? 'No Stock' : 'Buy Now'}
+                            </button>
+                            ${auth.currentUser ? `<button class="btn-del" style="margin-top:10px; width:100%" onclick="delDoc('items','${p.id}')">Delete Product</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- GLOBAL DELETE ---
+        window.delDoc = async (col, id) => {
+            if(confirm("Delete this?")) await deleteDoc(doc(db, col, id));
+        };
+
+        // --- CHAT & ORDER ---
+        let buyingItem = null;
+        window.openBuyModal = (json) => {
+            buyingItem = JSON.parse(decodeURIComponent(json));
+            document.getElementById("modalItemName").innerText = buyingItem.name;
+            document.getElementById("orderModal").style.display = "flex";
+        };
+
+        window.closeModal = (id) => document.getElementById(id).style.display = "none";
+
+        window.submitOrder = async () => {
+            const id = document.getElementById("customerMlbbId").value;
+            if(!id) return;
+            const ref = await addDoc(collection(db, "chats"), {
+                mlbbId: id, itemName: buyingItem.name, timestamp: Date.now(),
+                messages: [{sender: 'system', text: `Order: ${buyingItem.name}`, time: Date.now()}]
+            });
+            activeChatId = ref.id;
+            closeModal("orderModal");
+            maximizeChat();
+            onSnapshot(doc(db, "chats", ref.id), s => renderChat(s.data().messages));
+        };
+
+        function renderChat(msgs) {
+            const box = document.getElementById("customerMessages");
+            box.innerHTML = msgs.map(m => `<div class="${m.sender==='user'?'msg-user':(m.sender==='admin'?'msg-admin':'msg-system')}">${m.text}</div>`).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        window.sendCustomerMessage = async () => {
+            const txt = document.getElementById("customerMsgInput").value;
+            if(txt && activeChatId) {
+                await updateDoc(doc(db, "chats", activeChatId), { messages: arrayUnion({sender:'user', text:txt, time:Date.now()}) });
+                document.getElementById("customerMsgInput").value = "";
+            }
+        };
+
+        window.maximizeChat = () => { document.getElementById("customerChatModal").style.display = "flex"; document.getElementById("minimizedChat").style.display = "none"; };
+        window.minimizeChat = () => { document.getElementById("customerChatModal").style.display = "none"; document.getElementById("minimizedChat").style.display = "block"; };
+        window.openTrackModal = () => alert("Use Chat Support to track orders.");
 
     </script>
 </body>
