@@ -4,52 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STOREZ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Modern Purple Theme */
-            --primary: #bb86fc;
-            --primary-gradient: linear-gradient(135deg, #7c4dff, #b388ff);
-            --bg: #050505; 
-            --card-bg: rgba(30, 30, 30, 0.6);
-            --card-border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Minimalist Dark & White Theme */
+            --bg: #000000;
+            --surface: #111111;
+            --surface-hover: #1a1a1a;
+            --border: #333333;
+            
+            --primary: #ffffff; /* Pure White */
+            --primary-inv: #000000; /* Black for text on white */
+            
             --text: #ffffff; 
-            --text-muted: #b0b0b0;
-            --danger: #cf6679; 
-            --sale: #03dac6; 
-            --chat-user: #3700b3; 
-            --chat-admin: #1f1f1f;
+            --text-muted: #888888;
+            
+            --danger: #ff3b30; 
+            --success: #34c759;
+            --warning: #ffcc00;
+
+            --chat-user: #222222; /* Subtle Grey for user */
+            --chat-admin: #000000;
             --modal-overlay: rgba(0, 0, 0, 0.9);
-            --success: #00e676;
-            --warning: #ffb74d;
         }
 
         body { 
-            font-family: 'Poppins', sans-serif; 
+            font-family: 'Inter', sans-serif; 
             background-color: var(--bg); 
             color: var(--text); 
             margin: 0; padding: 0; 
             user-select: none; 
             -webkit-font-smoothing: antialiased; 
             padding-bottom: 80px; 
-            background-image: radial-gradient(circle at 10% 20%, rgba(65, 30, 119, 0.2) 0%, transparent 20%);
         }
 
         /* --- TICKER --- */
-        .ticker-wrap { width: 100%; background: #000; overflow: hidden; height: 32px; border-bottom: 1px solid #222; position: relative; z-index: 50; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; line-height: 32px; padding-left: 100%; }
-        .ticker-item { display: inline-block; padding: 0 2rem; color: #ccc; font-size: 0.8rem; letter-spacing: 1px;}
+        .ticker-wrap { width: 100%; background: #000; border-bottom: 1px solid var(--border); overflow: hidden; height: 30px; position: relative; z-index: 50; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; line-height: 30px; padding-left: 100%; }
+        .ticker-item { display: inline-block; padding: 0 2rem; color: #999; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;}
         .ticker-item b { color: var(--primary); }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
         /* --- HERO CAROUSEL --- */
         .hero-container {
             width: 100%;
-            height: 220px;
+            height: 200px; /* Compact Header */
             position: relative;
             overflow: hidden;
-            background: #111;
-            border-bottom: 1px solid #333;
+            background: #0a0a0a;
+            border-bottom: 1px solid var(--border);
         }
         .hero-img {
             width: 100%;
@@ -59,149 +62,163 @@
             top: 0; left: 0;
             opacity: 0;
             transition: opacity 1s ease-in-out;
-            filter: brightness(0.8);
+            filter: brightness(0.9);
         }
         .hero-img.active { opacity: 1; }
-        .hero-overlay {
-            position: absolute;
-            bottom: 20px; left: 20px;
-            z-index: 2;
-            background: rgba(0,0,0,0.6);
-            padding: 10px 20px;
-            border-radius: 8px;
-            backdrop-filter: blur(5px);
-        }
 
         /* --- NAVIGATION --- */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: rgba(18, 18, 18, 0.95); border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .logo { font-size: 1.8rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 25px; 
+            background: rgba(0, 0, 0, 0.85); 
+            border-bottom: 1px solid var(--border); 
+            position: sticky; top: 0; z-index: 100; 
+            backdrop-filter: blur(12px); 
+        }
+        .logo { font-size: 1.6rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; cursor: pointer; text-transform: uppercase; }
         
-        .nav-links { display: flex; gap: 15px; align-items: center; }
-        .nav-btn { background: rgba(255,255,255,0.05); border: var(--card-border); color: #ccc; padding: 8px 18px; border-radius: 12px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s; font-weight: 600; }
-        .nav-btn:hover { background: var(--primary); color: #000; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(187, 134, 252, 0.4); }
+        .nav-links { display: flex; gap: 10px; align-items: center; }
+        .nav-btn { 
+            background: transparent; 
+            border: 1px solid var(--border); 
+            color: #ccc; 
+            padding: 8px 16px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.8rem; 
+            transition: all 0.2s; 
+            font-weight: 500; 
+            text-transform: uppercase;
+        }
+        .nav-btn:hover { background: var(--primary); color: var(--primary-inv); border-color: var(--primary); }
 
-        #secretLogin { position: absolute; top: 80px; right: 30px; display: none; z-index: 999; animation: slideDown 0.3s; }
-        @keyframes slideDown { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+        #secretLogin { position: absolute; top: 75px; right: 25px; display: none; z-index: 999; }
 
         /* --- LAYOUT --- */
-        .container { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
+        .container { padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
         
-        /* --- CONTROLS --- */
+        /* --- TABS --- */
         .cat-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
-        .cat-tab { background: #1a1a1a; border: 1px solid #333; color: var(--text-muted); padding: 10px 25px; border-radius: 50px; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; }
-        .cat-tab:hover { background: #333; color: #fff; }
-        .cat-tab.active { background: var(--primary-gradient); color: white; border: none; font-weight: bold; box-shadow: 0 4px 15px rgba(124, 77, 255, 0.4); }
+        .cat-tab { 
+            background: var(--surface); 
+            border: 1px solid var(--border); 
+            color: var(--text-muted); 
+            padding: 10px 20px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            font-size: 0.85rem; 
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .cat-tab:hover { border-color: #666; color: #fff; }
+        .cat-tab.active { background: var(--primary); color: var(--primary-inv); border-color: var(--primary); }
 
         /* --- STORE GRID --- */
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; margin-bottom: 50px; }
-        .card { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: var(--card-border); display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s; position: relative; }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); border-color: rgba(187, 134, 252, 0.3); }
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 60px; }
+        .card { 
+            background: var(--surface); 
+            border-radius: 0; /* Square edges for minimal look */
+            overflow: hidden; 
+            border: 1px solid var(--border); 
+            display: flex; flex-direction: column; 
+            transition: transform 0.2s, border-color 0.2s; 
+            position: relative; 
+        }
+        .card:hover { transform: translateY(-3px); border-color: #555; }
         
-        .card-img-wrapper { position: relative; width: 100%; height: 200px; overflow: hidden; }
-        .card-img-top { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .card:hover .card-img-top { transform: scale(1.1); }
-        .sold-out-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; font-size: 1.2rem; backdrop-filter: blur(2px); }
+        .card-img-wrapper { position: relative; width: 100%; height: 200px; background: #0a0a0a; }
+        .card-img-top { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        .sold-out-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; text-transform: uppercase; font-size: 1rem; letter-spacing: 2px;}
 
-        .card-body { padding: 20px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { margin: 0 0 8px 0; color: #fff; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
+        .card-body { padding: 15px; text-align: left; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { margin: 0 0 5px 0; color: #fff; font-size: 1rem; font-weight: 600; }
         
-        .price-container { margin-bottom: 15px; min-height: 28px; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .current-price { color: var(--primary); font-weight: bold; font-size: 1.3rem; text-shadow: 0 0 10px rgba(187, 134, 252, 0.3); }
-        .old-price { text-decoration: line-through; color: #666; font-size: 0.95rem; }
+        .price-container { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .current-price { color: var(--primary); font-weight: 700; font-size: 1.1rem; }
+        .old-price { text-decoration: line-through; color: #555; font-size: 0.9rem; }
         
-        .stock-status { font-size: 0.8rem; margin-bottom: 15px; font-weight: 500; letter-spacing: 0.5px; }
-        .stock-high { color: var(--success); }
-        .stock-low { color: var(--warning); animation: pulseText 1.5s infinite; }
-        .stock-out { color: var(--danger); text-decoration: line-through; opacity: 0.7; }
-        @keyframes pulseText { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .stock-status { font-size: 0.75rem; margin-bottom: 15px; font-weight: 400; color: #666; }
+        .stock-low { color: var(--warning); }
+        .stock-out { color: var(--danger); }
 
-        .sale-badge { position: absolute; top: 15px; right: 15px; background: var(--sale); color: black; padding: 5px 12px; border-radius: 20px; font-weight: 800; font-size: 0.7rem; box-shadow: 0 4px 10px rgba(3, 218, 198, 0.3); z-index: 10; }
+        .sale-badge { position: absolute; top: 10px; left: 10px; background: var(--primary); color: black; padding: 2px 8px; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; z-index: 10; }
 
-        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 12px 0; background: var(--primary-gradient); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .buy-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
-        .buy-btn:disabled { background: #333; color: #666; cursor: not-allowed; filter: none; border: 1px solid #444; box-shadow: none; transform: none; }
+        .buy-btn { margin-top: auto; display: block; width: 100%; padding: 12px 0; background: var(--primary); color: black; border: none; font-weight: 700; cursor: pointer; transition: opacity 0.2s; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;}
+        .buy-btn:hover { opacity: 0.8; }
+        .buy-btn:disabled { background: #222; color: #555; cursor: not-allowed; }
 
         /* --- PROOF GALLERY --- */
-        .section-title { text-align: center; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 60px 0 30px 0; text-transform: uppercase; letter-spacing: 3px; font-size: 1.5rem; }
-        .proof-grid { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: var(--primary) #222; }
-        .proof-grid::-webkit-scrollbar { height: 8px; }
-        .proof-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-        .proof-card { min-width: 180px; max-width: 180px; background: #1a1a1a; border-radius: 12px; border: 1px solid #333; overflow: hidden; flex-shrink: 0; display:flex; flex-direction: column; transition: transform 0.2s; cursor: pointer;}
-        .proof-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .proof-img { width: 100%; height: 220px; object-fit: cover; }
-        .proof-details { padding: 10px; background: #111; border-top: 1px solid #333; }
-        .proof-caption { font-size: 0.8rem; color: #fff; margin-bottom: 5px; text-align: center;}
-        .proof-date { font-size: 0.7rem; color: #666; text-align: center; }
+        .section-title { text-align: center; color: var(--primary); margin: 60px 0 30px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 1.2rem; font-weight: 300; border-top: 1px solid #222; padding-top: 40px; }
+        .proof-grid { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: none; }
+        .proof-grid::-webkit-scrollbar { display: none; }
+        
+        .proof-card { min-width: 160px; max-width: 160px; background: var(--surface); border: 1px solid var(--border); flex-shrink: 0; cursor: pointer; transition: opacity 0.2s;}
+        .proof-card:hover { opacity: 0.8; }
+        .proof-img { width: 100%; height: 200px; object-fit: cover; }
+        .proof-details { padding: 8px; border-top: 1px solid #222; }
+        .proof-caption { font-size: 0.7rem; color: #ccc; margin-bottom: 2px; }
+        .proof-date { font-size: 0.6rem; color: #555; }
 
         /* --- ADMIN PANEL --- */
-        #adminArea { display: none; margin-top: 30px; border: 1px solid var(--primary); padding: 25px; border-radius: 15px; background: rgba(20,20,20,0.8); box-shadow: 0 0 30px rgba(187, 134, 252, 0.1); }
-        .admin-section { background: #222; padding: 20px; border-radius: 12px; border: 1px solid #333; margin-bottom: 25px; }
-        .admin-header { color: var(--primary); margin: 0 0 15px 0; border-bottom: 1px solid #444; padding-bottom: 10px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; }
-        .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
-        .form-group { flex: 1; min-width: 200px; margin-bottom: 15px; }
-        label { display: block; color: #aaa; font-size: 0.8rem; margin-bottom: 8px; font-weight: 500; }
-        input, select { width: 100%; padding: 12px; background: #0f0f0f; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; outline: none; transition: border 0.3s; font-family: inherit; }
-        input:focus, select:focus { border-color: var(--primary); }
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 5px; color: white; font-size: 0.9rem; transition: opacity 0.2s; }
-        .btn:hover { opacity: 0.9; }
-        .btn-save { background: var(--primary); color: #000; }
-        .btn-del { background: var(--danger); width: auto; padding: 4px 10px; font-size: 0.8rem; }
-        .btn-edit { background: #2196F3; width: auto; padding: 4px 10px; font-size: 0.8rem; margin-right: 5px; }
-        .btn-io { background-color: #333; border: 1px solid #555; }
+        #adminArea { display: none; margin-top: 20px; border: 1px solid #333; padding: 0; background: #080808; }
+        .admin-section { padding: 20px; border-bottom: 1px solid #222; }
+        .admin-header { color: #fff; margin: 0 0 15px 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; margin-bottom: 10px; }
+        label { display: block; color: #666; font-size: 0.7rem; margin-bottom: 5px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 10px; background: #111; border: 1px solid #333; color: white; box-sizing: border-box; outline: none; font-family: inherit; font-size: 0.9rem;}
+        input:focus, select:focus { border-color: #fff; }
+        .btn { padding: 10px 20px; border: none; cursor: pointer; font-weight: 600; margin-top: 5px; color: black; font-size: 0.8rem; text-transform: uppercase; }
+        .btn-save { background: #fff; }
+        .btn-del { background: var(--danger); color: white; width: auto; padding: 4px 8px; font-size: 0.7rem; }
+        .btn-edit { background: #444; color: white; width: auto; padding: 4px 8px; font-size: 0.7rem; margin-right: 5px; }
+        .btn-io { background-color: #222; color: #ccc; border: 1px solid #333; }
         
         /* --- CHAT SYSTEM --- */
         .chat-container { display: flex; flex-direction: column; height: 400px; }
-        .chat-box { flex-grow: 1; background: #080808; border: 1px solid #333; border-radius: 12px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; scroll-behavior: smooth; }
+        .chat-box { flex-grow: 1; background: #0a0a0a; border: 1px solid var(--border); overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         
-        .message { padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; max-width: 80%; word-wrap: break-word; line-height: 1.5; animation: slideUp 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .message { padding: 10px 14px; border-radius: 4px; font-size: 0.9rem; max-width: 85%; word-wrap: break-word; line-height: 1.5; }
         
-        .msg-system { align-self: center; background: #222; color: #bbb; font-size: 0.8rem; border-radius: 8px; padding: 8px 12px; border: 1px solid #333; }
-        .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border-bottom-right-radius: 4px; }
-        .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border-bottom-left-radius: 4px; border: 1px solid #333; }
-        .msg-receipt { align-self: center; background: #111; border: 1px dashed var(--primary); color: var(--primary); text-align: center; width: 85%; font-family: monospace; }
-        .msg-cancelled { align-self: center; background: rgba(207, 102, 121, 0.2); border: 1px solid var(--danger); color: var(--danger); text-align: center; width: 90%; }
+        .msg-system { align-self: center; color: #666; font-size: 0.75rem; text-transform: uppercase; margin: 10px 0; }
+        .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border: 1px solid #333; }
+        .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border: 1px solid #333; }
+        .msg-receipt { align-self: center; background: #000; border: 1px dashed #444; color: #fff; text-align: center; width: 90%; font-family: monospace; font-size: 0.8rem; }
+        .msg-cancelled { align-self: center; color: var(--danger); border: 1px solid var(--danger); padding: 5px 20px; font-size: 0.8rem; text-transform: uppercase; }
         
-        .msg-image { max-width: 200px; border-radius: 10px; margin-top: 5px; cursor: pointer; border: 1px solid #444; transition: transform 0.2s; }
-        .msg-image:hover { transform: scale(1.02); }
+        .msg-image { max-width: 200px; border: 1px solid #333; margin-top: 5px; cursor: pointer; }
 
-        .chat-input-area { display: flex; gap: 10px; align-items: center; background: #1a1a1a; padding: 10px; border-radius: 30px; border: 1px solid #333; }
-        .chat-input-area input { flex-grow: 1; padding: 10px; border: none; background: transparent; color: white; outline: none; }
-        .chat-input-area button { width: auto; padding: 8px 20px; border-radius: 20px; margin: 0; }
+        .chat-input-area { display: flex; gap: 10px; align-items: center; border-top: 1px solid #222; padding-top: 15px; }
+        .chat-input-area input { flex-grow: 1; padding: 10px; border: 1px solid #333; background: #111; color: white; }
+        .chat-input-area button { width: auto; margin: 0; }
         
-        .upload-label { cursor: pointer; font-size: 1.5rem; color: #666; padding: 0 10px; transition: color 0.2s; }
-        .upload-label:hover { color: var(--primary); }
+        .upload-label { cursor: pointer; font-size: 1.2rem; color: #666; padding: 0 5px; }
+        .upload-label:hover { color: #fff; }
 
         /* MINIMIZED BUBBLE */
-        #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; padding: 15px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(187, 134, 252, 0.4); display: none; z-index: 2000; animation: slideUp 0.3s; border: 2px solid white; display: flex; align-items: center; gap: 10px;}
-        #minimizedChat:hover { transform: scale(1.05); }
-        #minimizedChat.new-msg { background: var(--sale); color: black; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(3, 218, 198, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(3, 218, 198, 0); } 100% { box-shadow: 0 0 0 0 rgba(3, 218, 198, 0); } }
-        
-        .btn-min { background: transparent; border: 1px solid #666; color: #aaa; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size: 1.2rem; line-height: 0; padding-bottom: 5px; }
-        .btn-min:hover { border-color: white; color: white; }
+        #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: #fff; color: #000; padding: 15px 25px; font-weight: bold; cursor: pointer; display: none; z-index: 2000; border: 1px solid #000; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;}
+        #minimizedChat.new-msg { background: var(--danger); color: white; }
 
         /* Admin Chat List */
-        .admin-chat-item { background: #151515; padding: 12px; margin-bottom: 8px; border: 1px solid #333; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
-        .admin-chat-item:hover { background: #252525; }
-        .admin-chat-item.active { border-color: var(--primary); background: #222; }
-        .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
-        .badge.open { background: var(--sale); color: black; }
-        .badge.done { background: var(--success); color: black; }
-        .badge.cancelled { background: var(--danger); color: white; }
+        .admin-chat-item { background: #111; padding: 10px; margin-bottom: 5px; border: 1px solid #222; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .admin-chat-item:hover { background: #1a1a1a; }
+        .admin-chat-item.active { border-color: #fff; background: #000; }
+        .badge { padding: 2px 6px; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; border: 1px solid #333; }
+        .badge.open { color: #fff; border-color: #fff; }
+        .badge.done { color: var(--success); border-color: var(--success); }
+        .badge.cancelled { color: var(--danger); border-color: var(--danger); }
 
         /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(8px); }
-        .modal-box { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #444; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; font-size: 0.9rem; align-items: center;}
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-box { background: #000; padding: 30px; border: 1px solid #333; width: 90%; max-width: 450px; text-align: center; }
+        .list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; font-size: 0.8rem; align-items: center;}
 
-        .copy-btn { font-size: 0.7rem; background: #333; border: 1px solid #555; color: white; padding: 2px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
-        .copy-btn:hover { background: var(--primary); color: black; }
+        .copy-btn { font-size: 0.6rem; background: #222; border: 1px solid #333; color: white; padding: 2px 6px; cursor: pointer; margin-left: 5px; text-transform: uppercase; }
+        .copy-btn:hover { background: #fff; color: #000; }
 
-        /* IMAGE VIEWER LIGHTBOX */
-        #imageViewerModal { z-index: 5000; }
-        #imageViewerModal img { animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        /* IMAGE VIEWER */
+        #imageViewerModal { z-index: 5000; background: rgba(0,0,0,0.95); }
 
         /* Responsive */
         @media (max-width: 600px) {
@@ -209,9 +226,9 @@
             .nav-links button span { display: none; }
             .nav-links button::after { content: '🔍'; }
             .nav-links button:first-child::after { content: '📸'; }
-            .store-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
-            .card-img-wrapper { height: 140px; }
-            .buy-btn { font-size: 0.8rem; padding: 8px 0; }
+            .store-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .card-img-wrapper { height: 150px; }
+            .buy-btn { font-size: 0.7rem; padding: 10px 0; }
         }
     </style>
 </head>
@@ -230,7 +247,7 @@
         <div class="logo" onclick="clickLogo()">STOREZ</div>
         <div class="nav-links">
             <button class="nav-btn" onclick="document.getElementById('proofSection').scrollIntoView({behavior: 'smooth'})">Proofs</button>
-            <button class="nav-btn" onclick="openTrackModal()" style="border-color: var(--primary); color: var(--primary);">Track Order</button>
+            <button class="nav-btn" onclick="openTrackModal()" style="border-color: #666;">Track Order</button>
         </div>
         <div id="secretLogin">
             <button class="nav-btn" id="authBtn" onclick="handleAuth()">Admin</button>
@@ -241,45 +258,47 @@
         
         <!-- ADMIN DASHBOARD -->
         <div id="adminArea">
-            <h2 style="color:var(--primary); margin-top:0;">⚡ Admin Dashboard</h2>
+            <div style="padding:15px; background:#111; border-bottom:1px solid #333; margin-bottom:0;">
+                <h2 style="color:#fff; margin:0; font-size:1.2rem; text-transform:uppercase;">Admin Control</h2>
+            </div>
             
             <!-- HEADER / BANNER MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">🖼 Manage Header Banners</h4>
+                <h4 class="admin-header">Header Banners (Carousel)</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Upload New Banner (Landscape Recommended)</label>
+                        <label>Upload Image</label>
                         <input type="file" id="bannerInput" accept="image/*">
                     </div>
                 </div>
-                <button class="btn btn-save" onclick="uploadBanner()">+ Add Banner</button>
+                <button class="btn btn-save" onclick="uploadBanner()">Upload Banner</button>
                 <div id="bannerListAdmin" style="margin-top:10px;"></div>
             </div>
 
             <!-- CHATS MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">💬 Live Orders & Chats</h4>
+                <h4 class="admin-header">Live Orders</h4>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 250px;">
-                        <label>Active Orders</label>
-                        <div id="adminChatList" style="height: 400px; overflow-y: auto; border: 1px solid #333; background: #000; padding:10px; border-radius:8px;">
-                            <div style="color:#666; text-align:center; padding:20px;">No active orders</div>
+                        <label>Order Queue</label>
+                        <div id="adminChatList" style="height: 300px; overflow-y: auto; border: 1px solid #333; background: #000; padding:5px;">
+                            <div style="color:#444; text-align:center; padding:20px;">No active orders</div>
                         </div>
                     </div>
                     <div style="flex: 2; min-width: 300px; display: none;" id="adminChatWindow">
-                        <label id="adminChatTitle" style="color:var(--primary);">Chatting with...</label>
-                        <div class="chat-container" style="height: 350px;">
+                        <label id="adminChatTitle" style="color:#fff;">Chatting...</label>
+                        <div class="chat-container" style="height: 300px;">
                             <div id="adminMessages" class="chat-box"></div>
                             <div class="chat-input-area">
-                                <label for="adminImgInput" class="upload-label">📎</label>
+                                <label for="adminImgInput" class="upload-label">📷</label>
                                 <input type="file" id="adminImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'admin')">
-                                <input type="text" id="adminMsgInput" placeholder="Reply..." onkeypress="handleEnter(event, sendAdminMessage)">
+                                <input type="text" id="adminMsgInput" placeholder="Message..." onkeypress="handleEnter(event, sendAdminMessage)">
                                 <button class="btn btn-save" onclick="sendAdminMessage()">Send</button>
                             </div>
                         </div>
                         <div style="display:flex; gap:10px; margin-top:10px;">
-                            <button class="btn btn-save" style="background:var(--success); color:black;" onclick="sendReceipt()">🧾 Send Receipt</button>
-                            <button class="btn btn-del" onclick="closeCurrentChat()">🗑 Delete Chat</button>
+                            <button class="btn btn-save" style="background:#fff; color:black;" onclick="sendReceipt()">Send Receipt</button>
+                            <button class="btn btn-del" onclick="closeCurrentChat()">Delete Chat</button>
                         </div>
                     </div>
                 </div>
@@ -287,68 +306,58 @@
 
             <!-- TICKER MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">📢 Ticker (Fake/Real Buyers)</h4>
+                <h4 class="admin-header">Recent Buyers (Ticker)</h4>
                 <input type="hidden" id="editTickerId">
                 <div class="form-row">
                     <input type="text" id="buyerName" placeholder="Buyer Name">
                     <input type="text" id="buyerItem" placeholder="Item Bought">
                     <button class="btn btn-save" style="width:auto;" id="tickerBtn" onclick="saveBuyer()">Add to Ticker</button>
                 </div>
-                <div id="buyerList" style="margin-top:10px; max-height: 150px; overflow-y:auto; border:1px solid #333; padding:5px; border-radius:5px;"></div>
+                <div id="buyerList" style="margin-top:10px; max-height: 150px; overflow-y:auto; border:1px solid #333; padding:5px;"></div>
             </div>
 
             <!-- PRODUCT MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">📦 Add / Edit Product</h4>
+                <h4 class="admin-header">Product Manager</h4>
                 <input type="hidden" id="editItemId">
                 <div class="form-row">
-                    <div class="form-group"><label>Product Name</label><input type="text" id="itemName" placeholder="e.g. Starlight Member"></div>
+                    <div class="form-group"><label>Name</label><input type="text" id="itemName"></div>
                     <div class="form-group"><label>Category</label><select id="itemCatSelect"></select></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Original Price (₱)</label><input type="number" id="itemPrice" placeholder="0.00"></div>
-                    <div class="form-group"><label>Sale Price (₱ - Optional)</label><input type="number" id="itemSale" placeholder="Leave empty if not on sale"></div>
+                    <div class="form-group"><label>Price</label><input type="number" id="itemPrice"></div>
+                    <div class="form-group"><label>Sale Price (Optional)</label><input type="number" id="itemSale"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Stock Quantity</label><input type="number" id="itemStock" placeholder="e.g. 50"></div>
-                    <div class="form-group"><label>Image URL (Link)</label><input type="text" id="itemImg" placeholder="https://..."></div>
+                    <div class="form-group"><label>Stock</label><input type="number" id="itemStock"></div>
+                    <div class="form-group"><label>Image URL</label><input type="text" id="itemImg"></div>
                 </div>
                 <button class="btn btn-save" onclick="saveItem()">Save Product</button>
-                <button class="btn" style="background:#333; color:#aaa; margin-top:10px;" onclick="clearForm()">Clear Form</button>
+                <button class="btn" style="background:#222; color:#888;" onclick="clearForm()">Clear</button>
             </div>
 
             <!-- PROOF MANAGER -->
             <div class="admin-section">
-                <h4 class="admin-header">📸 Manage Proofs</h4>
+                <h4 class="admin-header">Proof Uploads</h4>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Caption</label>
-                        <input type="text" id="proofCaption" placeholder="e.g. User 123*** bought 100 Diamonds">
-                    </div>
-                    <div class="form-group">
-                         <label>Date (Optional)</label>
-                         <input type="date" id="proofDate">
-                    </div>
-                    <div class="form-group">
-                         <label>Upload Screenshot (Auto-compresses)</label>
-                         <input type="file" id="proofFileInput" accept="image/*">
-                    </div>
+                    <div class="form-group"><label>Caption</label><input type="text" id="proofCaption"></div>
+                    <div class="form-group"><label>Date</label><input type="date" id="proofDate"></div>
+                    <div class="form-group"><label>Image</label><input type="file" id="proofFileInput" accept="image/*"></div>
                 </div>
-                <button class="btn btn-save" onclick="uploadProof()">Upload Proof</button>
-                <div id="proofListAdmin" style="margin-top:10px; max-height: 200px; overflow-y:auto;"></div>
+                <button class="btn btn-save" onclick="uploadProof()">Upload</button>
             </div>
 
             <!-- SYSTEM TOOLS -->
-            <div class="admin-section">
-                <h4 class="admin-header">⚙️ System Tools & Categories</h4>
+            <div class="admin-section" style="border-bottom:none;">
+                <h4 class="admin-header">Settings</h4>
                 <div style="display:flex; gap:10px; margin-bottom:20px;">
-                    <button class="btn btn-io" onclick="exportFromFirebase()">⬇ Backup Database</button>
-                    <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">⬆ Restore Database</button>
+                    <button class="btn btn-io" onclick="exportFromFirebase()">Backup Data</button>
+                    <button class="btn btn-io" onclick="document.getElementById('jsonInput').click()">Restore Data</button>
                     <input type="file" id="jsonInput" style="display:none;" accept=".json" onchange="importToFirebase(this)">
                 </div>
                 <div class="form-row">
-                    <input type="text" id="catName" placeholder="New Category Name">
-                    <button class="btn btn-save" style="width:auto;" onclick="addCategory()">Add Category</button>
+                    <input type="text" id="catName" placeholder="New Category">
+                    <button class="btn btn-save" style="width:auto;" onclick="addCategory()">Add</button>
                 </div>
                 <div id="catList" style="margin-top:15px;"></div>
             </div>
@@ -357,81 +366,82 @@
         <!-- PUBLIC STORE -->
         <div class="cat-tabs" id="catTabs"></div>
         <div class="store-grid" id="storeGrid">
-             <p style="text-align:center; width:100%; color:#666; margin-top:50px;">Loading Store...</p>
+             <p style="text-align:center; width:100%; color:#444; margin-top:50px; font-size:0.8rem; text-transform:uppercase;">Loading Inventory...</p>
         </div>
 
         <!-- PROOF GALLERY SECTION -->
-        <h3 class="section-title" id="proofSection">Recent Proofs</h3>
+        <h3 class="section-title" id="proofSection">Verified Transactions</h3>
         <div class="proof-grid" id="proofGrid">
-            <p style="text-align:center; width:100%; color:#555;">No proofs uploaded yet.</p>
+            <p style="text-align:center; width:100%; color:#444; font-size:0.8rem;">No proofs yet.</p>
         </div>
 
     </div>
 
     <!-- MINIMIZED CHAT BUBBLE -->
     <div id="minimizedChat" onclick="maximizeChat()" style="display:none;">
-        <span style="font-size:1.5rem">💬</span> <span id="minimizedText">Active Chat</span>
+        <span style="font-size:1.2rem; margin-right:5px;">💬</span> <span id="minimizedText">Chat</span>
     </div>
 
     <!-- CUSTOMER ORDER MODAL -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-box">
-            <h3 style="color:var(--primary); margin-bottom:5px;" id="modalItemName">Confirm Order</h3>
-            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Enter your Game ID / Info to begin.</p>
-            <input type="text" id="customerMlbbId" placeholder="Game ID / Server / User ID" style="text-align:center; font-size: 1.1rem; padding: 12px; margin-bottom:15px;">
-            <button class="btn btn-save" onclick="submitOrder()">Proceed to Chat</button>
-            <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('orderModal')">Cancel</button>
+            <h3 style="color:#fff; margin-bottom:5px; text-transform:uppercase;" id="modalItemName">Confirm Order</h3>
+            <p style="color:#888; font-size:0.8rem; margin-bottom:20px;">Enter your Game ID / User ID</p>
+            <input type="text" id="customerMlbbId" placeholder="ID Here..." style="text-align:center; font-size: 1rem; padding: 12px; margin-bottom:15px;">
+            <button class="btn btn-save" style="width:100%;" onclick="submitOrder()">Start Chat</button>
+            <button class="btn" style="background:transparent; color:#666; margin-top:10px;" onclick="closeModal('orderModal')">Cancel</button>
         </div>
     </div>
 
     <!-- TRACK ORDER MODAL -->
     <div id="trackModal" class="modal-overlay">
         <div class="modal-box">
-            <h3 style="color:var(--primary); margin-bottom:5px;">Track / Continue Order</h3>
-            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Enter your <b>Order ID</b> to chat from this device.</p>
-            <input type="text" id="trackInputId" placeholder="Paste Order ID here" style="text-align:center; font-size: 1rem; padding: 12px; margin-bottom:15px; width:100%;">
-            <button class="btn btn-save" onclick="recoverChat()">Find Order</button>
-            <button class="btn" style="background:transparent; color:#888;" onclick="closeModal('trackModal')">Cancel</button>
+            <h3 style="color:#fff; margin-bottom:5px; text-transform:uppercase;">Track Order</h3>
+            <p style="color:#888; font-size:0.8rem; margin-bottom:20px;">Paste your Order ID to continue chatting.</p>
+            <input type="text" id="trackInputId" placeholder="Order ID" style="text-align:center; font-size: 1rem; padding: 12px; margin-bottom:15px;">
+            <button class="btn btn-save" style="width:100%;" onclick="recoverChat()">Find Order</button>
+            <button class="btn" style="background:transparent; color:#666; margin-top:10px;" onclick="closeModal('trackModal')">Close</button>
         </div>
     </div>
 
     <!-- CUSTOMER CHAT MODAL -->
     <div id="customerChatModal" class="modal-overlay">
-        <div class="modal-box" style="max-width: 500px; height: 85vh; display:flex; flex-direction:column; background: #111;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
+        <div class="modal-box" style="max-width: 500px; height: 85vh; display:flex; flex-direction:column; padding:0; overflow:hidden;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:#111; border-bottom:1px solid #333;">
                 <div style="text-align:left;">
-                    <h3 style="color:var(--primary); margin:0;">Support Chat</h3>
-                    <div style="font-size:0.75rem; color:#888; margin-top:2px;">
-                        ID: <span id="displayChatId" style="color:white; user-select:all; font-family:monospace;"></span>
+                    <h3 style="color:#fff; margin:0; font-size:1rem;">STOREZ SUPPORT</h3>
+                    <div style="font-size:0.7rem; color:#666; margin-top:2px;">
+                        ID: <span id="displayChatId" style="color:#fff; user-select:all; font-family:monospace;"></span>
                         <button class="copy-btn" onclick="copyChatId()">Copy</button>
                     </div>
                 </div>
                 <div>
-                    <button class="btn-min" onclick="minimizeChat()" title="Minimize" style="display:inline-flex; margin-right:5px;">_</button>
-                    <button class="btn-min" onclick="closeModal('customerChatModal')" style="display:inline-flex; border-color:var(--danger); color:var(--danger);">X</button>
+                    <button class="btn" onclick="minimizeChat()" style="background:transparent; color:#fff; font-size:1.2rem; padding:0 10px;">_</button>
+                    <button class="btn" onclick="closeModal('customerChatModal')" style="background:transparent; color:#fff; font-size:1.2rem; padding:0 10px;">&times;</button>
                 </div>
             </div>
             
-            <div id="customerMessages" class="chat-box"></div>
+            <div id="customerMessages" class="chat-box" style="border:none; border-radius:0;"></div>
             
-            <div style="display:flex; justify-content: flex-end; margin-bottom: 5px;">
-                 <button onclick="cancelOrder()" style="background:transparent; border:none; color:var(--danger); font-size:0.7rem; cursor:pointer; text-decoration:underline;">Cancel Order</button>
-            </div>
-
-            <div class="chat-input-area" id="customerInputArea">
-                <label for="customerImgInput" class="upload-label" title="Send Screenshot">📷</label>
-                <input type="file" id="customerImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'user')">
-                
-                <input type="text" id="customerMsgInput" placeholder="Type message..." onkeypress="handleEnter(event, sendCustomerMessage)">
-                <button class="btn btn-save" style="width: auto; padding: 8px 15px;" onclick="sendCustomerMessage()">➤</button>
+            <div style="background:#0a0a0a; padding:10px; border-top:1px solid #222;">
+                 <div style="text-align:right; margin-bottom:5px;">
+                    <button onclick="cancelOrder()" style="background:transparent; border:none; color:var(--danger); font-size:0.7rem; cursor:pointer; text-transform:uppercase; letter-spacing:1px;">Cancel Order</button>
+                 </div>
+                 <div class="chat-input-area" style="padding-top:0; border:none;">
+                    <label for="customerImgInput" class="upload-label">📷</label>
+                    <input type="file" id="customerImgInput" hidden accept="image/*" onchange="handleImageUpload(this, 'user')">
+                    
+                    <input type="text" id="customerMsgInput" placeholder="Type message..." onkeypress="handleEnter(event, sendCustomerMessage)">
+                    <button class="btn btn-save" style="width: auto; padding: 8px 15px;" onclick="sendCustomerMessage()">Send</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- IMAGE VIEWER MODAL (LIGHTBOX) -->
     <div id="imageViewerModal" class="modal-overlay" onclick="closeImageViewer()">
-        <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
-        <img class="modal-content" id="fullScreenImage" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow: 0 0 50px rgba(0,0,0,1);">
+        <span style="position:absolute; top:20px; right:30px; font-size:30px; color:white; cursor:pointer;">&times;</span>
+        <img class="modal-content" id="fullScreenImage" style="max-width:95%; max-height:90%; border:1px solid #333;">
     </div>
 
     <!-- FIREBASE SDK -->
@@ -464,12 +474,11 @@
         function initCarousel(banners) {
             const container = document.getElementById('heroCarousel');
             if(banners.length === 0) {
-                container.innerHTML = `<img src="https://via.placeholder.com/1200x400/111/444?text=Welcome+to+STOREZ" class="hero-img active">`;
+                container.innerHTML = `<img src="https://via.placeholder.com/1200x300/111/444?text=STOREZ" class="hero-img active">`;
                 return;
             }
             container.innerHTML = banners.map((b, i) => `<img src="${b.image}" class="hero-img ${i===0?'active':''}">`).join('');
             
-            // Clear existing interval to prevent speeding up
             if(window.carouselInterval) clearInterval(window.carouselInterval);
 
             if(banners.length > 1) {
@@ -493,7 +502,7 @@
                 const b = d.data();
                 banners.push(b);
                 if(isAdmin && adminList) {
-                    adminList.innerHTML += `<div class="list-item"><img src="${b.image}" height="40" style="border-radius:4px;"> <button class="btn-del" onclick="deleteBanner('${d.id}')">Delete</button></div>`;
+                    adminList.innerHTML += `<div class="list-item"><img src="${b.image}" height="30" style="border-radius:2px;"> <button class="btn-del" onclick="deleteBanner('${d.id}')">Del</button></div>`;
                 }
             });
             initCarousel(banners);
@@ -505,17 +514,17 @@
             const btn = document.querySelector("button[onclick='uploadBanner()']");
             btn.innerText = "Uploading...";
             try {
-                const imgData = await compressImage(file, 1920); // Full HD for banners // Higher quality for banner
+                const imgData = await compressImage(file, 1920); // Full HD for banners
                 await addDoc(collection(db, "banners"), { image: imgData, timestamp: Date.now() });
                 document.getElementById("bannerInput").value = "";
                 alert("Banner Added");
             } catch(e) { console.error(e); alert("Failed"); }
-            btn.innerText = "+ Add Banner";
+            btn.innerText = "Upload Banner";
         }
         window.deleteBanner = async (id) => { if(confirm("Remove banner?")) await deleteDoc(doc(db, "banners", id)); }
 
 
-        // --- SESSION & MINIMIZE LOGIC ---
+        // --- SESSION ---
         async function checkSavedSession() {
             const savedId = localStorage.getItem('storez_active_chat');
             if(savedId) {
@@ -542,12 +551,12 @@
             document.getElementById('customerChatModal').style.display = 'flex';
             document.getElementById('minimizedChat').style.display = 'none';
             document.getElementById('minimizedChat').classList.remove('new-msg'); 
-            document.getElementById('minimizedText').innerText = "Active Chat";
+            document.getElementById('minimizedText').innerText = "Chat";
             const container = document.getElementById("customerMessages");
             container.scrollTop = container.scrollHeight;
         };
 
-        // --- IMAGE VIEWER HELPERS ---
+        // --- HELPERS ---
         window.openImageViewer = (src) => {
             const modal = document.getElementById("imageViewerModal");
             const img = document.getElementById("fullScreenImage");
@@ -555,11 +564,8 @@
             modal.style.display = "flex";
         };
 
-        window.closeImageViewer = () => {
-            document.getElementById("imageViewerModal").style.display = "none";
-        };
+        window.closeImageViewer = () => document.getElementById("imageViewerModal").style.display = "none";
 
-        // --- IMAGE COMPRESSION HELPER ---
         // --- UPDATED IMAGE COMPRESSION (CLEARER) ---
 async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 1280
     return new Promise((resolve) => {
@@ -609,11 +615,11 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
             input.value = "";
         };
 
-        // --- AUTH & HIDDEN BUTTON ---
+        // --- AUTH ---
         window.clickLogo = () => {
             logoClicks++;
             clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => { logoClicks = 0; }, 2000); // Reset if not clicked fast enough
+            clickTimer = setTimeout(() => { logoClicks = 0; }, 2000); 
 
             if(logoClicks >= 5) { 
                 document.getElementById("secretLogin").style.display = "block"; 
@@ -624,26 +630,24 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
         window.handleAuth = () => {
             if (auth.currentUser) signOut(auth).then(() => window.location.reload());
             else {
-                const e = prompt("Admin Email:");
-                if(!e) return;
-                const p = prompt("Password:");
-                if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert("Error: " + err.message));
+                const e = prompt("Email:"); if(!e) return;
+                const p = prompt("Password:"); if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert("Error: " + err.message));
             }
         };
 
         onAuthStateChanged(auth, (user) => {
             isAdmin = !!user;
-            document.getElementById("authBtn").innerText = user ? "Logout" : "Admin";
+            document.getElementById("authBtn").innerText = user ? "Exit" : "Admin";
             document.getElementById("adminArea").style.display = user ? "block" : "none";
             if(user) {
-                document.getElementById("secretLogin").style.display = "block"; // Keep visible if logged in
+                document.getElementById("secretLogin").style.display = "block";
                 initAdminChatListener();
                 renderBuyerList();
             }
             renderStore();
         });
 
-        // --- DATA SYNC ---
+        // --- DATA ---
         onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => {
             categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() }));
             renderCategories(); renderCatList();
@@ -653,47 +657,26 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
             renderStore();
         });
         
-        // --- PROOFS SYNC ---
+        // --- PROOFS ---
         onSnapshot(query(collection(db, "proofs"), orderBy("timestamp", "desc")), (snap) => {
             const grid = document.getElementById("proofGrid");
-            const adminList = document.getElementById("proofListAdmin");
             grid.innerHTML = "";
-            if(adminList) adminList.innerHTML = "";
-
-            if(snap.empty) { 
-                grid.innerHTML = "<p style='color:#555; width:100%; text-align:center'>No proofs available.</p>"; 
-            }
-
+            if(snap.empty) { grid.innerHTML = "<p style='color:#444; width:100%; text-align:center; font-size:0.8rem;'>No proofs.</p>"; }
             snap.forEach(d => {
                 const p = d.data();
-                const dateDisplay = p.dateString ? p.dateString : "";
-                
-                grid.innerHTML += `
-                    <div class="proof-card" onclick="openImageViewer('${p.image}')">
-                        <img src="${p.image}" class="proof-img">
-                        <div class="proof-details">
-                            <div class="proof-caption">${p.caption}</div>
-                            <div class="proof-date">${dateDisplay}</div>
-                        </div>
-                    </div>
-                `;
-                
-                if(adminList && isAdmin) {
-                    adminList.innerHTML += `<div class="list-item"><img src="${p.image}" height="30"> <span>${p.caption}</span> <button class="btn-del" onclick="deleteProof('${d.id}')">X</button></div>`;
-                }
+                grid.innerHTML += `<div class="proof-card" onclick="openImageViewer('${p.image}')"><img src="${p.image}" class="proof-img"><div class="proof-details"><div class="proof-caption">${p.caption}</div></div></div>`;
             });
         });
 
-        // --- TICKER LOGIC (SELLER/BUYERS) ---
+        // --- TICKER ---
         onSnapshot(query(collection(db, "buyers"), orderBy("timestamp", "desc")), (snap) => {
             let html = "", buyers = [];
             snap.forEach(d => buyers.push({id: d.id, ...d.data()}));
-            window.buyersData = buyers; // Store for editing
+            window.buyersData = buyers;
             
-            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to STOREZ Store! Best deals online.</div>`;
+            if(buyers.length === 0) html = `<div class="ticker-item">Welcome to STOREZ</div>`;
             else {
-                buyers.forEach(b => html += `<div class="ticker-item">🎉 <b>${b.name}</b> bought <b>${b.item}</b></div>`);
-                // Duplicate for smooth loop if few items
+                buyers.forEach(b => html += `<div class="ticker-item">⚡ <b>${b.name}</b> bought <b>${b.item}</b></div>`);
                 if(buyers.length < 5) html += html; 
             }
             document.getElementById("tickerContent").innerHTML = html;
@@ -704,20 +687,12 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
             const id = document.getElementById("editTickerId").value;
             const name = document.getElementById("buyerName").value;
             const item = document.getElementById("buyerItem").value;
-            
             if(name && item) {
-                if(id) {
-                    await updateDoc(doc(db, "buyers", id), { name, item });
-                    alert("Ticker Updated");
-                } else {
-                    await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() });
-                }
+                if(id) await updateDoc(doc(db, "buyers", id), { name, item });
+                else await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() });
                 document.getElementById("buyerName").value = "";
                 document.getElementById("buyerItem").value = "";
                 document.getElementById("editTickerId").value = "";
-                document.getElementById("tickerBtn").innerText = "Add to Ticker";
-            } else {
-                alert("Fill name and item");
             }
         };
 
@@ -727,109 +702,55 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
                 document.getElementById("buyerName").value = b.name;
                 document.getElementById("buyerItem").value = b.item;
                 document.getElementById("editTickerId").value = b.id;
-                document.getElementById("tickerBtn").innerText = "Update Ticker";
             }
         };
-
         window.deleteBuyer = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "buyers", id)); };
         function renderBuyerList() {
             if(!window.buyersData) return;
-            const list = document.getElementById("buyerList");
-            list.innerHTML = "";
-            window.buyersData.forEach(b => {
-                list.innerHTML += `<div class="list-item" style="font-size:0.8rem;">
-                    <span>${b.name} - ${b.item}</span>
-                    <div>
-                        <button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button>
-                        <button class="btn-del" onclick="deleteBuyer('${b.id}')">Del</button>
-                    </div>
-                </div>`;
-            });
+            document.getElementById("buyerList").innerHTML = window.buyersData.map(b => 
+                `<div class="list-item" style="font-size:0.75rem;"><span>${b.name} - ${b.item}</span><div><button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button><button class="btn-del" onclick="deleteBuyer('${b.id}')">X</button></div></div>`
+            ).join('');
         }
 
-        // --- PROOF UPLOAD ---
         window.uploadProof = async () => {
             const caption = document.getElementById("proofCaption").value;
-            const dateInput = document.getElementById("proofDate").value;
             const fileInput = document.getElementById("proofFileInput");
-            const btn = document.querySelector("button[onclick='uploadProof()']");
-            
-            if(!fileInput.files[0] || !caption) return alert("Image and Caption required");
-
-            btn.innerText = "Uploading...";
-            btn.disabled = true;
-
+            if(!fileInput.files[0] || !caption) return alert("Image & Caption needed");
+            const btn = document.querySelector("button[onclick='uploadProof()']"); btn.innerText = "...";
             try {
                 const imgData = await compressImage(fileInput.files[0], 1200); 
-                let dateStr = dateInput || new Date().toISOString().split('T')[0];
-
-                await addDoc(collection(db, "proofs"), {
-                    caption: caption,
-                    dateString: dateStr,
-                    image: imgData,
-                    timestamp: Date.now()
-                });
-                alert("Proof uploaded!");
-                document.getElementById("proofCaption").value = "";
-                fileInput.value = "";
-            } catch (error) { alert("Error: " + error.message); } 
-            finally { btn.innerText = "Upload Proof"; btn.disabled = false; }
+                await addDoc(collection(db, "proofs"), { caption, image: imgData, timestamp: Date.now() });
+                alert("Done"); fileInput.value = "";
+            } catch (e) { alert(e.message); } 
+            finally { btn.innerText = "Upload"; }
         };
 
-        window.deleteProof = async(id) => { if(confirm("Delete proof?")) await deleteDoc(doc(db, "proofs", id)); }
-
-        // --- TRACKING & CANCEL ---
-        window.openTrackModal = () => {
-             document.getElementById("trackModal").style.display = "flex";
-             document.getElementById("trackInputId").focus();
-        }
-
+        // --- TRACKING ---
+        window.openTrackModal = () => { document.getElementById("trackModal").style.display = "flex"; document.getElementById("trackInputId").focus(); }
         window.recoverChat = async () => {
             const inputId = document.getElementById("trackInputId").value.trim();
-            if(!inputId) return alert("Enter an Order ID");
-            const btn = document.querySelector("#trackModal .btn-save");
-            btn.innerText = "Searching...";
-            
-            try {
-                const docSnap = await getDoc(doc(db, "chats", inputId));
-                if(docSnap.exists()) {
-                    localStorage.setItem('storez_active_chat', inputId);
-                    closeModal("trackModal");
-                    resumeCustomerChat(inputId);
-                } else {
-                    alert("Order not found!");
-                }
-            } catch(e) { alert("Error"); } 
-            finally { btn.innerText = "Find Order"; }
+            if(!inputId) return;
+            const docSnap = await getDoc(doc(db, "chats", inputId));
+            if(docSnap.exists()) {
+                localStorage.setItem('storez_active_chat', inputId);
+                closeModal("trackModal"); resumeCustomerChat(inputId);
+            } else alert("Invalid ID");
         }
-
-        window.copyChatId = () => {
-            if(activeCustomerChatId) {
-                navigator.clipboard.writeText(activeCustomerChatId);
-                alert("Order ID copied! Use it to track on other devices.");
-            }
-        }
-
+        window.copyChatId = () => { if(activeCustomerChatId) { navigator.clipboard.writeText(activeCustomerChatId); alert("Copied ID"); } }
         window.cancelOrder = async () => {
             if(!activeCustomerChatId) return;
-            if(confirm("Are you sure you want to CANCEL this order?")) {
-                await updateDoc(doc(db, "chats", activeCustomerChatId), {
-                    status: 'cancelled',
-                    messages: arrayUnion({ sender: 'system', text: '⚠️ Order Cancelled by User', time: Date.now() })
-                });
-                alert("Order Cancelled.");
+            if(confirm("Cancel order?")) {
+                await updateDoc(doc(db, "chats", activeCustomerChatId), { status: 'cancelled', messages: arrayUnion({ sender: 'system', text: '⚠️ CANCELLED', time: Date.now() }) });
             }
         };
 
-        // --- CUSTOMER ORDER LOGIC ---
+        // --- BUY LOGIC ---
         window.openBuyModal = (itemJson) => {
-            if(activeCustomerChatId) {
-                if(!confirm("You have an active chat. Open new order?")) return;
-                localStorage.removeItem('storez_active_chat');
-            }
+            if(activeCustomerChatId && confirm("Close active chat?")) localStorage.removeItem('storez_active_chat');
+            else if(activeCustomerChatId) return;
             const item = JSON.parse(decodeURIComponent(itemJson));
             currentItemBuying = item;
-            document.getElementById("modalItemName").innerText = "Order: " + item.name;
+            document.getElementById("modalItemName").innerText = item.name;
             document.getElementById("customerMlbbId").value = "";
             document.getElementById("orderModal").style.display = "flex";
             document.getElementById("customerMlbbId").focus();
@@ -839,57 +760,38 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
 
         window.submitOrder = async () => {
             const mlbbId = document.getElementById("customerMlbbId").value.trim();
-            if(!mlbbId) return alert("Please enter Game ID");
-            const btn = document.querySelector("#orderModal .btn-save");
-            btn.innerText = "Creating Order..."; btn.disabled = true;
-
+            if(!mlbbId) return;
+            const btn = document.querySelector("#orderModal .btn-save"); btn.innerText = "..."; btn.disabled = true;
             try {
                 let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
                 const chatRef = await addDoc(collection(db, "chats"), {
                     mlbbId: mlbbId, itemName: currentItemBuying.name, itemPrice: finalPrice, status: 'open', timestamp: Date.now(),
-                    messages: [{ sender: 'system', text: `New Order: ${currentItemBuying.name} (₱${finalPrice})\nDetails: ${mlbbId}\n\nWaiting for admin...`, time: Date.now() }]
+                    messages: [{ sender: 'system', text: `New: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}`, time: Date.now() }]
                 });
                 localStorage.setItem('storez_active_chat', chatRef.id);
-                closeModal("orderModal");
-                resumeCustomerChat(chatRef.id);
-            } catch (error) { alert("Failed. Check internet."); } 
-            finally { btn.innerText = "Proceed to Chat"; btn.disabled = false; }
+                closeModal("orderModal"); resumeCustomerChat(chatRef.id);
+            } catch (error) { alert("Error"); } 
+            finally { btn.innerText = "Start Chat"; btn.disabled = false; }
         };
 
         function resumeCustomerChat(chatId) {
-            activeCustomerChatId = chatId;
-            maximizeChat(); 
-            document.getElementById("displayChatId").innerText = chatId;
-
+            activeCustomerChatId = chatId; maximizeChat(); document.getElementById("displayChatId").innerText = chatId;
             onSnapshot(doc(db, "chats", chatId), (docSnap) => {
                 if(docSnap.exists()) {
                     const data = docSnap.data();
                     currentChatData = data;
                     renderMessages(data.messages, "customerMessages");
-                    
-                    // Minimize notification
                     if(isChatMinimized) {
                         const lastMsg = data.messages[data.messages.length - 1];
                         if(lastMsg && lastMsg.sender === 'admin') {
                             document.getElementById("minimizedChat").classList.add('new-msg');
-                            document.getElementById('minimizedText').innerText = "New Message!";
                         }
                     }
-
-                    // Disable inputs if cancelled/done
                     const inputArea = document.getElementById("customerInputArea");
-                    if(data.status === 'cancelled' || data.status === 'done') {
-                         inputArea.style.opacity = '0.5';
-                         inputArea.style.pointerEvents = 'none';
-                    } else {
-                         inputArea.style.opacity = '1';
-                         inputArea.style.pointerEvents = 'all';
-                    }
-
+                    if(data.status === 'cancelled' || data.status === 'done') { inputArea.style.opacity = '0.3'; inputArea.style.pointerEvents = 'none'; } 
+                    else { inputArea.style.opacity = '1'; inputArea.style.pointerEvents = 'all'; }
                 } else {
-                    alert("Chat closed by admin.");
-                    localStorage.removeItem('storez_active_chat');
-                    window.location.reload();
+                    localStorage.removeItem('storez_active_chat'); window.location.reload();
                 }
             });
         }
@@ -903,39 +805,32 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
         window.handleEnter = (e, func) => { if(e.key === 'Enter') func(); };
 
         function renderMessages(msgs, divId) {
-            const container = document.getElementById(divId);
-            container.innerHTML = "";
+            const container = document.getElementById(divId); container.innerHTML = "";
             msgs.forEach(m => {
                 let content = m.text.replace(/\n/g, '<br>');
                 if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="openImageViewer(this.src)">`;
-                
                 let cls = "msg-system";
                 if(m.sender === 'user') cls = "msg-user";
                 if(m.sender === 'admin') cls = "msg-admin";
                 if(m.text.includes("RECEIPT")) cls = "msg-receipt";
-                if(m.text.includes("Cancelled")) cls = "msg-cancelled";
-
+                if(m.text.includes("CANCELLED")) cls = "msg-cancelled";
                 container.innerHTML += `<div class="message ${cls}">${content}</div>`;
             });
             container.scrollTop = container.scrollHeight;
         }
 
-        // --- ADMIN ---
+        // --- ADMIN CHAT ---
         function initAdminChatListener() {
             onSnapshot(query(collection(db, "chats"), orderBy("timestamp", "desc")), (snap) => {
-                const list = document.getElementById("adminChatList");
-                list.innerHTML = "";
-                if(snap.empty) { list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>No active orders.</div>"; return; }
+                const list = document.getElementById("adminChatList"); list.innerHTML = "";
+                if(snap.empty) { list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>Empty</div>"; return; }
                 snap.forEach(d => {
                     const chat = d.data();
                     const isActive = activeAdminChatId === d.id ? "active" : "";
                     let badgeClass = 'badge open';
                     if(chat.status === 'done') badgeClass = 'badge done';
                     if(chat.status === 'cancelled') badgeClass = 'badge cancelled';
-                    
-                    list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')">
-                            <div><strong style="color:white;">${chat.mlbbId}</strong><div style="font-size:0.8rem; color:#aaa;">${chat.itemName}</div></div>
-                            <div class="${badgeClass}">${chat.status.toUpperCase()}</div></div>`;
+                    list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')"><div><strong style="color:white;">${chat.mlbbId}</strong><div style="font-size:0.7rem; color:#888;">${chat.itemName}</div></div><div class="${badgeClass}">${chat.status.toUpperCase()}</div></div>`;
                 });
             });
         }
@@ -945,7 +840,7 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
             chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => {
                 if(s.exists()) { 
                     currentChatData = s.data();
-                    document.getElementById("adminChatTitle").innerText = `Chat: ${s.data().mlbbId}`; 
+                    document.getElementById("adminChatTitle").innerText = `${s.data().mlbbId}`; 
                     renderMessages(s.data().messages, "adminMessages"); 
                 }
                 else document.getElementById("adminChatWindow").style.display = "none";
@@ -957,130 +852,66 @@ async function compressImage(file, maxWidth = 1280) { // Changed from 800 to 128
             await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) });
             input.value = "";
         };
-
         window.sendReceipt = async () => {
             if(!activeAdminChatId || !currentChatData) return;
-            const r = `
-🧾 OFFICIAL RECEIPT
-------------------
-ID: ${currentChatData.mlbbId}
-Item: ${currentChatData.itemName}
-Price: ₱${currentChatData.itemPrice}
-Status: ✅ COMPLETED
-------------------
-Thank you for buying!
-            `;
-            await updateDoc(doc(db, "chats", activeAdminChatId), { 
-                status: 'done',
-                messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) 
-            });
-            // Auto add to ticker
-            await addDoc(collection(db, "buyers"), { name: "User " + currentChatData.mlbbId.slice(0,3), item: currentChatData.itemName, timestamp: Date.now() });
+            const r = `🧾 OFFICIAL RECEIPT\nID: ${currentChatData.mlbbId}\nItem: ${currentChatData.itemName}\nTotal: ₱${currentChatData.itemPrice}\nStatus: ✅ PAID`;
+            await updateDoc(doc(db, "chats", activeAdminChatId), { status: 'done', messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) });
+            await addDoc(collection(db, "buyers"), { name: "Client", item: currentChatData.itemName, timestamp: Date.now() });
         };
+        window.closeCurrentChat = async () => { if(activeAdminChatId && confirm("Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; } };
 
-        window.closeCurrentChat = async () => {
-            if(activeAdminChatId && confirm("Permanently Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; }
-        };
-
-        // --- STORE & CRUD ---
+        // --- STORE CRUD ---
         window.renderStore = () => {
-            const grid = document.getElementById("storeGrid");
-            grid.innerHTML = "";
+            const grid = document.getElementById("storeGrid"); grid.innerHTML = "";
             let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
-            if(filtered.length === 0) { grid.innerHTML = "<p style='color:#555; width:100%; text-align:center; margin-top:40px;'>No items available.</p>"; return; }
-            
+            if(filtered.length === 0) { grid.innerHTML = "<p style='color:#444; width:100%; text-align:center;'>Empty.</p>"; return; }
             filtered.forEach(item => {
                 const stockVal = item.stock !== undefined ? Number(item.stock) : 999;
-                const isSoldOut = stockVal <= 0;
-                
-                let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:10px;"><button class="btn btn-io" style="margin:0; font-size:0.8rem" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" onclick="deleteItem('${item.id}')">Del</button></div>` : "";
-                
                 let priceHtml = `<div class="current-price">₱${item.price}</div>`;
                 let badgeHtml = "";
-                
                 if(item.salePrice && Number(item.salePrice) < Number(item.price)) { 
-                    priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price" style="color:var(--sale)">₱${item.salePrice}</span>`; 
-                    badgeHtml += `<div class="sale-badge">SALE</div>`; 
+                    priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price">₱${item.salePrice}</span>`; 
+                    badgeHtml = `<div class="sale-badge">SALE</div>`; 
                 }
-                
                 let btnHtml = `<button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>`;
-                let stockStatusHtml = `<div class="stock-status stock-high">✅ In Stock: ${stockVal}</div>`;
+                let stockStatusHtml = `<div class="stock-status">In Stock: ${stockVal}</div>`;
                 let overlayHtml = "";
-
-                if(stockVal <= 10 && stockVal > 0) {
-                     stockStatusHtml = `<div class="stock-status stock-low">🔥 Hurry! Only ${stockVal} left</div>`;
-                }
-
-                if(isSoldOut) {
-                    stockStatusHtml = `<div class="stock-status stock-out">Out of Stock</div>`;
+                if(stockVal <= 0) {
+                    stockStatusHtml = `<div class="stock-status stock-out">Sold Out</div>`;
                     btnHtml = `<button disabled class="buy-btn">Sold Out</button>`;
                     overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`;
                     badgeHtml = ""; 
                 }
-
-                grid.innerHTML += `
-                    <div class="card">
-                        ${badgeHtml}
-                        <div class="card-img-wrapper">
-                            <img src="${item.image || 'https://via.placeholder.com/300x200?text=No+Image'}" class="card-img-top">
-                            ${overlayHtml}
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${item.name}</h3>
-                            <div class="price-container">${priceHtml}</div>
-                            ${stockStatusHtml}
-                            ${btnHtml}
-                            ${adminHtml}
-                        </div>
-                    </div>`;
+                let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:5px;"><button class="btn btn-io" style="margin:0; font-size:0.7rem; width:100%;" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" style="margin:0; width:auto;" onclick="deleteItem('${item.id}')">X</button></div>` : "";
+                grid.innerHTML += `<div class="card">${badgeHtml}<div class="card-img-wrapper"><img src="${item.image || 'https://via.placeholder.com/300'}" class="card-img-top">${overlayHtml}</div><div class="card-body"><h3 class="card-title">${item.name}</h3><div class="price-container">${priceHtml}</div>${stockStatusHtml}${btnHtml}${adminHtml}</div></div>`;
             });
         };
         window.addCategory = async () => { const n = document.getElementById("catName").value; if(n) await addDoc(collection(db, "categories"), { name: n, order: Date.now() }); document.getElementById("catName").value = ""; };
         window.deleteCategory = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "categories", id)); };
         window.renderCategories = () => {
             const c = document.getElementById("catTabs"), s = document.getElementById("itemCatSelect");
-            c.innerHTML = `<div class="cat-tab ${currentCat==='All'?'active':''}" onclick="window.setCat('All')">All</div>` + categoriesData.map(x=>`<div class="cat-tab ${currentCat===x.id?'active':''}" onclick="window.setCat('${x.id}')">${x.name}</div>`).join('');
+            c.innerHTML = `<div class="cat-tab ${currentCat==='All'?'active':''}" onclick="window.setCat('All')">ALL</div>` + categoriesData.map(x=>`<div class="cat-tab ${currentCat===x.id?'active':''}" onclick="window.setCat('${x.id}')">${x.name.toUpperCase()}</div>`).join('');
             s.innerHTML = `<option value="">Category...</option>` + categoriesData.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');
         };
         window.setCat = (id) => { currentCat = id; renderStore(); };
         window.renderCatList = () => { document.getElementById("catList").innerHTML = categoriesData.map(x=>`<div class="list-item"><span>${x.name}</span><button class="btn-del" onclick="deleteCategory('${x.id}')">X</button></div>`).join(''); };
-        
         window.saveItem = async () => {
             const id = document.getElementById("editItemId").value;
-            const data = { 
-                name: document.getElementById("itemName").value, 
-                price: Number(document.getElementById("itemPrice").value), 
-                salePrice: document.getElementById("itemSale").value, 
-                catId: document.getElementById("itemCatSelect").value, 
-                image: document.getElementById("itemImg").value,
-                stock: Number(document.getElementById("itemStock").value) 
-            };
-            if(!data.name || !data.price || !data.catId) return alert("Info missing");
+            const data = { name: document.getElementById("itemName").value, price: Number(document.getElementById("itemPrice").value), salePrice: document.getElementById("itemSale").value, catId: document.getElementById("itemCatSelect").value, image: document.getElementById("itemImg").value, stock: Number(document.getElementById("itemStock").value) };
+            if(!data.name || !data.price || !data.catId) return alert("Missing info");
             if(!data.salePrice) delete data.salePrice; else data.salePrice = Number(data.salePrice);
             if(isNaN(data.stock)) data.stock = 999;
-
-            if(id) await updateDoc(doc(db, "items", id), data);
-            else await addDoc(collection(db, "items"), { ...data, order: Date.now() });
+            if(id) await updateDoc(doc(db, "items", id), data); else await addDoc(collection(db, "items"), { ...data, order: Date.now() });
             window.clearForm();
         };
         window.deleteItem = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "items", id)); };
         window.editItem = (id) => {
             const i = itemsData.find(x => x.id === id); 
-            document.getElementById("editItemId").value = i.id; 
-            document.getElementById("itemName").value = i.name; 
-            document.getElementById("itemPrice").value = i.price; 
-            document.getElementById("itemSale").value = i.salePrice||""; 
-            document.getElementById("itemCatSelect").value = i.catId; 
-            document.getElementById("itemImg").value = i.image; 
-            document.getElementById("itemStock").value = i.stock !== undefined ? i.stock : "";
-            document.getElementById("adminArea").scrollIntoView();
+            document.getElementById("editItemId").value = i.id; document.getElementById("itemName").value = i.name; document.getElementById("itemPrice").value = i.price; document.getElementById("itemSale").value = i.salePrice||""; document.getElementById("itemCatSelect").value = i.catId; document.getElementById("itemImg").value = i.image; document.getElementById("itemStock").value = i.stock; document.getElementById("adminArea").scrollIntoView();
         };
         window.clearForm = () => { document.querySelectorAll("#adminArea input").forEach(x=>x.value=""); document.getElementById("itemCatSelect").value=""; document.getElementById("editItemId").value=""; };
-        window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "StoreZ_Backup.json"; a.click(); };
-        window.importToFirebase = async (i) => {
-            if(!i.files[0] || !confirm("Import?")) return;
-            const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]);
-        };
+        window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "STOREZ_Backup.json"; a.click(); };
+        window.importToFirebase = async (i) => { if(i.files[0] && confirm("Import?")) { const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]); }};
     </script>
 </body>
 </html>
