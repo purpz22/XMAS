@@ -1,3 +1,4 @@
+<!-- START OF FILE index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,9 +19,8 @@
             --danger: #ff3b30; 
             --success: #34c759;
             --warning: #ffcc00;
-            --fb-blue: #1877F2;
-            --chat-user: #222222; 
-            --chat-admin: #000000;
+            --fb-blue: #0084ff; /* Messenger Blue */
+            --chat-bg-other: #3e4042; /* Messenger Gray */
             --modal-overlay: rgba(0, 0, 0, 0.9);
         }
 
@@ -54,7 +54,7 @@
         .seller-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
         .seller-info h2 { margin: 0 0 5px 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
         .seller-info p { margin: 0 0 10px 0; color: #888; font-size: 0.8rem; }
-        .fb-btn { background: var(--fb-blue); color: white; border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; text-decoration: none; display: inline-block; cursor: pointer; transition: opacity 0.2s; }
+        .fb-btn { background: var(--fb-blue); color: white; border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; text-decoration: none; display: inline-block; cursor: pointer; transition: opacity 0.2s; border-radius: 4px; }
         .fb-btn:hover { opacity: 0.8; }
 
         /* --- TABS & STORE --- */
@@ -108,18 +108,36 @@
         
         /* --- CHAT --- */
         .chat-container { display: flex; flex-direction: column; height: 400px; }
-        .chat-box { flex-grow: 1; background: #0a0a0a; border: 1px solid var(--border); overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .message { padding: 10px 14px; border-radius: 4px; font-size: 0.9rem; max-width: 85%; word-wrap: break-word; line-height: 1.5; }
-        .msg-system { align-self: center; color: #666; font-size: 0.75rem; text-transform: uppercase; margin: 10px 0; }
-        .msg-user { align-self: flex-end; background: var(--chat-user); color: white; border: 1px solid #333; }
-        .msg-admin { align-self: flex-start; background: var(--chat-admin); color: #ddd; border: 1px solid #333; }
-        .msg-receipt { align-self: center; background: #000; border: 1px dashed #444; color: #fff; text-align: center; width: 90%; font-family: monospace; font-size: 0.8rem; }
-        .msg-image { max-width: 200px; border: 1px solid #333; margin-top: 5px; cursor: pointer; }
+        .chat-box { flex-grow: 1; background: #000; border: 1px solid var(--border); overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+        
+        /* Messenger Style Messages */
+        .message { padding: 8px 12px; border-radius: 18px; font-size: 0.9rem; max-width: 75%; word-wrap: break-word; line-height: 1.4; position: relative; }
+        .msg-system { align-self: center; color: #666; font-size: 0.7rem; text-transform: uppercase; margin: 10px 0; background: transparent; max-width: 95%; text-align: center;}
+        
+        /* Customer (Right) */
+        .msg-user { 
+            align-self: flex-end; 
+            background: var(--fb-blue); 
+            color: white; 
+            border-bottom-right-radius: 4px;
+        }
+        
+        /* Admin (Left) */
+        .msg-admin { 
+            align-self: flex-start; 
+            background: var(--chat-bg-other); 
+            color: white; 
+            border-bottom-left-radius: 4px;
+        }
+
+        .msg-receipt { align-self: center; background: #111; border: 1px dashed #444; color: #fff; text-align: center; width: 90%; font-family: monospace; font-size: 0.8rem; border-radius: 4px; }
+        .msg-image { max-width: 200px; border-radius: 10px; margin-top: 5px; cursor: pointer; }
+        
         .chat-input-area { display: flex; gap: 10px; align-items: center; border-top: 1px solid #222; padding-top: 15px; }
-        .chat-input-area input { flex-grow: 1; padding: 10px; border: 1px solid #333; background: #111; color: white; }
-        .chat-input-area button { width: auto; margin: 0; }
-        .upload-label { cursor: pointer; font-size: 1.2rem; color: #666; padding: 0 5px; }
-        .upload-label:hover { color: #fff; }
+        .chat-input-area input { flex-grow: 1; padding: 10px; border: 1px solid #333; background: #111; color: white; border-radius: 20px;}
+        .chat-input-area button { width: auto; margin: 0; border-radius: 20px;}
+        .upload-label { cursor: pointer; font-size: 1.2rem; color: var(--fb-blue); padding: 0 5px; }
+        .upload-label:hover { opacity: 0.8; }
 
         #minimizedChat { position: fixed; bottom: 20px; right: 20px; background: #fff; color: #000; padding: 15px 25px; font-weight: bold; cursor: pointer; display: none; z-index: 2000; border: 1px solid #000; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;}
         #minimizedChat.new-msg { background: var(--danger); color: white; }
@@ -137,6 +155,12 @@
         .copy-btn { font-size: 0.6rem; background: #222; border: 1px solid #333; color: white; padding: 2px 6px; cursor: pointer; margin-left: 5px; text-transform: uppercase; }
         
         #imageViewerModal { z-index: 5000; background: rgba(0,0,0,0.95); }
+
+        /* API Verification Styles */
+        .id-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .id-input-group input { text-align: center; }
+        .verified-badge { color: var(--success); font-weight: bold; font-size: 0.9rem; margin: 10px 0; display: none; }
+        .verified-badge span { border-bottom: 1px solid var(--success); }
 
         @media (max-width: 600px) {
             .hero-container { height: 160px; }
@@ -304,12 +328,22 @@
     <!-- CHAT MODALS -->
     <div id="minimizedChat" onclick="maximizeChat()" style="display:none;"><span style="font-size:1.2rem; margin-right:5px;">💬</span> <span id="minimizedText">Chat</span></div>
 
+    <!-- UPDATED ORDER MODAL WITH API VERIFICATION -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-box">
             <h3 style="color:#fff; margin-bottom:5px; text-transform:uppercase;" id="modalItemName">Confirm Order</h3>
-            <p style="color:#888; font-size:0.8rem; margin-bottom:20px;">Enter your Game ID / User ID</p>
-            <input type="text" id="customerMlbbId" placeholder="ID Here..." style="text-align:center; font-size: 1rem; padding: 12px; margin-bottom:15px;">
-            <button class="btn btn-save" style="width:100%;" onclick="submitOrder()">Start Chat</button>
+            <p style="color:#888; font-size:0.8rem; margin-bottom:20px;">Enter MLBB ID & Server to Verify</p>
+            
+            <div class="id-input-group">
+                <input type="number" id="inputMlbbId" placeholder="User ID" style="flex:2;">
+                <input type="number" id="inputMlbbZone" placeholder="Zone ID" style="flex:1;">
+            </div>
+
+            <button class="btn" style="width:100%; background: #333; color: #fff; margin-bottom: 10px;" onclick="verifyMlbbId()" id="btnVerify">Verify ID</button>
+            
+            <div id="ignResult" class="verified-badge">IGN: <span id="ignText"></span></div>
+
+            <button class="btn btn-save" id="btnSubmitOrder" style="width:100%; opacity: 0.5; cursor: not-allowed;" disabled onclick="submitOrder()">Start Chat</button>
             <button class="btn" style="background:transparent; color:#666; margin-top:10px;" onclick="closeModal('orderModal')">Cancel</button>
         </div>
     </div>
@@ -382,6 +416,7 @@
         let itemsData = [], categoriesData = [], currentCat = "All", isAdmin = false, logoClicks = 0, clickTimer;
         let currentItemBuying = null, activeCustomerChatId = null, activeAdminChatId = null, chatUnsubscribe = null;
         let isChatMinimized = false, currentChatData = null;
+        let verifiedIgn = null; // Store verified IGN
 
         // --- CAROUSEL ---
         let currentBannerIndex = 0;
@@ -422,21 +457,15 @@
             }
         });
 
-        // --- FIX IS HERE: AUTO ADD HTTPS ---
         window.saveProfile = async () => {
             const name = document.getElementById("adminSellerName").value;
             let fb = document.getElementById("adminSellerFb").value.trim();
             const file = document.getElementById("adminSellerImg").files[0];
-            
-            // Auto-fix URL if it doesn't start with http
-            if(fb && !fb.startsWith("http")) {
-                fb = "https://" + fb;
-            }
-
+            if(fb && !fb.startsWith("http")) fb = "https://" + fb;
             let data = { name: name, fbLink: fb };
             if(file) { const imgData = await compressImage(file, 400); data.image = imgData; }
             await setDoc(doc(db, "settings", "seller"), data, { merge: true }); 
-            alert("Profile Saved! Link fixed to: " + fb);
+            alert("Profile Saved!");
         };
 
         // --- COMPRESSION ---
@@ -545,22 +574,110 @@
             }
         };
 
+        // --- BUY & VERIFY FLOW ---
         window.openBuyModal = (itemJson) => {
             if(activeCustomerChatId && confirm("Close active chat?")) localStorage.removeItem('storez_active_chat');
             else if(activeCustomerChatId) return;
-            const item = JSON.parse(decodeURIComponent(itemJson)); currentItemBuying = item;
-            document.getElementById("modalItemName").innerText = item.name; document.getElementById("customerMlbbId").value = ""; document.getElementById("orderModal").style.display = "flex"; document.getElementById("customerMlbbId").focus();
+            
+            // Reset Modal
+            const item = JSON.parse(decodeURIComponent(itemJson)); 
+            currentItemBuying = item;
+            document.getElementById("modalItemName").innerText = item.name; 
+            document.getElementById("inputMlbbId").value = ""; 
+            document.getElementById("inputMlbbZone").value = "";
+            
+            // Hide result, disable button
+            document.getElementById("ignResult").style.display = "none";
+            document.getElementById("btnSubmitOrder").disabled = true;
+            document.getElementById("btnSubmitOrder").style.opacity = "0.5";
+            document.getElementById("btnSubmitOrder").style.cursor = "not-allowed";
+            verifiedIgn = null;
+
+            document.getElementById("orderModal").style.display = "flex"; 
+            document.getElementById("inputMlbbId").focus();
         };
+
+        window.verifyMlbbId = async () => {
+            const id = document.getElementById("inputMlbbId").value.trim();
+            const zone = document.getElementById("inputMlbbZone").value.trim();
+            const btn = document.getElementById("btnVerify");
+            
+            if(!id || !zone) return alert("Please enter both ID and Zone.");
+            
+            btn.innerText = "Checking...";
+            btn.disabled = true;
+
+            try {
+                // Fetch from API
+                const res = await fetch(`https://api.isan.eu.org/nickname/ml?id=${id}&zone=${zone}`);
+                const data = await res.json();
+                
+                if(data.success || data.name) {
+                    const ign = data.name || data.nickname;
+                    if(ign) {
+                        verifiedIgn = ign;
+                        document.getElementById("ignText").innerText = ign;
+                        document.getElementById("ignResult").style.display = "block";
+                        
+                        // Enable Start Chat
+                        const submitBtn = document.getElementById("btnSubmitOrder");
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = "1";
+                        submitBtn.style.cursor = "pointer";
+                    } else {
+                        alert("Player not found.");
+                    }
+                } else {
+                    alert("ID not found or API error.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Verification failed. Please check ID/Zone or try again.");
+            } finally {
+                btn.innerText = "Verify ID";
+                btn.disabled = false;
+            }
+        };
+
         window.closeModal = (id) => document.getElementById(id).style.display = "none";
+        
         window.submitOrder = async () => {
-            const mlbbId = document.getElementById("customerMlbbId").value.trim(); if(!mlbbId) return;
-            const btn = document.querySelector("#orderModal .btn-save"); btn.innerText = "..."; btn.disabled = true;
+            const mlbbId = document.getElementById("inputMlbbId").value.trim(); 
+            const zone = document.getElementById("inputMlbbZone").value.trim();
+            
+            if(!mlbbId || !zone || !verifiedIgn) return alert("Please verify ID first.");
+            
+            const btn = document.getElementById("btnSubmitOrder"); 
+            btn.innerText = "..."; btn.disabled = true;
+            
             try {
                 let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
-                const chatRef = await addDoc(collection(db, "chats"), { mlbbId: mlbbId, itemName: currentItemBuying.name, itemPrice: finalPrice, status: 'open', timestamp: Date.now(), messages: [{ sender: 'system', text: `New: ${currentItemBuying.name} (₱${finalPrice})\nID: ${mlbbId}`, time: Date.now() }] });
-                localStorage.setItem('storez_active_chat', chatRef.id); closeModal("orderModal"); resumeCustomerChat(chatRef.id);
-            } catch (error) { alert("Error"); } finally { btn.innerText = "Start Chat"; btn.disabled = false; }
+                const fullIdString = `${mlbbId} (${zone})`;
+                
+                const initialMsg = `
+                New Order: ${currentItemBuying.name} (₱${finalPrice})
+                IGN: ${verifiedIgn}
+                ID: ${mlbbId}
+                Server: ${zone}
+                `;
+
+                const chatRef = await addDoc(collection(db, "chats"), { 
+                    mlbbId: fullIdString, 
+                    ign: verifiedIgn,
+                    itemName: currentItemBuying.name, 
+                    itemPrice: finalPrice, 
+                    status: 'open', 
+                    timestamp: Date.now(), 
+                    messages: [{ sender: 'system', text: initialMsg, time: Date.now() }] 
+                });
+                
+                localStorage.setItem('storez_active_chat', chatRef.id); 
+                closeModal("orderModal"); 
+                resumeCustomerChat(chatRef.id);
+            } catch (error) { alert("Error: " + error.message); } 
+            finally { btn.innerText = "Start Chat"; btn.disabled = false; }
         };
+
         function resumeCustomerChat(chatId) {
             activeCustomerChatId = chatId; maximizeChat(); document.getElementById("displayChatId").innerText = chatId;
             onSnapshot(doc(db, "chats", chatId), (docSnap) => {
@@ -575,12 +692,18 @@
             try { await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion({ sender: 'user', text: text, time: Date.now() }) }); input.value = ""; } catch(e) {}
         };
         window.handleEnter = (e, func) => { if(e.key === 'Enter') func(); };
+        
         function renderMessages(msgs, divId) {
             const container = document.getElementById(divId); container.innerHTML = "";
             msgs.forEach(m => {
                 let content = m.text.replace(/\n/g, '<br>');
                 if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="openImageViewer(this.src)">`;
-                let cls = "msg-system"; if(m.sender === 'user') cls = "msg-user"; if(m.sender === 'admin') cls = "msg-admin"; if(m.text.includes("RECEIPT")) cls = "msg-receipt";
+                
+                let cls = "msg-system"; 
+                if(m.sender === 'user') cls = "msg-user"; // Customer (Right)
+                if(m.sender === 'admin') cls = "msg-admin"; // Admin (Left)
+                if(m.text.includes("RECEIPT")) cls = "msg-receipt";
+                
                 container.innerHTML += `<div class="message ${cls}">${content}</div>`;
             });
             container.scrollTop = container.scrollHeight;
@@ -593,7 +716,9 @@
                 snap.forEach(d => {
                     const chat = d.data(); const isActive = activeAdminChatId === d.id ? "active" : "";
                     let badgeClass = 'badge open'; if(chat.status === 'done') badgeClass = 'badge done';
-                    list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')"><div><strong style="color:white;">${chat.mlbbId}</strong><div style="font-size:0.7rem; color:#888;">${chat.itemName}</div></div><div class="${badgeClass}">${chat.status.toUpperCase()}</div></div>`;
+                    // Show IGN in admin list if available
+                    const displayName = chat.ign ? `${chat.ign} (${chat.mlbbId})` : chat.mlbbId;
+                    list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')"><div><strong style="color:white; font-size:0.8rem;">${displayName}</strong><div style="font-size:0.7rem; color:#888;">${chat.itemName}</div></div><div class="${badgeClass}">${chat.status.toUpperCase()}</div></div>`;
                 });
             });
         }
@@ -601,7 +726,12 @@
             activeAdminChatId = chatId; document.getElementById("adminChatWindow").style.display = "block";
             if(chatUnsubscribe) chatUnsubscribe();
             chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => {
-                if(s.exists()) { currentChatData = s.data(); document.getElementById("adminChatTitle").innerText = `${s.data().mlbbId}`; renderMessages(s.data().messages, "adminMessages"); }
+                if(s.exists()) { 
+                    currentChatData = s.data(); 
+                    const title = s.data().ign ? `${s.data().ign}` : s.data().mlbbId;
+                    document.getElementById("adminChatTitle").innerText = title; 
+                    renderMessages(s.data().messages, "adminMessages"); 
+                }
                 else document.getElementById("adminChatWindow").style.display = "none";
             });
         };
@@ -611,9 +741,9 @@
         };
         window.sendReceipt = async () => {
             if(!activeAdminChatId || !currentChatData) return;
-            const r = `🧾 OFFICIAL RECEIPT\nID: ${currentChatData.mlbbId}\nItem: ${currentChatData.itemName}\nTotal: ₱${currentChatData.itemPrice}\nStatus: ✅ PAID`;
+            const r = `🧾 OFFICIAL RECEIPT\nID: ${currentChatData.mlbbId}\nIGN: ${currentChatData.ign || 'N/A'}\nItem: ${currentChatData.itemName}\nTotal: ₱${currentChatData.itemPrice}\nStatus: ✅ PAID`;
             await updateDoc(doc(db, "chats", activeAdminChatId), { status: 'done', messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) });
-            await addDoc(collection(db, "buyers"), { name: "Client", item: currentChatData.itemName, timestamp: Date.now() });
+            await addDoc(collection(db, "buyers"), { name: currentChatData.ign || "Client", item: currentChatData.itemName, timestamp: Date.now() });
         };
         window.closeCurrentChat = async () => { if(activeAdminChatId && confirm("Permanently Cancel & Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; } };
 
