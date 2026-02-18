@@ -1,4 +1,3 @@
-<!-- START OF FILE index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,39 +18,12 @@
             --danger: #ff3b30; 
             --success: #34c759;
             --warning: #ffcc00;
-            --fb-blue: #0084ff; 
-            --chat-bg-other: #3e4042;
-            --modal-overlay: rgba(0, 0, 0, 0.95);
+            --fb-blue: #0084ff; /* Messenger Blue */
+            --chat-bg-other: #3e4042; /* Messenger Gray */
+            --modal-overlay: rgba(0, 0, 0, 0.9);
         }
 
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; user-select: none; -webkit-font-smoothing: antialiased; padding-bottom: 80px; }
-
-        /* --- LOGIN GATE OVERLAY --- */
-        #loginGate {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 20px; box-sizing: border-box;
-        }
-        .login-box {
-            width: 100%; max-width: 400px;
-            background: #111; padding: 30px; border: 1px solid #333;
-            text-align: center;
-        }
-        .login-logo { font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 20px; cursor: pointer; letter-spacing: -1px; }
-        
-        /* --- FLOATING PROFILE --- */
-        #userProfileFloat {
-            position: fixed; bottom: 20px; left: 20px;
-            background: rgba(17, 17, 17, 0.9); border: 1px solid #333;
-            padding: 10px 15px; border-radius: 30px;
-            display: none; align-items: center; gap: 10px;
-            z-index: 200; cursor: pointer; backdrop-filter: blur(5px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        #userProfileFloat:hover { border-color: #fff; }
-        .profile-icon { width: 30px; height: 30px; background: var(--fb-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; }
-        .profile-name { font-size: 0.8rem; font-weight: 600; color: #fff; }
 
         /* --- TICKER --- */
         .ticker-wrap { width: 100%; background: #000; border-bottom: 1px solid var(--border); overflow: hidden; height: 30px; position: relative; z-index: 50; }
@@ -137,13 +109,25 @@
         .chat-container { display: flex; flex-direction: column; height: 400px; }
         .chat-box { flex-grow: 1; background: #000; border: 1px solid var(--border); overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
         
+        /* Messenger Style Messages */
         .message { padding: 8px 12px; border-radius: 18px; font-size: 0.9rem; max-width: 75%; word-wrap: break-word; line-height: 1.4; position: relative; }
         .msg-system { align-self: center; color: #666; font-size: 0.7rem; text-transform: uppercase; margin: 10px 0; background: transparent; max-width: 95%; text-align: center;}
         
         /* Customer (Right) */
-        .msg-user { align-self: flex-end; background: var(--fb-blue); color: white; border-bottom-right-radius: 4px; }
+        .msg-user { 
+            align-self: flex-end; 
+            background: var(--fb-blue); 
+            color: white; 
+            border-bottom-right-radius: 4px;
+        }
+        
         /* Admin (Left) */
-        .msg-admin { align-self: flex-start; background: var(--chat-bg-other); color: white; border-bottom-left-radius: 4px; }
+        .msg-admin { 
+            align-self: flex-start; 
+            background: var(--chat-bg-other); 
+            color: white; 
+            border-bottom-left-radius: 4px;
+        }
 
         .msg-receipt { align-self: center; background: #111; border: 1px dashed #444; color: #fff; text-align: center; width: 90%; font-family: monospace; font-size: 0.8rem; border-radius: 4px; }
         .msg-image { max-width: 200px; border-radius: 10px; margin-top: 5px; cursor: pointer; }
@@ -171,9 +155,11 @@
         
         #imageViewerModal { z-index: 5000; background: rgba(0,0,0,0.95); }
 
+        /* API Verification Styles */
         .id-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
         .id-input-group input { text-align: center; }
-        .verified-badge { color: var(--success); font-weight: bold; font-size: 0.9rem; margin: 10px 0; display: none; border: 1px solid var(--success); padding: 10px;}
+        .verified-badge { color: var(--success); font-weight: bold; font-size: 0.9rem; margin: 10px 0; display: none; }
+        .verified-badge span { border-bottom: 1px solid var(--success); }
 
         @media (max-width: 600px) {
             .hero-container { height: 160px; }
@@ -184,36 +170,10 @@
             .card-img-wrapper { height: 150px; }
             .buy-btn { font-size: 0.7rem; padding: 10px 0; }
             .seller-profile { flex-direction: column; text-align: center; }
-            #userProfileFloat { bottom: 15px; left: 15px; padding: 8px 12px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- LOGIN GATE OVERLAY -->
-    <div id="loginGate">
-        <div class="login-box">
-            <div class="login-logo" onclick="clickLogo()">STOREZ</div>
-            <p style="color:#888; margin-bottom:20px; font-size:0.8rem;">ENTER YOUR MLBB ID & SERVER TO ACCESS STORE</p>
-            
-            <div class="id-input-group">
-                <input type="number" id="loginId" placeholder="User ID" style="flex:2;">
-                <input type="number" id="loginZone" placeholder="Zone ID" style="flex:1;">
-            </div>
-
-            <div id="loginIgnResult" class="verified-badge">IGN: <span id="loginIgnText"></span></div>
-
-            <button class="btn" style="width:100%; background: #333; color: #fff; margin-bottom: 10px;" onclick="verifyUser()" id="btnLoginVerify">Verify ID</button>
-            
-            <button class="btn btn-save" id="btnEnterStore" style="width:100%; display:none;" onclick="enterStore()">ENTER STORE</button>
-        </div>
-    </div>
-
-    <!-- FLOATING USER PROFILE -->
-    <div id="userProfileFloat" onclick="userLogout()">
-        <div class="profile-icon">👤</div>
-        <div class="profile-name" id="floatIgn">User</div>
-    </div>
 
     <!-- TICKER BAR -->
     <div class="ticker-wrap"><div class="ticker" id="tickerContent"></div></div>
@@ -222,7 +182,7 @@
     <div class="hero-container" id="heroCarousel"></div>
 
     <nav>
-        <div class="logo">STOREZ</div>
+        <div class="logo" onclick="clickLogo()">STOREZ</div>
         <div class="nav-links">
             <button class="nav-btn" onclick="document.getElementById('proofSection').scrollIntoView({behavior: 'smooth'})">Proofs</button>
             <button class="nav-btn" onclick="openTrackModal()" style="border-color: #666;">Track Order</button>
@@ -233,6 +193,7 @@
     </nav>
 
     <div class="container">
+        
         <!-- SELLER PROFILE -->
         <div id="sellerProfileSection" class="seller-profile" style="display:none;">
             <img id="publicSellerImg" src="https://via.placeholder.com/100" class="seller-img">
@@ -249,7 +210,7 @@
                 <h2 style="color:#fff; margin:0; font-size:1.2rem; text-transform:uppercase;">Admin Control</h2>
             </div>
             
-            <!-- ADMIN SECTIONS (Same as before) -->
+            <!-- SELLER PROFILE MANAGER -->
             <div class="admin-section">
                 <h4 class="admin-header">Seller Profile (FB & Pic)</h4>
                 <div class="form-row">
@@ -260,13 +221,20 @@
                 <button class="btn btn-save" onclick="saveProfile()">Save Profile</button>
             </div>
 
+            <!-- HEADER / BANNER MANAGER -->
             <div class="admin-section">
                 <h4 class="admin-header">Header Banners</h4>
-                <div class="form-row"><div class="form-group"><label>Upload Image</label><input type="file" id="bannerInput" accept="image/*"></div></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Upload Image</label>
+                        <input type="file" id="bannerInput" accept="image/*">
+                    </div>
+                </div>
                 <button class="btn btn-save" onclick="uploadBanner()">Upload Banner</button>
                 <div id="bannerListAdmin" style="margin-top:10px;"></div>
             </div>
 
+            <!-- CHATS MANAGER -->
             <div class="admin-section">
                 <h4 class="admin-header">Live Orders</h4>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
@@ -295,6 +263,7 @@
                 </div>
             </div>
 
+            <!-- TICKER & PRODUCT MANAGERS -->
             <div class="admin-section">
                 <h4 class="admin-header">Recent Buyers</h4>
                 <input type="hidden" id="editTickerId">
@@ -325,7 +294,10 @@
 
             <div class="admin-section">
                 <h4 class="admin-header">Proofs</h4>
-                <div class="form-row"><div class="form-group"><label>Caption</label><input type="text" id="proofCaption"></div><div class="form-group"><label>Image</label><input type="file" id="proofFileInput" accept="image/*"></div></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Caption</label><input type="text" id="proofCaption"></div>
+                    <div class="form-group"><label>Image</label><input type="file" id="proofFileInput" accept="image/*"></div>
+                </div>
                 <button class="btn btn-save" onclick="uploadProof()">Upload</button>
             </div>
 
@@ -343,20 +315,34 @@
 
         <!-- PUBLIC STORE -->
         <div class="cat-tabs" id="catTabs"></div>
-        <div class="store-grid" id="storeGrid"><p style="text-align:center; width:100%; color:#444; margin-top:50px; font-size:0.8rem; text-transform:uppercase;">Loading Inventory...</p></div>
+        <div class="store-grid" id="storeGrid">
+             <p style="text-align:center; width:100%; color:#444; margin-top:50px; font-size:0.8rem; text-transform:uppercase;">Loading Inventory...</p>
+        </div>
+
         <h3 class="section-title" id="proofSection">Verified Transactions</h3>
         <div class="proof-grid" id="proofGrid"><p style="text-align:center; width:100%; color:#444; font-size:0.8rem;">No proofs yet.</p></div>
+
     </div>
 
     <!-- CHAT MODALS -->
     <div id="minimizedChat" onclick="maximizeChat()" style="display:none;"><span style="font-size:1.2rem; margin-right:5px;">💬</span> <span id="minimizedText">Chat</span></div>
 
-    <!-- SIMPLE CONFIRM ORDER MODAL (No Inputs) -->
+    <!-- UPDATED ORDER MODAL WITH API VERIFICATION -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-box">
             <h3 style="color:#fff; margin-bottom:5px; text-transform:uppercase;" id="modalItemName">Confirm Order</h3>
-            <p style="color:#888; font-size:0.8rem; margin-bottom:20px;">Buying for IGN: <b style="color:white;" id="modalIgnDisplay"></b></p>
-            <button class="btn btn-save" id="btnSubmitOrder" style="width:100%;" onclick="submitOrder()">Yes, Buy Now</button>
+            <p style="color:#888; font-size:0.8rem; margin-bottom:20px;">Enter MLBB ID & Server to Verify</p>
+            
+            <div class="id-input-group">
+                <input type="number" id="inputMlbbId" placeholder="User ID" style="flex:2;">
+                <input type="number" id="inputMlbbZone" placeholder="Zone ID" style="flex:1;">
+            </div>
+
+            <button class="btn" style="width:100%; background: #333; color: #fff; margin-bottom: 10px;" onclick="verifyMlbbId()" id="btnVerify">Verify ID</button>
+            
+            <div id="ignResult" class="verified-badge">IGN: <span id="ignText"></span></div>
+
+            <button class="btn btn-save" id="btnSubmitOrder" style="width:100%; opacity: 0.5; cursor: not-allowed;" disabled onclick="submitOrder()">Start Chat</button>
             <button class="btn" style="background:transparent; color:#666; margin-top:10px;" onclick="closeModal('orderModal')">Cancel</button>
         </div>
     </div>
@@ -429,78 +415,7 @@
         let itemsData = [], categoriesData = [], currentCat = "All", isAdmin = false, logoClicks = 0, clickTimer;
         let currentItemBuying = null, activeCustomerChatId = null, activeAdminChatId = null, chatUnsubscribe = null;
         let isChatMinimized = false, currentChatData = null;
-        
-        // NEW STATE FOR LOGIN
-        let userSession = null; 
-
-        // --- AUTH & LOGIN GATE LOGIC ---
-        
-        // 1. Check Session on Load
-        function checkUserSession() {
-            const storedUser = localStorage.getItem('storez_user');
-            if(storedUser) {
-                userSession = JSON.parse(storedUser);
-                applyLoginState();
-            } else {
-                document.getElementById("loginGate").style.display = "flex";
-            }
-        }
-        window.addEventListener('DOMContentLoaded', checkUserSession);
-
-        // 2. Verify User API
-        window.verifyUser = async () => {
-            const id = document.getElementById("loginId").value.trim();
-            const zone = document.getElementById("loginZone").value.trim();
-            const btn = document.getElementById("btnLoginVerify");
-            
-            if(!id || !zone) return alert("Enter ID & Zone");
-            
-            btn.innerText = "Checking..."; btn.disabled = true;
-
-            try {
-                const res = await fetch(`https://api.isan.eu.org/nickname/ml?id=${id}&zone=${zone}`);
-                const data = await res.json();
-                
-                if(data.success || data.name) {
-                    const ign = data.name || data.nickname;
-                    if(ign) {
-                        document.getElementById("loginIgnText").innerText = ign;
-                        document.getElementById("loginIgnResult").style.display = "block";
-                        
-                        // Temporarily store result
-                        userSession = { id: id, zone: zone, ign: ign };
-                        
-                        // Show Enter Button
-                        document.getElementById("btnLoginVerify").style.display = "none";
-                        document.getElementById("btnEnterStore").style.display = "block";
-                    } else alert("Player not found");
-                } else alert("Invalid ID");
-            } catch (e) { alert("API Error"); } 
-            finally { btn.innerText = "Verify ID"; btn.disabled = false; }
-        };
-
-        // 3. Enter Store (Save Session)
-        window.enterStore = () => {
-            if(!userSession) return;
-            localStorage.setItem('storez_user', JSON.stringify(userSession));
-            applyLoginState();
-        };
-
-        // 4. Apply UI State
-        function applyLoginState() {
-            document.getElementById("loginGate").style.display = "none";
-            document.getElementById("userProfileFloat").style.display = "flex";
-            document.getElementById("floatIgn").innerText = userSession.ign;
-            checkSavedChatSession(); // Check for existing chat
-        }
-
-        // 5. Logout
-        window.userLogout = () => {
-            if(confirm(`Logout as ${userSession.ign}?`)) {
-                localStorage.removeItem('storez_user');
-                location.reload();
-            }
-        };
+        let verifiedIgn = null; // Store verified IGN
 
         // --- CAROUSEL ---
         let currentBannerIndex = 0;
@@ -579,7 +494,7 @@
         window.deleteBanner = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "banners", id)); }
 
         // --- SESSION ---
-        async function checkSavedChatSession() {
+        async function checkSavedSession() {
             const savedId = localStorage.getItem('storez_active_chat');
             if(savedId) {
                 try {
@@ -589,6 +504,7 @@
                 } catch (e) { }
             }
         }
+        window.addEventListener('DOMContentLoaded', checkSavedSession);
         window.minimizeChat = () => { isChatMinimized = true; document.getElementById('customerChatModal').style.display = 'none'; document.getElementById('minimizedChat').style.display = 'flex'; };
         window.maximizeChat = () => { isChatMinimized = false; document.getElementById('customerChatModal').style.display = 'flex'; document.getElementById('minimizedChat').style.display = 'none'; document.getElementById('minimizedChat').classList.remove('new-msg'); const c = document.getElementById("customerMessages"); c.scrollTop = c.scrollHeight; };
         window.openImageViewer = (src) => { document.getElementById("fullScreenImage").src = src; document.getElementById("imageViewerModal").style.display = "flex"; };
@@ -602,22 +518,17 @@
         };
 
         // --- AUTH ---
-        window.clickLogo = () => { logoClicks++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { logoClicks = 0; }, 2000); if(logoClicks >= 5) { document.getElementById("secretLogin").style.display = "block"; handleAuth(); logoClicks = 0; } };
+        window.clickLogo = () => { logoClicks++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { logoClicks = 0; }, 2000); if(logoClicks >= 5) { document.getElementById("secretLogin").style.display = "block"; logoClicks = 0; } };
         window.handleAuth = () => { if (auth.currentUser) signOut(auth).then(() => window.location.reload()); else { const e = prompt("Email:"); if(!e) return; const p = prompt("Password:"); if(e && p) signInWithEmailAndPassword(auth, e, p).catch(err => alert("Error: " + err.message)); } };
         onAuthStateChanged(auth, (user) => {
             isAdmin = !!user;
             document.getElementById("authBtn").innerText = user ? "Exit" : "Admin";
             document.getElementById("adminArea").style.display = user ? "block" : "none";
-            if(user) { 
-                document.getElementById("secretLogin").style.display = "block"; 
-                // Admin bypasses login gate
-                document.getElementById("loginGate").style.display = "none";
-                initAdminChatListener(); renderBuyerList(); 
-            }
+            if(user) { document.getElementById("secretLogin").style.display = "block"; initAdminChatListener(); renderBuyerList(); }
             renderStore();
         });
 
-        // --- DATA & STORE RENDER --- (Standard Firestore Logic - preserved)
+        // --- DATA ---
         onSnapshot(query(collection(db, "categories"), orderBy("order", "asc")), (snap) => { categoriesData = []; snap.forEach(d => categoriesData.push({ id: d.id, ...d.data() })); renderCategories(); renderCatList(); });
         onSnapshot(query(collection(db, "items"), orderBy("order", "asc")), (snap) => { itemsData = []; snap.forEach(d => itemsData.push({ id: d.id, ...d.data() })); renderStore(); });
         onSnapshot(query(collection(db, "proofs"), orderBy("timestamp", "desc")), (snap) => {
@@ -632,53 +543,19 @@
             document.getElementById("tickerContent").innerHTML = html; if(isAdmin) renderBuyerList();
         });
 
-        // --- ORDER FLOW (UPDATED) ---
-        window.openBuyModal = (itemJson) => {
-            if(activeCustomerChatId && confirm("Close active chat?")) localStorage.removeItem('storez_active_chat');
-            else if(activeCustomerChatId) return;
-            
-            // Check if user is logged in (double check)
-            if(!userSession && !isAdmin) {
-                alert("Please log in first.");
-                location.reload();
-                return;
-            }
+        window.saveBuyer = async () => { const id = document.getElementById("editTickerId").value; const name = document.getElementById("buyerName").value; const item = document.getElementById("buyerItem").value; if(name && item) { if(id) await updateDoc(doc(db, "buyers", id), { name, item }); else await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() }); document.getElementById("buyerName").value = ""; document.getElementById("buyerItem").value = ""; document.getElementById("editTickerId").value = ""; } };
+        window.editBuyer = (id) => { const b = window.buyersData.find(x => x.id === id); if(b) { document.getElementById("buyerName").value = b.name; document.getElementById("buyerItem").value = b.item; document.getElementById("editTickerId").value = b.id; } };
+        window.deleteBuyer = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "buyers", id)); };
+        function renderBuyerList() { if(!window.buyersData) return; document.getElementById("buyerList").innerHTML = window.buyersData.map(b => `<div class="list-item" style="font-size:0.75rem;"><span>${b.name} - ${b.item}</span><div><button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button><button class="btn-del" onclick="deleteBuyer('${b.id}')">X</button></div></div>`).join(''); }
 
-            const item = JSON.parse(decodeURIComponent(itemJson)); 
-            currentItemBuying = item;
-            document.getElementById("modalItemName").innerText = item.name;
-            document.getElementById("modalIgnDisplay").innerText = userSession ? userSession.ign : "Admin";
-            document.getElementById("orderModal").style.display = "flex"; 
-        };
-        window.closeModal = (id) => document.getElementById(id).style.display = "none";
-        
-        window.submitOrder = async () => {
-            if(!userSession) return;
-            const btn = document.querySelector("#orderModal .btn-save"); btn.innerText = "..."; btn.disabled = true;
-            try {
-                let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
-                const fullIdString = `${userSession.id} (${userSession.zone})`;
-                const initialMsg = `
-                New Order: ${currentItemBuying.name} (₱${finalPrice})
-                IGN: ${userSession.ign}
-                ID: ${userSession.id}
-                Server: ${userSession.zone}
-                `;
-
-                const chatRef = await addDoc(collection(db, "chats"), { 
-                    mlbbId: fullIdString, 
-                    ign: userSession.ign,
-                    itemName: currentItemBuying.name, 
-                    itemPrice: finalPrice, 
-                    status: 'open', 
-                    timestamp: Date.now(), 
-                    messages: [{ sender: 'system', text: initialMsg, time: Date.now() }] 
-                });
-                localStorage.setItem('storez_active_chat', chatRef.id); closeModal("orderModal"); resumeCustomerChat(chatRef.id);
-            } catch (error) { alert("Error"); } finally { btn.innerText = "Yes, Buy Now"; btn.disabled = false; }
+        window.uploadProof = async () => {
+            const caption = document.getElementById("proofCaption").value; const fileInput = document.getElementById("proofFileInput");
+            if(!fileInput.files[0] || !caption) return alert("Image & Caption needed");
+            const btn = document.querySelector("button[onclick='uploadProof()']"); btn.innerText = "...";
+            try { const imgData = await compressImage(fileInput.files[0], 1200); await addDoc(collection(db, "proofs"), { caption, image: imgData, timestamp: Date.now() }); alert("Done"); fileInput.value = ""; } catch (e) { alert(e.message); } finally { btn.innerText = "Upload"; }
         };
 
-        // --- RECOVERY, CHAT & ADMIN (Standard Logic - preserved) ---
+        // --- TRACKING & CANCEL ---
         window.openTrackModal = () => { document.getElementById("trackModal").style.display = "flex"; document.getElementById("trackInputId").focus(); }
         window.recoverChat = async () => {
             const inputId = document.getElementById("trackInputId").value.trim(); if(!inputId) return;
@@ -686,7 +563,119 @@
             if(docSnap.exists()) { localStorage.setItem('storez_active_chat', inputId); closeModal("trackModal"); resumeCustomerChat(inputId); } else alert("Invalid ID");
         }
         window.copyChatId = () => { if(activeCustomerChatId) { navigator.clipboard.writeText(activeCustomerChatId); alert("Copied ID"); } }
-        window.cancelOrder = async () => { if(activeCustomerChatId && confirm("Permanently Cancel & Delete this order?")) { await deleteDoc(doc(db, "chats", activeCustomerChatId)); localStorage.removeItem('storez_active_chat'); window.location.reload(); } };
+        
+        window.cancelOrder = async () => {
+            if(!activeCustomerChatId) return;
+            if(confirm("Permanently Cancel & Delete this order?")) {
+                await deleteDoc(doc(db, "chats", activeCustomerChatId));
+                localStorage.removeItem('storez_active_chat');
+                window.location.reload();
+            }
+        };
+
+        // --- BUY & VERIFY FLOW ---
+        window.openBuyModal = (itemJson) => {
+            if(activeCustomerChatId && confirm("Close active chat?")) localStorage.removeItem('storez_active_chat');
+            else if(activeCustomerChatId) return;
+            
+            // Reset Modal
+            const item = JSON.parse(decodeURIComponent(itemJson)); 
+            currentItemBuying = item;
+            document.getElementById("modalItemName").innerText = item.name; 
+            document.getElementById("inputMlbbId").value = ""; 
+            document.getElementById("inputMlbbZone").value = "";
+            
+            // Hide result, disable button
+            document.getElementById("ignResult").style.display = "none";
+            document.getElementById("btnSubmitOrder").disabled = true;
+            document.getElementById("btnSubmitOrder").style.opacity = "0.5";
+            document.getElementById("btnSubmitOrder").style.cursor = "not-allowed";
+            verifiedIgn = null;
+
+            document.getElementById("orderModal").style.display = "flex"; 
+            document.getElementById("inputMlbbId").focus();
+        };
+
+        window.verifyMlbbId = async () => {
+            const id = document.getElementById("inputMlbbId").value.trim();
+            const zone = document.getElementById("inputMlbbZone").value.trim();
+            const btn = document.getElementById("btnVerify");
+            
+            if(!id || !zone) return alert("Please enter both ID and Zone.");
+            
+            btn.innerText = "Checking...";
+            btn.disabled = true;
+
+            try {
+                // Fetch from API
+                const res = await fetch(`https://api.isan.eu.org/nickname/ml?id=${id}&zone=${zone}`);
+                const data = await res.json();
+                
+                if(data.success || data.name) {
+                    const ign = data.name || data.nickname;
+                    if(ign) {
+                        verifiedIgn = ign;
+                        document.getElementById("ignText").innerText = ign;
+                        document.getElementById("ignResult").style.display = "block";
+                        
+                        // Enable Start Chat
+                        const submitBtn = document.getElementById("btnSubmitOrder");
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = "1";
+                        submitBtn.style.cursor = "pointer";
+                    } else {
+                        alert("Player not found.");
+                    }
+                } else {
+                    alert("ID not found or API error.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Verification failed. Please check ID/Zone or try again.");
+            } finally {
+                btn.innerText = "Verify ID";
+                btn.disabled = false;
+            }
+        };
+
+        window.closeModal = (id) => document.getElementById(id).style.display = "none";
+        
+        window.submitOrder = async () => {
+            const mlbbId = document.getElementById("inputMlbbId").value.trim(); 
+            const zone = document.getElementById("inputMlbbZone").value.trim();
+            
+            if(!mlbbId || !zone || !verifiedIgn) return alert("Please verify ID first.");
+            
+            const btn = document.getElementById("btnSubmitOrder"); 
+            btn.innerText = "..."; btn.disabled = true;
+            
+            try {
+                let finalPrice = currentItemBuying.salePrice || currentItemBuying.price;
+                const fullIdString = `${mlbbId} (${zone})`;
+                
+                const initialMsg = `
+                New Order: ${currentItemBuying.name} (₱${finalPrice})
+                IGN: ${verifiedIgn}
+                ID: ${mlbbId}
+                Server: ${zone}
+                `;
+
+                const chatRef = await addDoc(collection(db, "chats"), { 
+                    mlbbId: fullIdString, 
+                    ign: verifiedIgn,
+                    itemName: currentItemBuying.name, 
+                    itemPrice: finalPrice, 
+                    status: 'open', 
+                    timestamp: Date.now(), 
+                    messages: [{ sender: 'system', text: initialMsg, time: Date.now() }] 
+                });
+                
+                localStorage.setItem('storez_active_chat', chatRef.id); 
+                closeModal("orderModal"); 
+                resumeCustomerChat(chatRef.id);
+            } catch (error) { alert("Error: " + error.message); } 
+            finally { btn.innerText = "Start Chat"; btn.disabled = false; }
+        };
 
         function resumeCustomerChat(chatId) {
             activeCustomerChatId = chatId; maximizeChat(); document.getElementById("displayChatId").innerText = chatId;
@@ -697,39 +686,104 @@
                 } else { localStorage.removeItem('storez_active_chat'); window.location.reload(); }
             });
         }
-        window.sendCustomerMessage = async () => { const input = document.getElementById("customerMsgInput"); const text = input.value.trim(); if(!text || !activeCustomerChatId) return; try { await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion({ sender: 'user', text: text, time: Date.now() }) }); input.value = ""; } catch(e) {} };
+        window.sendCustomerMessage = async () => {
+            const input = document.getElementById("customerMsgInput"); const text = input.value.trim(); if(!text || !activeCustomerChatId) return;
+            try { await updateDoc(doc(db, "chats", activeCustomerChatId), { messages: arrayUnion({ sender: 'user', text: text, time: Date.now() }) }); input.value = ""; } catch(e) {}
+        };
         window.handleEnter = (e, func) => { if(e.key === 'Enter') func(); };
+        
         function renderMessages(msgs, divId) {
             const container = document.getElementById(divId); container.innerHTML = "";
             msgs.forEach(m => {
                 let content = m.text.replace(/\n/g, '<br>');
                 if(m.image) content = `<img src="${m.image}" class="msg-image" onclick="openImageViewer(this.src)">`;
-                let cls = "msg-system"; if(m.sender === 'user') cls = "msg-user"; if(m.sender === 'admin') cls = "msg-admin"; if(m.text.includes("RECEIPT")) cls = "msg-receipt";
+                
+                let cls = "msg-system"; 
+                if(m.sender === 'user') cls = "msg-user"; // Customer (Right)
+                if(m.sender === 'admin') cls = "msg-admin"; // Admin (Left)
+                if(m.text.includes("RECEIPT")) cls = "msg-receipt";
+                
                 container.innerHTML += `<div class="message ${cls}">${content}</div>`;
             });
             container.scrollTop = container.scrollHeight;
         }
 
-        // Admin Chat & Items Logic (Minified to save space, same functionality)
-        function initAdminChatListener() { onSnapshot(query(collection(db, "chats"), orderBy("timestamp", "desc")), (snap) => { const list = document.getElementById("adminChatList"); list.innerHTML = ""; if(snap.empty) { list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>Empty</div>"; return; } snap.forEach(d => { const chat = d.data(); const isActive = activeAdminChatId === d.id ? "active" : ""; let badgeClass = 'badge open'; if(chat.status === 'done') badgeClass = 'badge done'; const displayName = chat.ign ? `${chat.ign} (${chat.mlbbId})` : chat.mlbbId; list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')"><div><strong style="color:white; font-size:0.8rem;">${displayName}</strong><div style="font-size:0.7rem; color:#888;">${chat.itemName}</div></div><div class="${badgeClass}">${chat.status.toUpperCase()}</div></div>`; }); }); }
-        window.openAdminChat = (chatId) => { activeAdminChatId = chatId; document.getElementById("adminChatWindow").style.display = "block"; if(chatUnsubscribe) chatUnsubscribe(); chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => { if(s.exists()) { currentChatData = s.data(); const title = s.data().ign ? `${s.data().ign}` : s.data().mlbbId; document.getElementById("adminChatTitle").innerText = title; renderMessages(s.data().messages, "adminMessages"); } else document.getElementById("adminChatWindow").style.display = "none"; }); };
-        window.sendAdminMessage = async () => { const input = document.getElementById("adminMsgInput"); if(!input.value.trim() || !activeAdminChatId) return; await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) }); input.value = ""; };
-        window.sendReceipt = async () => { if(!activeAdminChatId || !currentChatData) return; const r = `🧾 OFFICIAL RECEIPT\nID: ${currentChatData.mlbbId}\nIGN: ${currentChatData.ign || 'N/A'}\nItem: ${currentChatData.itemName}\nTotal: ₱${currentChatData.itemPrice}\nStatus: ✅ PAID`; await updateDoc(doc(db, "chats", activeAdminChatId), { status: 'done', messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) }); await addDoc(collection(db, "buyers"), { name: currentChatData.ign || "Client", item: currentChatData.itemName, timestamp: Date.now() }); };
+        function initAdminChatListener() {
+            onSnapshot(query(collection(db, "chats"), orderBy("timestamp", "desc")), (snap) => {
+                const list = document.getElementById("adminChatList"); list.innerHTML = "";
+                if(snap.empty) { list.innerHTML = "<div style='padding:20px; text-align:center; color:#555;'>Empty</div>"; return; }
+                snap.forEach(d => {
+                    const chat = d.data(); const isActive = activeAdminChatId === d.id ? "active" : "";
+                    let badgeClass = 'badge open'; if(chat.status === 'done') badgeClass = 'badge done';
+                    // Show IGN in admin list if available
+                    const displayName = chat.ign ? `${chat.ign} (${chat.mlbbId})` : chat.mlbbId;
+                    list.innerHTML += `<div class="admin-chat-item ${isActive}" onclick="openAdminChat('${d.id}')"><div><strong style="color:white; font-size:0.8rem;">${displayName}</strong><div style="font-size:0.7rem; color:#888;">${chat.itemName}</div></div><div class="${badgeClass}">${chat.status.toUpperCase()}</div></div>`;
+                });
+            });
+        }
+        window.openAdminChat = (chatId) => {
+            activeAdminChatId = chatId; document.getElementById("adminChatWindow").style.display = "block";
+            if(chatUnsubscribe) chatUnsubscribe();
+            chatUnsubscribe = onSnapshot(doc(db, "chats", chatId), (s) => {
+                if(s.exists()) { 
+                    currentChatData = s.data(); 
+                    const title = s.data().ign ? `${s.data().ign}` : s.data().mlbbId;
+                    document.getElementById("adminChatTitle").innerText = title; 
+                    renderMessages(s.data().messages, "adminMessages"); 
+                }
+                else document.getElementById("adminChatWindow").style.display = "none";
+            });
+        };
+        window.sendAdminMessage = async () => {
+            const input = document.getElementById("adminMsgInput"); if(!input.value.trim() || !activeAdminChatId) return;
+            await updateDoc(doc(db, "chats", activeAdminChatId), { messages: arrayUnion({ sender: 'admin', text: input.value.trim(), time: Date.now() }) }); input.value = "";
+        };
+        window.sendReceipt = async () => {
+            if(!activeAdminChatId || !currentChatData) return;
+            const r = `🧾 OFFICIAL RECEIPT\nID: ${currentChatData.mlbbId}\nIGN: ${currentChatData.ign || 'N/A'}\nItem: ${currentChatData.itemName}\nTotal: ₱${currentChatData.itemPrice}\nStatus: ✅ PAID`;
+            await updateDoc(doc(db, "chats", activeAdminChatId), { status: 'done', messages: arrayUnion({ sender: 'admin', text: r, time: Date.now() }) });
+            await addDoc(collection(db, "buyers"), { name: currentChatData.ign || "Client", item: currentChatData.itemName, timestamp: Date.now() });
+        };
         window.closeCurrentChat = async () => { if(activeAdminChatId && confirm("Permanently Cancel & Delete?")) { await deleteDoc(doc(db, "chats", activeAdminChatId)); activeAdminChatId = null; document.getElementById("adminChatWindow").style.display = "none"; } };
-        window.saveBuyer = async () => { const id = document.getElementById("editTickerId").value; const name = document.getElementById("buyerName").value; const item = document.getElementById("buyerItem").value; if(name && item) { if(id) await updateDoc(doc(db, "buyers", id), { name, item }); else await addDoc(collection(db, "buyers"), { name, item, timestamp: Date.now() }); document.getElementById("buyerName").value = ""; document.getElementById("buyerItem").value = ""; document.getElementById("editTickerId").value = ""; } };
-        window.editBuyer = (id) => { const b = window.buyersData.find(x => x.id === id); if(b) { document.getElementById("buyerName").value = b.name; document.getElementById("buyerItem").value = b.item; document.getElementById("editTickerId").value = b.id; } };
-        window.deleteBuyer = async (id) => { if(confirm("Remove?")) await deleteDoc(doc(db, "buyers", id)); };
-        function renderBuyerList() { if(!window.buyersData) return; document.getElementById("buyerList").innerHTML = window.buyersData.map(b => `<div class="list-item" style="font-size:0.75rem;"><span>${b.name} - ${b.item}</span><div><button class="btn-edit" onclick="editBuyer('${b.id}')">Edit</button><button class="btn-del" onclick="deleteBuyer('${b.id}')">X</button></div></div>`).join(''); }
-        window.uploadProof = async () => { const caption = document.getElementById("proofCaption").value; const fileInput = document.getElementById("proofFileInput"); if(!fileInput.files[0] || !caption) return alert("Image & Caption needed"); const btn = document.querySelector("button[onclick='uploadProof()']"); btn.innerText = "..."; try { const imgData = await compressImage(fileInput.files[0], 1200); await addDoc(collection(db, "proofs"), { caption, image: imgData, timestamp: Date.now() }); alert("Done"); fileInput.value = ""; } catch (e) { alert(e.message); } finally { btn.innerText = "Upload"; } };
-        window.renderStore = () => { const grid = document.getElementById("storeGrid"); grid.innerHTML = ""; let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat); if(filtered.length === 0) { grid.innerHTML = "<p style='color:#444; width:100%; text-align:center;'>Empty.</p>"; return; } filtered.forEach(item => { const stockVal = item.stock !== undefined ? Number(item.stock) : 999; let priceHtml = `<div class="current-price">₱${item.price}</div>`; let badgeHtml = ""; if(item.salePrice && Number(item.salePrice) < Number(item.price)) { priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price">₱${item.salePrice}</span>`; badgeHtml = `<div class="sale-badge">SALE</div>`; } let btnHtml = `<button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>`; let stockStatusHtml = `<div class="stock-status">In Stock: ${stockVal}</div>`; let overlayHtml = ""; if(stockVal <= 0) { stockStatusHtml = `<div class="stock-status stock-out">Sold Out</div>`; btnHtml = `<button disabled class="buy-btn">Sold Out</button>`; overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`; badgeHtml = ""; } let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:5px;"><button class="btn btn-io" style="margin:0; font-size:0.7rem; width:100%;" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" style="margin:0; width:auto;" onclick="deleteItem('${item.id}')">X</button></div>` : ""; grid.innerHTML += `<div class="card">${badgeHtml}<div class="card-img-wrapper"><img src="${item.image || 'https://via.placeholder.com/300'}" class="card-img-top">${overlayHtml}</div><div class="card-body"><h3 class="card-title">${item.name}</h3><div class="price-container">${priceHtml}</div>${stockStatusHtml}${btnHtml}${adminHtml}</div></div>`; }); };
+
+        window.renderStore = () => {
+            const grid = document.getElementById("storeGrid"); grid.innerHTML = "";
+            let filtered = currentCat === "All" ? [...itemsData] : itemsData.filter(i => i.catId === currentCat);
+            if(filtered.length === 0) { grid.innerHTML = "<p style='color:#444; width:100%; text-align:center;'>Empty.</p>"; return; }
+            filtered.forEach(item => {
+                const stockVal = item.stock !== undefined ? Number(item.stock) : 999;
+                let priceHtml = `<div class="current-price">₱${item.price}</div>`; let badgeHtml = "";
+                if(item.salePrice && Number(item.salePrice) < Number(item.price)) { priceHtml = `<span class="old-price">₱${item.price}</span><span class="current-price">₱${item.salePrice}</span>`; badgeHtml = `<div class="sale-badge">SALE</div>`; }
+                let btnHtml = `<button onclick="openBuyModal('${encodeURIComponent(JSON.stringify(item))}')" class="buy-btn">Buy Now</button>`;
+                let stockStatusHtml = `<div class="stock-status">In Stock: ${stockVal}</div>`; let overlayHtml = "";
+                if(stockVal <= 0) { stockStatusHtml = `<div class="stock-status stock-out">Sold Out</div>`; btnHtml = `<button disabled class="buy-btn">Sold Out</button>`; overlayHtml = `<div class="sold-out-overlay">Sold Out</div>`; badgeHtml = ""; }
+                let adminHtml = isAdmin ? `<div style="padding:10px; display:flex; gap:5px;"><button class="btn btn-io" style="margin:0; font-size:0.7rem; width:100%;" onclick="editItem('${item.id}')">Edit</button><button class="btn btn-del" style="margin:0; width:auto;" onclick="deleteItem('${item.id}')">X</button></div>` : "";
+                grid.innerHTML += `<div class="card">${badgeHtml}<div class="card-img-wrapper"><img src="${item.image || 'https://via.placeholder.com/300'}" class="card-img-top">${overlayHtml}</div><div class="card-body"><h3 class="card-title">${item.name}</h3><div class="price-container">${priceHtml}</div>${stockStatusHtml}${btnHtml}${adminHtml}</div></div>`;
+            });
+        };
         window.addCategory = async () => { const n = document.getElementById("catName").value; if(n) await addDoc(collection(db, "categories"), { name: n, order: Date.now() }); document.getElementById("catName").value = ""; };
         window.deleteCategory = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "categories", id)); };
-        window.renderCategories = () => { const c = document.getElementById("catTabs"), s = document.getElementById("itemCatSelect"); c.innerHTML = `<div class="cat-tab ${currentCat==='All'?'active':''}" onclick="window.setCat('All')">ALL</div>` + categoriesData.map(x=>`<div class="cat-tab ${currentCat===x.id?'active':''}" onclick="window.setCat('${x.id}')">${x.name.toUpperCase()}</div>`).join(''); s.innerHTML = `<option value="">Category...</option>` + categoriesData.map(x=>`<option value="${x.id}">${x.name}</option>`).join(''); };
+        window.renderCategories = () => {
+            const c = document.getElementById("catTabs"), s = document.getElementById("itemCatSelect");
+            c.innerHTML = `<div class="cat-tab ${currentCat==='All'?'active':''}" onclick="window.setCat('All')">ALL</div>` + categoriesData.map(x=>`<div class="cat-tab ${currentCat===x.id?'active':''}" onclick="window.setCat('${x.id}')">${x.name.toUpperCase()}</div>`).join('');
+            s.innerHTML = `<option value="">Category...</option>` + categoriesData.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');
+        };
         window.setCat = (id) => { currentCat = id; renderStore(); };
         window.renderCatList = () => { document.getElementById("catList").innerHTML = categoriesData.map(x=>`<div class="list-item"><span>${x.name}</span><button class="btn-del" onclick="deleteCategory('${x.id}')">X</button></div>`).join(''); };
-        window.saveItem = async () => { const id = document.getElementById("editItemId").value; const data = { name: document.getElementById("itemName").value, price: Number(document.getElementById("itemPrice").value), salePrice: document.getElementById("itemSale").value, catId: document.getElementById("itemCatSelect").value, image: document.getElementById("itemImg").value, stock: Number(document.getElementById("itemStock").value) }; if(!data.name || !data.price || !data.catId) return alert("Missing info"); if(!data.salePrice) delete data.salePrice; else data.salePrice = Number(data.salePrice); if(isNaN(data.stock)) data.stock = 999; if(id) await updateDoc(doc(db, "items", id), data); else await addDoc(collection(db, "items"), { ...data, order: Date.now() }); window.clearForm(); };
+        window.saveItem = async () => {
+            const id = document.getElementById("editItemId").value;
+            const data = { name: document.getElementById("itemName").value, price: Number(document.getElementById("itemPrice").value), salePrice: document.getElementById("itemSale").value, catId: document.getElementById("itemCatSelect").value, image: document.getElementById("itemImg").value, stock: Number(document.getElementById("itemStock").value) };
+            if(!data.name || !data.price || !data.catId) return alert("Missing info");
+            if(!data.salePrice) delete data.salePrice; else data.salePrice = Number(data.salePrice);
+            if(isNaN(data.stock)) data.stock = 999;
+            if(id) await updateDoc(doc(db, "items", id), data); else await addDoc(collection(db, "items"), { ...data, order: Date.now() });
+            window.clearForm();
+        };
         window.deleteItem = async (id) => { if(confirm("Del?")) await deleteDoc(doc(db, "items", id)); };
-        window.editItem = (id) => { const i = itemsData.find(x => x.id === id); document.getElementById("editItemId").value = i.id; document.getElementById("itemName").value = i.name; document.getElementById("itemPrice").value = i.price; document.getElementById("itemSale").value = i.salePrice||""; document.getElementById("itemCatSelect").value = i.catId; document.getElementById("itemImg").value = i.image; document.getElementById("itemStock").value = i.stock; document.getElementById("adminArea").scrollIntoView(); };
+        window.editItem = (id) => {
+            const i = itemsData.find(x => x.id === id); 
+            document.getElementById("editItemId").value = i.id; document.getElementById("itemName").value = i.name; document.getElementById("itemPrice").value = i.price; document.getElementById("itemSale").value = i.salePrice||""; document.getElementById("itemCatSelect").value = i.catId; document.getElementById("itemImg").value = i.image; document.getElementById("itemStock").value = i.stock; document.getElementById("adminArea").scrollIntoView();
+        };
         window.clearForm = () => { document.querySelectorAll("#adminArea input").forEach(x=>x.value=""); document.getElementById("itemCatSelect").value=""; document.getElementById("editItemId").value=""; };
         window.exportFromFirebase = async () => { const b = new Blob([JSON.stringify({items:itemsData, categories:categoriesData})], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "STOREZ_Backup.json"; a.click(); };
         window.importToFirebase = async (i) => { if(i.files[0] && confirm("Import?")) { const r = new FileReader(); r.onload = async(e) => { const j = JSON.parse(e.target.result); const b = writeBatch(db); j.categories?.forEach(x=>b.set(doc(collection(db,"categories")),x)); j.items?.forEach(x=>b.set(doc(collection(db,"items")),x)); await b.commit(); alert("Done"); }; r.readAsText(i.files[0]); }};
